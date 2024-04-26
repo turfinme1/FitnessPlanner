@@ -28,10 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FitnessPlanner.Services\FitnessPlanner.Services.csproj" />
     <ProjectReference Include="..\fitnessplanner.client\fitnessplanner.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\FitnessPlanner.Services\FitnessPlanner.Services.csproj" />
   </ItemGroup>
 
 </Project>
