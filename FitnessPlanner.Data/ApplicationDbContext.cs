@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using FitnessPlanner.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FitnessPlanner.Data
 {
@@ -14,5 +14,14 @@ namespace FitnessPlanner.Data
             : base(options)
         {
         }
+
+        public DbSet<MuscleGroup> MuscleGroups { get; set; } = null!;
+        public DbSet<ExerciseMuscleGroup> ExercisesMuscleGroups { get; set; } = null!;
+        public DbSet<Exercise> Exercises { get; set; } = null!;
+        public DbSet<ExercisePerformInfo> ExercisesPerformInfos { get; set; } = null!;
+        public DbSet<ExercisePerformInfoSingleWorkout> ExercisePerformInfosSingleWorkouts { get; set; } = null!;
+        public DbSet<SingleWorkout> SingleWorkouts { get; set; } = null!;
+        public DbSet<SingleWorkoutWorkoutPlan> SingleWorkoutsWorkoutPlans { get; set; } = null!;
+        public DbSet<WorkoutPlan> WorkoutPlans { get; set; } = null!;
     }
 }
