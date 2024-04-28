@@ -1,5 +1,6 @@
 using FitnessPlanner.Data;
 using FitnessPlanner.Data.Models;
+using FitnessPlanner.Server.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,19 +11,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddIdentity<User, IdentityRole>(options =>
-    {
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequiredLength = 6;
-        options.Password.RequireLowercase = false;
-        options.User.RequireUniqueEmail = true;
-        options.SignIn.RequireConfirmedEmail = false;
-    })
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.ConfigureIdentity();
+
+builder.Services.ConfigureApplicationServices();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
