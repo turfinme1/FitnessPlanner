@@ -1,8 +1,13 @@
-﻿using FitnessPlanner.Data;
+﻿using System.Text;
+using FitnessPlanner.Data;
 using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Data.Repositories;
+using FitnessPlanner.Services.Authentication;
+using FitnessPlanner.Services.Authentication.Contracts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FitnessPlanner.Server.Extensions
 {
@@ -24,7 +29,7 @@ namespace FitnessPlanner.Server.Extensions
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
         }
-        
+
         public static void ConfigureApplicationServices(this IServiceCollection builder)
         {
             builder.AddScoped<IExercisePerformInfoRepository, ExercisePerformInfoRepository>();
@@ -32,7 +37,35 @@ namespace FitnessPlanner.Server.Extensions
             builder.AddScoped<ISingleWorkoutRepository, SingleWorkoutRepository>();
             builder.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
+
+            builder.AddScoped<IAuthenticationService, AuthenticationService>();
         }
-        
+
+        public static void ConfigureJwt(this IServiceCollection builder, IConfiguration configuration)
+        {   
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var key = jwtSettings.GetSection("Secret").Value!;
+            var issuer = jwtSettings.GetSection("ValidIssuer").Value!;
+            var audience = jwtSettings.GetSection("ValidAudience").Value!;
+
+            builder.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = issuer,
+                        ValidAudience = audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                    };
+                });
+        }
     }
 }
