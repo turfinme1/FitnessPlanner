@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FitnessPlanner.Data\FitnessPlanner.Data.csproj" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FitnessPlanner.Services.Models\FitnessPlanner.Services.Models.csproj" />
   </ItemGroup>
 
