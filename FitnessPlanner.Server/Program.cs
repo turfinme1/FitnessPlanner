@@ -1,7 +1,5 @@
 using FitnessPlanner.Data;
-using FitnessPlanner.Data.Models;
 using FitnessPlanner.Server.Extensions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
