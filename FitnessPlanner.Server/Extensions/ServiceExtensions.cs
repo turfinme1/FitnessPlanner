@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using Azure.Identity;
+using Azure.Storage.Blobs;
 using FitnessPlanner.Data;
 using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
@@ -32,6 +34,11 @@ namespace FitnessPlanner.Server.Extensions
 
         public static void ConfigureApplicationServices(this IServiceCollection builder)
         {
+            builder.AddSingleton<BlobServiceClient>(x =>
+                new BlobServiceClient(
+                    new Uri("https://artshopimgs.blob.core.windows.net"),
+                    new DefaultAzureCredential()));
+
             builder.AddScoped<IExercisePerformInfoRepository, ExercisePerformInfoRepository>();
             builder.AddScoped<IExerciseRepository, ExerciseRepository>();
             builder.AddScoped<ISingleWorkoutRepository, SingleWorkoutRepository>();
@@ -42,7 +49,7 @@ namespace FitnessPlanner.Server.Extensions
         }
 
         public static void ConfigureJwt(this IServiceCollection builder, IConfiguration configuration)
-        {   
+        {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var key = jwtSettings.GetSection("Secret").Value!;
             var issuer = jwtSettings.GetSection("ValidIssuer").Value!;
