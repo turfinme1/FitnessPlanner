@@ -1,4 +1,5 @@
-﻿using FitnessPlanner.Data.Models;
+﻿using FitnessPlanner.Data.Configuration;
+using FitnessPlanner.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,14 @@ namespace FitnessPlanner.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfiguration(new MuscleGroupConfiguration());
+
+            base.OnModelCreating(builder);
         }
 
         public DbSet<MuscleGroup> MuscleGroups { get; set; } = null!;

@@ -3,6 +3,7 @@ using System;
 using FitnessPlanner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FitnessPlanner.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240429193120_SeedMuscleGroups")]
+    partial class SeedMuscleGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("exercise", (string)null);
+                    b.ToTable("exercise");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.ExerciseMuscleGroup", b =>
@@ -74,7 +77,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasIndex("MuscleGroupId");
 
-                    b.ToTable("exercises_muscle_group", (string)null);
+                    b.ToTable("exercises_muscle_group");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.ExercisePerformInfo", b =>
@@ -102,7 +105,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasIndex("ExerciseId");
 
-                    b.ToTable("exercise_perform_info", (string)null);
+                    b.ToTable("exercise_perform_info");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.ExercisePerformInfoSingleWorkout", b =>
@@ -119,7 +122,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasIndex("SingleWorkoutId");
 
-                    b.ToTable("exercise_perform_info_single_workout", (string)null);
+                    b.ToTable("exercise_perform_info_single_workout");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.MuscleGroup", b =>
@@ -139,7 +142,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("muscle_group", (string)null);
+                    b.ToTable("muscle_group");
 
                     b.HasData(
                         new
@@ -229,7 +232,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("single_workout", (string)null);
+                    b.ToTable("single_workout");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.SingleWorkoutWorkoutPlan", b =>
@@ -246,7 +249,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasIndex("WorkoutPlanId");
 
-                    b.ToTable("single_workout_workout_plan", (string)null);
+                    b.ToTable("single_workout_workout_plan");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.WorkoutPlan", b =>
@@ -274,7 +277,7 @@ namespace FitnessPlanner.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("workout_plan", (string)null);
+                    b.ToTable("workout_plan");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -501,7 +504,7 @@ namespace FitnessPlanner.Data.Migrations
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
 
-                    b.ToTable("user", (string)null);
+                    b.ToTable("user");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.ExerciseMuscleGroup", b =>
