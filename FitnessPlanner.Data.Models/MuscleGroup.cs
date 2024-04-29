@@ -15,5 +15,7 @@ namespace FitnessPlanner.Data.Models
         [MaxLength(NameMaxLength)]
         [Column("name")]
         public required string Name { get; set; }
+
+        public IEnumerable<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = [];
     }
 }
