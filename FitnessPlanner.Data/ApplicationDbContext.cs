@@ -21,7 +21,7 @@ namespace FitnessPlanner.Data
         {
             builder.ApplyConfiguration(new MuscleGroupConfiguration());
             builder.ApplyConfiguration(new ExerciseConfiguration());
-            //builder.ApplyConfiguration(new ExerciseMuscleGroupConfiguration());
+            builder.ApplyConfiguration(new ExerciseMuscleGroupConfiguration());
 
             base.OnModelCreating(builder);
         }
