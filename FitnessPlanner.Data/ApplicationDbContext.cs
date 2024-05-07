@@ -20,6 +20,8 @@ namespace FitnessPlanner.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new MuscleGroupConfiguration());
+            builder.ApplyConfiguration(new ExerciseConfiguration());
+            //builder.ApplyConfiguration(new ExerciseMuscleGroupConfiguration());
 
             base.OnModelCreating(builder);
         }
