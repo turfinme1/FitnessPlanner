@@ -10,8 +10,8 @@
         public static class ExerciseConstants
         {
             public const int NameMaxLength = 50;
-            public const int ExplanationMaxLength = 500;
-            public const int PerformTipMaxLength = 500;
+            public const int ExplanationMaxLength = 2000;
+            public const int PerformTipMaxLength = 2000;
             public const int ImageNameMaxLength = 100;
         }
 
