@@ -23,6 +23,20 @@ namespace FitnessPlanner.Data.Models
         [ForeignKey(nameof(UserId))]
         public User? User { get; set; }
 
+        [Column("skill_level_id")]
+        public int SkillLevelId { get; set; }
+
+        [ForeignKey(nameof(SkillLevelId))]
+        public SkillLevel SkillLevel { get; set; } = null!;
+
+        [Column("goal_id")]
+        public int GoalId { get; set; }
+            
+        [ForeignKey(nameof(GoalId))]
+        public Goal Goal { get; set; } = null!;
+
         public IEnumerable<SingleWorkoutWorkoutPlan> SingleWorkoutWorkoutPlans { get; set; } = [];
+
+        //public IEnumerable<WorkoutPlanBodyMassIndexMeasure> WorkoutPlanBodyMassIndexMeasures { get; set; } = [];
     }
 }

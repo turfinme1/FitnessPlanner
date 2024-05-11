@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FitnessPlanner.Data.Models.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static FitnessPlanner.Data.Models.Constants.ValidationConstants.SingleWorkoutConstants;
 
@@ -18,11 +19,7 @@ namespace FitnessPlanner.Data.Models
 
         [Required]
         [Column("day")]
-        public DayOfWeek Day { get; set; }
-
-        [Required]
-        [Column("is_rest_day")]
-        public bool IsRestDay { get; set; }
+        public DaysOfWeek Day { get; set; }
 
         public IEnumerable<ExercisePerformInfoSingleWorkout> ExercisePerformInfoSingleWorkouts { get; set; } = [];
 
