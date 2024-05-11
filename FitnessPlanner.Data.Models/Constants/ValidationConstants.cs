@@ -1,4 +1,6 @@
-﻿namespace FitnessPlanner.Data.Models.Constants
+﻿using System.Runtime.CompilerServices;
+
+namespace FitnessPlanner.Data.Models.Constants
 {
     public static class ValidationConstants
     {
@@ -48,6 +50,34 @@
             public const int WeightMinLength = 30;
             public const int WeightMaxLength = 200;
         }
+
+        public static class ExercisePerformInfoConstants
+        {
+            public const int SetsMinValue = 1;
+            public const int SetsMaxValue = 10;
+
+            public const int RepsMinValue = 1;
+            public const int RepsMaxValue = 50;
+        }
+
+        public static class GoalConstants
+        {
+            public const int NameMaxLength = 50;
+            public const int NameMinLength = 3;
+        }
+
+        public static class SkillLevelConstants
+        {
+            public const int NameMaxLength = 50;
+            public const int NameMinLength = 3;
+        }
+
+        public static class BodyMassIndexMeasureConstants
+        {
+            public const int TypeMaxLength = 50;
+            public const int TypeMinLength = 3;
+        }
+
         public static class ErrorMessages
         {
             public const string RequiredErrorMessage = "The field {0} is required.";
