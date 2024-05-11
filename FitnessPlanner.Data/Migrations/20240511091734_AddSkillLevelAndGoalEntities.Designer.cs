@@ -3,6 +3,7 @@ using System;
 using FitnessPlanner.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FitnessPlanner.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240511091734_AddSkillLevelAndGoalEntities")]
+    partial class AddSkillLevelAndGoalEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,26 +24,6 @@ namespace FitnessPlanner.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("FitnessPlanner.Data.Models.BodyMassIndexMeasure", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("type");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("body_mass_index_measure_id");
-                });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.Exercise", b =>
                 {
@@ -1506,23 +1489,6 @@ namespace FitnessPlanner.Data.Migrations
                     b.ToTable("workout_plan");
                 });
 
-            modelBuilder.Entity("FitnessPlanner.Data.Models.WorkoutPlanBodyMassIndexMeasure", b =>
-                {
-                    b.Property<int>("WorkoutPlanId")
-                        .HasColumnType("integer")
-                        .HasColumnName("workout_plan_id");
-
-                    b.Property<int>("BodyMassIndexMeasureId")
-                        .HasColumnType("integer")
-                        .HasColumnName("body_mass_index_measure_id");
-
-                    b.HasKey("WorkoutPlanId", "BodyMassIndexMeasureId");
-
-                    b.HasIndex("BodyMassIndexMeasureId");
-
-                    b.ToTable("workout_plan_body_mass_index_measure");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -1729,17 +1695,12 @@ namespace FitnessPlanner.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("age");
 
-                    b.Property<int?>("BodyMassIndexMeasureId")
-                        .HasColumnType("integer")
-                        .HasColumnName("body_mass_index_measure_id");
-
                     b.Property<int>("Gender")
                         .HasColumnType("integer")
                         .HasColumnName("gender");
 
                     b.Property<int?>("GoalId")
-                        .HasColumnType("integer")
-                        .HasColumnName("goal_id");
+                        .HasColumnType("integer");
 
                     b.Property<double>("Height")
                         .HasColumnType("double precision")
@@ -1752,14 +1713,11 @@ namespace FitnessPlanner.Data.Migrations
                         .HasColumnName("name");
 
                     b.Property<int?>("SkillLevelId")
-                        .HasColumnType("integer")
-                        .HasColumnName("skill_level_id");
+                        .HasColumnType("integer");
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
-
-                    b.HasIndex("BodyMassIndexMeasureId");
 
                     b.HasIndex("GoalId");
 
@@ -1861,25 +1819,6 @@ namespace FitnessPlanner.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FitnessPlanner.Data.Models.WorkoutPlanBodyMassIndexMeasure", b =>
-                {
-                    b.HasOne("FitnessPlanner.Data.Models.BodyMassIndexMeasure", "BodyMassIndexMeasure")
-                        .WithMany("WorkoutPlanBodyMassIndexMeasures")
-                        .HasForeignKey("BodyMassIndexMeasureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FitnessPlanner.Data.Models.WorkoutPlan", "WorkoutPlan")
-                        .WithMany()
-                        .HasForeignKey("WorkoutPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BodyMassIndexMeasure");
-
-                    b.Navigation("WorkoutPlan");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1933,11 +1872,7 @@ namespace FitnessPlanner.Data.Migrations
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.User", b =>
                 {
-                    b.HasOne("FitnessPlanner.Data.Models.BodyMassIndexMeasure", "BodyMassIndexMeasure")
-                        .WithMany("Users")
-                        .HasForeignKey("BodyMassIndexMeasureId");
-
-                    b.HasOne("FitnessPlanner.Data.Models.Goal", "Goal")
+                    b.HasOne("FitnessPlanner.Data.Models.Goal", null)
                         .WithMany("Users")
                         .HasForeignKey("GoalId");
 
@@ -1947,22 +1882,9 @@ namespace FitnessPlanner.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FitnessPlanner.Data.Models.SkillLevel", "SkillLevel")
+                    b.HasOne("FitnessPlanner.Data.Models.SkillLevel", null)
                         .WithMany("Users")
                         .HasForeignKey("SkillLevelId");
-
-                    b.Navigation("BodyMassIndexMeasure");
-
-                    b.Navigation("Goal");
-
-                    b.Navigation("SkillLevel");
-                });
-
-            modelBuilder.Entity("FitnessPlanner.Data.Models.BodyMassIndexMeasure", b =>
-                {
-                    b.Navigation("Users");
-
-                    b.Navigation("WorkoutPlanBodyMassIndexMeasures");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.Exercise", b =>
