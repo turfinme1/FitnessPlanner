@@ -13,7 +13,9 @@ namespace FitnessPlanner.Services.WorkoutPlan
     {
         public async Task<IEnumerable<WorkoutPlanDto>> GetAllAsync()
         {
-                return (await repositoryManager.WorkoutPlans.GetAllWithRelatedEntitiesAsync()).Select(wp=> new WorkoutPlanDto()
+            try
+            {
+                return (await repositoryManager.WorkoutPlans.GetAllWithRelatedEntitiesAsync()).Select(wp => new WorkoutPlanDto()
                 {
                     Id = wp.Id,
                     Name = wp.Name,
@@ -33,6 +35,12 @@ namespace FitnessPlanner.Services.WorkoutPlan
                         })
                     })
                 });
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetAllAsync)}");
+                throw;
+            }
         }
     }
 }
