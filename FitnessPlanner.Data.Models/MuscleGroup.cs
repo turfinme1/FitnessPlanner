@@ -16,6 +16,6 @@ namespace FitnessPlanner.Data.Models
         [Column("name")]
         public required string Name { get; set; }
 
-        public IEnumerable<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = [];
+        public IEnumerable<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = new List<ExerciseMuscleGroup>();
     }
 }

@@ -31,8 +31,8 @@ namespace FitnessPlanner.Data.Models
         [Column("image_name")]
         public required string ImageName { get; set; }
 
-        public IEnumerable<ExercisePerformInfo> ExercisePerformInfos { get; set; } = [];
+        public IEnumerable<ExercisePerformInfo> ExercisePerformInfos { get; set; } = new List<ExercisePerformInfo>();
 
-        public IEnumerable<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = [];
+        public IEnumerable<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = new List<ExerciseMuscleGroup>();
     }
 }

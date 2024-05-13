@@ -35,8 +35,8 @@ namespace FitnessPlanner.Data.Models
         [ForeignKey(nameof(GoalId))]
         public Goal Goal { get; set; } = null!;
 
-        public IEnumerable<SingleWorkoutWorkoutPlan> SingleWorkoutWorkoutPlans { get; set; } = [];
+        public IEnumerable<SingleWorkoutWorkoutPlan> SingleWorkoutWorkoutPlans { get; set; } = new List<SingleWorkoutWorkoutPlan>();
 
-        public IEnumerable<WorkoutPlanBodyMassIndexMeasure> WorkoutPlanBodyMassIndexMeasures { get; set; } = [];
+        public IEnumerable<WorkoutPlanBodyMassIndexMeasure> WorkoutPlanBodyMassIndexMeasures { get; set; } = new List<WorkoutPlanBodyMassIndexMeasure>();
     }
 }

@@ -25,6 +25,6 @@ namespace FitnessPlanner.Data.Models
         [Column("reps")]
         public int Reps { get; set; }
 
-        public IEnumerable<ExercisePerformInfoSingleWorkout> ExercisePerformInfoSingleWorkouts { get; set; } = [];
+        public IEnumerable<ExercisePerformInfoSingleWorkout> ExercisePerformInfoSingleWorkouts { get; set; } = new List<ExercisePerformInfoSingleWorkout>();
     }
 }

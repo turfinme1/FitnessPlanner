@@ -21,8 +21,8 @@ namespace FitnessPlanner.Data.Models
         [Column("day")]
         public DaysOfWeek Day { get; set; }
 
-        public IEnumerable<ExercisePerformInfoSingleWorkout> ExercisePerformInfoSingleWorkouts { get; set; } = [];
+        public IEnumerable<ExercisePerformInfoSingleWorkout> ExercisePerformInfoSingleWorkouts { get; set; } = new List<ExercisePerformInfoSingleWorkout>();
 
-        public IEnumerable<SingleWorkoutWorkoutPlan> SingleWorkoutWorkoutPlans { get; set; } = [];
+        public IEnumerable<SingleWorkoutWorkoutPlan> SingleWorkoutWorkoutPlans { get; set; } = new List<SingleWorkoutWorkoutPlan>();
     }
 }
