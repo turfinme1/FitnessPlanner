@@ -7,6 +7,10 @@ using FitnessPlanner.Data.Models;
 using FitnessPlanner.Data.Repositories;
 using FitnessPlanner.Services.Authentication;
 using FitnessPlanner.Services.Authentication.Contracts;
+using FitnessPlanner.Services.FilePersistence;
+using FitnessPlanner.Services.FilePersistence.Contracts;
+using FitnessPlanner.Services.WorkoutPlan;
+using FitnessPlanner.Services.WorkoutPlan.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -46,6 +50,8 @@ namespace FitnessPlanner.Server.Extensions
             builder.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
 
             builder.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.AddScoped<IFilePersistenceService, FilePersistenceService>();
+            builder.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection builder, IConfiguration configuration)
