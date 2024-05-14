@@ -12,7 +12,7 @@ using System.Text;
 
 namespace FitnessPlanner.Services.Authentication
 {
-    public class AuthenticationService(
+    public sealed class AuthenticationService(
         ILogger<AuthenticationService> logger,
         UserManager<User> userManager,
         IConfiguration configuration) : IAuthenticationService

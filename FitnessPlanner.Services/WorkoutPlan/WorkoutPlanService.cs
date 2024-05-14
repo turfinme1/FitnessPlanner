@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FitnessPlanner.Services.WorkoutPlan
 {
-    public class WorkoutPlanService(
+    public sealed class WorkoutPlanService(
         IUnitOfWork repositoryManager,
         ILogger<WorkoutPlanService> logger) : IWorkoutPlanService
     {
