@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using FitnessPlanner.Data.Contracts;
+﻿using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
