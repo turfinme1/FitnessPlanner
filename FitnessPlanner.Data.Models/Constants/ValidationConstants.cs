@@ -62,14 +62,18 @@ namespace FitnessPlanner.Data.Models.Constants
 
         public static class GoalConstants
         {
-            public const int NameMaxLength = 50;
-            public const int NameMinLength = 3;
+            public const int GoalNameMaxLength = 50;
+            public const int GoalNameMinLength = 3;
+            public const int GoalIdMinRange = 1;
+            public const int GoalIdMaxRange = 3;
         }
 
         public static class SkillLevelConstants
         {
-            public const int NameMaxLength = 50;
-            public const int NameMinLength = 3;
+            public const int SkillNameMaxLength = 50;
+            public const int SkillNameMinLength = 3;
+            public const int SkillIdMinRange = 1;
+            public const int SkillIdMaxRange = 4;
         }
 
         public static class BodyMassIndexMeasureConstants
