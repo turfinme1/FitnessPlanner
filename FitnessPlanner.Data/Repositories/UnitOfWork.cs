@@ -6,11 +6,13 @@ namespace FitnessPlanner.Data.Repositories
         ApplicationDbContext context,
         IWorkoutPlanRepository workoutPlans,
         ISingleWorkoutRepository singleWorkouts,
-        IExerciseRepository exercises) : IUnitOfWork
+        IExerciseRepository exercises,
+        IUserRepository users) : IUnitOfWork
     {
         public IWorkoutPlanRepository WorkoutPlans { get; } = workoutPlans;
         public ISingleWorkoutRepository SingleWorkouts { get; } = singleWorkouts;
         public IExerciseRepository Exercises { get; } = exercises;
+        public IUserRepository Users { get; } = users;
 
         public async Task SaveChangesAsync()
         {

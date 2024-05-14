@@ -8,6 +8,8 @@
 
         IExerciseRepository Exercises { get; }
 
+        IUserRepository Users { get; }
+
         Task SaveChangesAsync();
     }
 }
