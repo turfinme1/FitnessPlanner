@@ -12,7 +12,7 @@ namespace FitnessPlanner.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(NameMaxLength)]
+        [MaxLength(GoalNameMaxLength)]
         [Column("name")]
         public required string Name { get; set; }
 
