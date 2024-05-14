@@ -1,7 +1,10 @@
-﻿using FitnessPlanner.Data.Models.Enums;
+﻿using FitnessPlanner.Data.Models.Constants;
+using FitnessPlanner.Data.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using static FitnessPlanner.Data.Models.Constants.ValidationConstants.ErrorMessages;
 using static FitnessPlanner.Data.Models.Constants.ValidationConstants.UserConstants;
+using static FitnessPlanner.Data.Models.Constants.ValidationConstants.SkillLevelConstants;
+using static FitnessPlanner.Data.Models.Constants.ValidationConstants.GoalConstants;
 
 namespace FitnessPlanner.Services.Models.User
 {
@@ -26,10 +29,6 @@ namespace FitnessPlanner.Services.Models.User
         public required string Password { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [EnumDataType(typeof(Genders))]
-        public Genders Gender { get; set; }
-
-        [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(AgeMinLength,
             AgeMaxLength,
             ErrorMessage = NumberValueErrorMessage)]
@@ -46,5 +45,17 @@ namespace FitnessPlanner.Services.Models.User
             WeightMaxLength,
             ErrorMessage = NumberValueErrorMessage)]
         public double Weight { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [EnumDataType(typeof(Genders))]
+        public Genders Gender { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(SkillIdMinRange, SkillIdMaxRange)]
+        public int? SkillLevelId { get; set; }
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        [Range(GoalIdMinRange, GoalIdMaxRange)]
+        public int? GoalId { get; set; }
     }
 }
