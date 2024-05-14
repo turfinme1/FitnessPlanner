@@ -1,10 +1,11 @@
-﻿using System.Text;
-using Azure.Identity;
+﻿using Azure.Identity;
 using Azure.Storage.Blobs;
 using FitnessPlanner.Data;
 using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Data.Repositories;
+using FitnessPlanner.Services.ApplicationUser;
+using FitnessPlanner.Services.ApplicationUser.Contracts;
 using FitnessPlanner.Services.Authentication;
 using FitnessPlanner.Services.Authentication.Contracts;
 using FitnessPlanner.Services.FilePersistence;
@@ -14,6 +15,9 @@ using FitnessPlanner.Services.WorkoutPlan.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using FitnessPlanner.Services.Admin;
+using FitnessPlanner.Services.Admin.Contracts;
 
 namespace FitnessPlanner.Server.Extensions
 {
@@ -46,12 +50,15 @@ namespace FitnessPlanner.Server.Extensions
             builder.AddScoped<IExercisePerformInfoRepository, ExercisePerformInfoRepository>();
             builder.AddScoped<IExerciseRepository, ExerciseRepository>();
             builder.AddScoped<ISingleWorkoutRepository, SingleWorkoutRepository>();
-            builder.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
+            builder.AddScoped<IUserRepository, UserRepository>();
+            builder.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.AddScoped<IFilePersistenceService, FilePersistenceService>();
             builder.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
+            builder.AddScoped<IUserService, UserService>();
+            builder.AddScoped<IAdminService, AdminService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection builder, IConfiguration configuration)
