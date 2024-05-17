@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FitnessPlanner.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240512130110_SeedBodyMassIndexMeasure")]
-    partial class SeedBodyMassIndexMeasure
+    [Migration("20240517151253_AddBodyMassIndexMeasure")]
+    partial class AddBodyMassIndexMeasure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,7 +42,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("body_mass_index_measure_id");
+                    b.ToTable("body_mass_index_measure");
 
                     b.HasData(
                         new
@@ -1319,6 +1319,57 @@ namespace FitnessPlanner.Data.Migrations
                     b.HasIndex("ExerciseId");
 
                     b.ToTable("exercise_perform_info");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ExerciseId = 73,
+                            Reps = 5,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ExerciseId = 18,
+                            Reps = 5,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ExerciseId = 86,
+                            Reps = 5,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ExerciseId = 50,
+                            Reps = 5,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ExerciseId = 8,
+                            Reps = 5,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ExerciseId = 57,
+                            Reps = 5,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ExerciseId = 38,
+                            Reps = 5,
+                            Sets = 3
+                        });
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.ExercisePerformInfoSingleWorkout", b =>
@@ -1336,6 +1387,68 @@ namespace FitnessPlanner.Data.Migrations
                     b.HasIndex("SingleWorkoutId");
 
                     b.ToTable("exercise_perform_info_single_workout");
+
+                    b.HasData(
+                        new
+                        {
+                            ExercisePerformInfoId = 1,
+                            SingleWorkoutId = 1
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 2,
+                            SingleWorkoutId = 1
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 3,
+                            SingleWorkoutId = 1
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 4,
+                            SingleWorkoutId = 1
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 1,
+                            SingleWorkoutId = 2
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 5,
+                            SingleWorkoutId = 2
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 6,
+                            SingleWorkoutId = 2
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 7,
+                            SingleWorkoutId = 2
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 1,
+                            SingleWorkoutId = 3
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 2,
+                            SingleWorkoutId = 3
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 3,
+                            SingleWorkoutId = 3
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 4,
+                            SingleWorkoutId = 3
+                        });
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.Goal", b =>
@@ -1356,23 +1469,6 @@ namespace FitnessPlanner.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("goal");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Lose weight"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Gain muscle"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Maintain weight"
-                        });
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.MuscleGroup", b =>
@@ -1479,6 +1575,26 @@ namespace FitnessPlanner.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("single_workout");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Day = 1,
+                            Name = "Full Body type A"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Day = 3,
+                            Name = "Full Body type B"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Day = 5,
+                            Name = "Full Body type A"
+                        });
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.SingleWorkoutWorkoutPlan", b =>
@@ -1516,28 +1632,6 @@ namespace FitnessPlanner.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("skill_level");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Beginner"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Intermediate"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Advanced"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Professional"
-                        });
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.WorkoutPlan", b =>
@@ -1944,7 +2038,7 @@ namespace FitnessPlanner.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("FitnessPlanner.Data.Models.WorkoutPlan", "WorkoutPlan")
-                        .WithMany()
+                        .WithMany("WorkoutPlanBodyMassIndexMeasures")
                         .HasForeignKey("WorkoutPlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2080,6 +2174,8 @@ namespace FitnessPlanner.Data.Migrations
             modelBuilder.Entity("FitnessPlanner.Data.Models.WorkoutPlan", b =>
                 {
                     b.Navigation("SingleWorkoutWorkoutPlans");
+
+                    b.Navigation("WorkoutPlanBodyMassIndexMeasures");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.User", b =>

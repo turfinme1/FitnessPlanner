@@ -4,7 +4,7 @@ using static FitnessPlanner.Data.Models.Constants.ValidationConstants.BodyMassIn
 
 namespace FitnessPlanner.Data.Models
 {
-    [Table("body_mass_index_measure_id")]
+    [Table("body_mass_index_measure")]
     public class BodyMassIndexMeasure
     {
         [Key]

@@ -27,9 +27,9 @@ namespace FitnessPlanner.Data
             builder.ApplyConfiguration(new SingleWorkoutConfiguration());
             builder.ApplyConfiguration(new ExercisePerformInfoSingleWorkoutConfiguration());
 
+            builder.ApplyConfiguration(new BodyMassIndexMeasureConfiguration());
             builder.ApplyConfiguration(new SkillLevelConfiguration());
             builder.ApplyConfiguration(new GoalConfiguration());
-            builder.ApplyConfiguration(new BodyMassIndexMeasureConfiguration());
 
             builder.ApplyConfiguration(new WorkoutPlanConfiguration());
             builder.ApplyConfiguration(new SingleWorkoutWorkoutPlanConfiguration());

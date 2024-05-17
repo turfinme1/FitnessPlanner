@@ -7,20 +7,19 @@
 namespace FitnessPlanner.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedSkillLevel : Migration
+    public partial class AddGoal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
-                table: "skill_level",
+                table: "goal",
                 columns: new[] { "id", "name" },
                 values: new object[,]
                 {
-                    { 1, "Beginner" },
-                    { 2, "Intermediate" },
-                    { 3, "Advanced" },
-                    { 4, "Professional" }
+                    { 1, "Lose weight" },
+                    { 2, "Gain muscle" },
+                    { 3, "Maintain weight" }
                 });
         }
 
@@ -28,24 +27,19 @@ namespace FitnessPlanner.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
-                table: "skill_level",
+                table: "goal",
                 keyColumn: "id",
                 keyValue: 1);
 
             migrationBuilder.DeleteData(
-                table: "skill_level",
+                table: "goal",
                 keyColumn: "id",
                 keyValue: 2);
 
             migrationBuilder.DeleteData(
-                table: "skill_level",
+                table: "goal",
                 keyColumn: "id",
                 keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "skill_level",
-                keyColumn: "id",
-                keyValue: 4);
         }
     }
 }

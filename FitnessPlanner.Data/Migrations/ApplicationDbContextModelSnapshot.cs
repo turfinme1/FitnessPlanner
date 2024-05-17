@@ -39,7 +39,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("body_mass_index_measure_id");
+                    b.ToTable("body_mass_index_measure");
 
                     b.HasData(
                         new
@@ -1366,6 +1366,97 @@ namespace FitnessPlanner.Data.Migrations
                             ExerciseId = 38,
                             Reps = 5,
                             Sets = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ExerciseId = 73,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ExerciseId = 9,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ExerciseId = 32,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ExerciseId = 43,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ExerciseId = 30,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ExerciseId = 77,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ExerciseId = 83,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ExerciseId = 81,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ExerciseId = 85,
+                            Reps = 30,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 17,
+                            ExerciseId = 66,
+                            Reps = 30,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 18,
+                            ExerciseId = 68,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 19,
+                            ExerciseId = 70,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 20,
+                            ExerciseId = 72,
+                            Reps = 10,
+                            Sets = 3
                         });
                 });
 
@@ -1445,6 +1536,131 @@ namespace FitnessPlanner.Data.Migrations
                         {
                             ExercisePerformInfoId = 4,
                             SingleWorkoutId = 3
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 8,
+                            SingleWorkoutId = 4
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 9,
+                            SingleWorkoutId = 4
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 10,
+                            SingleWorkoutId = 4
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 11,
+                            SingleWorkoutId = 4
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 12,
+                            SingleWorkoutId = 4
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 13,
+                            SingleWorkoutId = 4
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 14,
+                            SingleWorkoutId = 4
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 15,
+                            SingleWorkoutId = 5
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 16,
+                            SingleWorkoutId = 5
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 17,
+                            SingleWorkoutId = 5
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 18,
+                            SingleWorkoutId = 5
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 19,
+                            SingleWorkoutId = 5
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 20,
+                            SingleWorkoutId = 5
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 8,
+                            SingleWorkoutId = 6
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 9,
+                            SingleWorkoutId = 6
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 10,
+                            SingleWorkoutId = 6
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 11,
+                            SingleWorkoutId = 6
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 12,
+                            SingleWorkoutId = 6
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 13,
+                            SingleWorkoutId = 6
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 15,
+                            SingleWorkoutId = 7
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 16,
+                            SingleWorkoutId = 7
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 17,
+                            SingleWorkoutId = 7
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 18,
+                            SingleWorkoutId = 7
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 19,
+                            SingleWorkoutId = 7
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 20,
+                            SingleWorkoutId = 7
                         });
                 });
 
@@ -1608,6 +1824,30 @@ namespace FitnessPlanner.Data.Migrations
                             Id = 3,
                             Day = 5,
                             Name = "Full Body type A"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Day = 1,
+                            Name = "Full Body Strength Training"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Day = 2,
+                            Name = "Cardio and Core"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Day = 4,
+                            Name = "Full Body Strength Training"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Day = 5,
+                            Name = "Cardio and Core"
                         });
                 });
 
@@ -1642,6 +1882,26 @@ namespace FitnessPlanner.Data.Migrations
                         {
                             SingleWorkoutId = 3,
                             WorkoutPlanId = 1
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 4,
+                            WorkoutPlanId = 2
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 5,
+                            WorkoutPlanId = 2
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 6,
+                            WorkoutPlanId = 2
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 7,
+                            WorkoutPlanId = 2
                         });
                 });
 
@@ -1732,7 +1992,14 @@ namespace FitnessPlanner.Data.Migrations
                             Id = 1,
                             GoalId = 1,
                             Name = "Beginner muscle gain full body workout",
-                            SkillLevelId = 2
+                            SkillLevelId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            GoalId = 1,
+                            Name = "Beginner body toning workout for women",
+                            SkillLevelId = 1
                         });
                 });
 
@@ -1767,6 +2034,26 @@ namespace FitnessPlanner.Data.Migrations
                         {
                             WorkoutPlanId = 1,
                             BodyMassIndexMeasureId = 4
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 2,
+                            BodyMassIndexMeasureId = 3
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 2,
+                            BodyMassIndexMeasureId = 4
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 2,
+                            BodyMassIndexMeasureId = 5
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 2,
+                            BodyMassIndexMeasureId = 6
                         });
                 });
 
