@@ -13,7 +13,7 @@ namespace FitnessPlanner.Services.Admin
         {
             try
             {
-                return (await repositoryManager.Users.GetAllAsync()).Select(u => new UserDisplayDto
+                return (await repositoryManager.Users.GetAllWithRelatedEntitiesAsync()).Select(u => new UserDisplayDto
                 {
                     Id = u.Id,
                     Email = u.Email!,
@@ -21,10 +21,11 @@ namespace FitnessPlanner.Services.Admin
                     Age = u.Age,
                     Height = u.Height,
                     Weight = u.Weight,
-                    Gender = nameof(u.Gender),
+                    Gender = u.Gender.ToString(),
                     SkillLevel = u.SkillLevel.Name,
                     Goal = u.Goal.Name,
-                    BodyMassIndexMeasure = u.BodyMassIndexMeasure.Type
+                    BodyMassIndexMeasure = null,
+                    // TODO: Implement BodyMassIndexMeasure
                 });
             }
             catch (Exception e)
