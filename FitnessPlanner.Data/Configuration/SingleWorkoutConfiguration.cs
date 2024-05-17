@@ -15,6 +15,7 @@ namespace FitnessPlanner.Data.Configuration
         private SingleWorkout[] GetSingleWorkouts()
         {
             return [
+                //workout plan 1 - beginner muscle gain full body workout
                 new SingleWorkout()
                 {
                     Id = 1,
@@ -33,6 +34,32 @@ namespace FitnessPlanner.Data.Configuration
                     Name = "Full Body type A",
                     Day = DaysOfWeek.Friday,
                 },
+
+                //workout plan 2 - beginner lose fat for women
+                new SingleWorkout
+                {
+                    Id = 4,
+                    Name = "Full Body Strength Training",
+                    Day = DaysOfWeek.Monday
+                },
+                new SingleWorkout
+                {
+                    Id = 5,
+                    Name = "Cardio and Core",
+                    Day = DaysOfWeek.Tuesday
+                },
+                new SingleWorkout
+                {
+                    Id = 6,
+                    Name = "Full Body Strength Training",
+                    Day = DaysOfWeek.Thursday
+                },
+                new SingleWorkout
+                {
+                    Id = 7,
+                    Name = "Cardio and Core",
+                    Day = DaysOfWeek.Friday
+                }
             ];
         }
     }

@@ -1,4 +1,5 @@
 ﻿using FitnessPlanner.Data.Models;
+using FitnessPlanner.Data.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,12 +16,12 @@ namespace FitnessPlanner.Data.Configuration
         {
             return
             [
-                new BodyMassIndexMeasure { Id = 1, Type = "Severe Underweight" },
-                new BodyMassIndexMeasure { Id = 2, Type = "Underweight" },
-                new BodyMassIndexMeasure { Id = 3, Type = "Normal weight" },
-                new BodyMassIndexMeasure { Id = 4, Type = "Slightly Above Normal weight" },
-                new BodyMassIndexMeasure { Id = 5, Type = "Overweight" },
-                new BodyMassIndexMeasure { Id = 6, Type = "Obesity" }
+                new BodyMassIndexMeasure { Id = (int)BodyMassIndexMeasuresEnum.SevereUnderweight, Type = "Severe Underweight" },
+                new BodyMassIndexMeasure { Id = (int)BodyMassIndexMeasuresEnum.Underweight, Type = "Underweight" },
+                new BodyMassIndexMeasure { Id = (int)BodyMassIndexMeasuresEnum.NormalWeight, Type = "Normal weight" },
+                new BodyMassIndexMeasure { Id = (int)BodyMassIndexMeasuresEnum.SlightlyAboveNormalWeight, Type = "Slightly Above Normal weight" },
+                new BodyMassIndexMeasure { Id = (int)BodyMassIndexMeasuresEnum.Overweight, Type = "Overweight" },
+                new BodyMassIndexMeasure { Id = (int)BodyMassIndexMeasuresEnum.Obesity, Type = "Obesity" }
             ];
         }
     }

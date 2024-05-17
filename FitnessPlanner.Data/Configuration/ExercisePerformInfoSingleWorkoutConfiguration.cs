@@ -76,6 +76,34 @@ namespace FitnessPlanner.Data.Configuration
                     SingleWorkoutId = 3,
                     ExercisePerformInfoId = 4,
                 },
+
+                //workout plan 2 
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 4, ExercisePerformInfoId = 8 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 4, ExercisePerformInfoId = 9 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 4, ExercisePerformInfoId = 10 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 4, ExercisePerformInfoId = 11 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 4, ExercisePerformInfoId = 12 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 4, ExercisePerformInfoId = 13 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 4, ExercisePerformInfoId = 14 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 5, ExercisePerformInfoId = 15 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 5, ExercisePerformInfoId = 16 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 5, ExercisePerformInfoId = 17 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 5, ExercisePerformInfoId = 18 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 5, ExercisePerformInfoId = 19 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 5, ExercisePerformInfoId = 20 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 6, ExercisePerformInfoId = 8 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 6, ExercisePerformInfoId = 9 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 6, ExercisePerformInfoId = 10 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 6, ExercisePerformInfoId = 11 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 6, ExercisePerformInfoId = 12 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 6, ExercisePerformInfoId = 13 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 7, ExercisePerformInfoId = 15 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 7, ExercisePerformInfoId = 16 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 7, ExercisePerformInfoId = 17 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 7, ExercisePerformInfoId = 18 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 7, ExercisePerformInfoId = 19 },
+                new ExercisePerformInfoSingleWorkout { SingleWorkoutId = 7, ExercisePerformInfoId = 20 },
+
             ];
         }
     }
