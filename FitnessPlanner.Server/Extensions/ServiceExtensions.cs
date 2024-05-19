@@ -18,6 +18,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FitnessPlanner.Services.Admin;
 using FitnessPlanner.Services.Admin.Contracts;
+using FitnessPlanner.Services.BodyMassIndexCalculation;
+using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
 
 namespace FitnessPlanner.Server.Extensions
 {
@@ -56,6 +58,7 @@ namespace FitnessPlanner.Server.Extensions
 
             builder.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.AddScoped<IFilePersistenceService, FilePersistenceService>();
+            builder.AddScoped<IBodyMassIndexCalculationService, BodyMassIndexCalculationService>();
             builder.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
             builder.AddScoped<IUserService, UserService>();
             builder.AddScoped<IAdminService, AdminService>();
