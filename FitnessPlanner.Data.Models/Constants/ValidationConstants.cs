@@ -24,7 +24,7 @@ namespace FitnessPlanner.Data.Models.Constants
 
         public static class WorkoutPlanConstants
         {
-            public const int NameMaxLength = 50;
+            public const int NameMaxLength = 100;
             public const int UserIdMaxLength = 450;
         }
 
