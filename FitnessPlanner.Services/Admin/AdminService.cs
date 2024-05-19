@@ -22,10 +22,9 @@ namespace FitnessPlanner.Services.Admin
                     Height = u.Height,
                     Weight = u.Weight,
                     Gender = u.Gender.ToString(),
-                    SkillLevel = u.SkillLevel.Name,
-                    Goal = u.Goal.Name,
-                    BodyMassIndexMeasure = null,
-                    // TODO: Implement BodyMassIndexMeasure
+                    SkillLevel = u.SkillLevel?.Name ?? string.Empty,
+                    Goal = u.Goal?.Name ?? string.Empty,
+                    BodyMassIndexMeasure = u.BodyMassIndexMeasure?.Type ?? string.Empty,
                 });
             }
             catch (Exception e)

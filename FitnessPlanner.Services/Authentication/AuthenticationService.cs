@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
 
 
 namespace FitnessPlanner.Services.Authentication
@@ -15,21 +16,25 @@ namespace FitnessPlanner.Services.Authentication
     public sealed class AuthenticationService(
         ILogger<AuthenticationService> logger,
         UserManager<User> userManager,
-        IConfiguration configuration) : IAuthenticationService
+        IConfiguration configuration,
+        IBodyMassIndexCalculationService bodyMassCalculationService) : IAuthenticationService
     {
         private User? _user;
 
         public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto model)
         {
             var user = new User
-            {   
+            {
                 UserName = model.Email,
                 Email = model.Email,
                 Name = model.Name,
                 Gender = model.Gender,
                 Age = model.Age,
                 Height = model.Height,
-                Weight = model.Weight
+                Weight = model.Weight,
+                SkillLevelId = model.SkillLevelId,
+                GoalId = model.GoalId,
+                BodyMassIndexMeasureId = bodyMassCalculationService.GetBodyMassIndexMeasureId(model.Weight, model.Height)
             };
 
             try
@@ -78,7 +83,7 @@ namespace FitnessPlanner.Services.Authentication
         private async Task<List<Claim>> GetClaims()
         {
             var claims = new List<Claim>()
-            {   
+            {
                 new Claim("Name", _user.Name),
                 new Claim(ClaimTypes.Email, _user.Email),
                 new Claim(ClaimTypes.NameIdentifier, _user.Id)
