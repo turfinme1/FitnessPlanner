@@ -10,6 +10,12 @@
 
         IUserRepository Users { get; }
 
+        IGoalRepository Goals { get; }
+
+        ISkillLevelRepository SkillLevels { get; }
+
+        IBodyMassIndexMeasureRepository BodyMassIndexMeasures { get; }
+
         Task SaveChangesAsync();
     }
 }
