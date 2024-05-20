@@ -1457,6 +1457,398 @@ namespace FitnessPlanner.Data.Migrations
                             ExerciseId = 72,
                             Reps = 10,
                             Sets = 3
+                        },
+                        new
+                        {
+                            Id = 21,
+                            ExerciseId = 32,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 22,
+                            ExerciseId = 86,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 23,
+                            ExerciseId = 29,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 24,
+                            ExerciseId = 40,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 25,
+                            ExerciseId = 39,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 26,
+                            ExerciseId = 42,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 27,
+                            ExerciseId = 18,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 28,
+                            ExerciseId = 19,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 29,
+                            ExerciseId = 8,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 30,
+                            ExerciseId = 55,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 31,
+                            ExerciseId = 5,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 32,
+                            ExerciseId = 48,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 33,
+                            ExerciseId = 34,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 34,
+                            ExerciseId = 73,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 35,
+                            ExerciseId = 75,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 36,
+                            ExerciseId = 76,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 37,
+                            ExerciseId = 84,
+                            Reps = 15,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 38,
+                            ExerciseId = 18,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 39,
+                            ExerciseId = 19,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 40,
+                            ExerciseId = 8,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 41,
+                            ExerciseId = 23,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 42,
+                            ExerciseId = 9,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 43,
+                            ExerciseId = 10,
+                            Reps = 10,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 44,
+                            ExerciseId = 5,
+                            Reps = 10,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 45,
+                            ExerciseId = 29,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 46,
+                            ExerciseId = 32,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 47,
+                            ExerciseId = 86,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 48,
+                            ExerciseId = 30,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 49,
+                            ExerciseId = 14,
+                            Reps = 10,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 50,
+                            ExerciseId = 48,
+                            Reps = 10,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 51,
+                            ExerciseId = 40,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 52,
+                            ExerciseId = 73,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 53,
+                            ExerciseId = 34,
+                            Reps = 6,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 54,
+                            ExerciseId = 74,
+                            Reps = 8,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 55,
+                            ExerciseId = 75,
+                            Reps = 10,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 56,
+                            ExerciseId = 76,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 57,
+                            ExerciseId = 77,
+                            Reps = 12,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 58,
+                            ExerciseId = 83,
+                            Reps = 15,
+                            Sets = 4
+                        },
+                        new
+                        {
+                            Id = 59,
+                            ExerciseId = 24,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 60,
+                            ExerciseId = 32,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 61,
+                            ExerciseId = 9,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 62,
+                            ExerciseId = 73,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 63,
+                            ExerciseId = 77,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 64,
+                            ExerciseId = 85,
+                            Reps = 30,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 65,
+                            ExerciseId = 25,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 66,
+                            ExerciseId = 31,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 67,
+                            ExerciseId = 23,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 68,
+                            ExerciseId = 74,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 69,
+                            ExerciseId = 76,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 70,
+                            ExerciseId = 17,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 71,
+                            ExerciseId = 20,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 72,
+                            ExerciseId = 29,
+                            Reps = 10,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 73,
+                            ExerciseId = 10,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 74,
+                            ExerciseId = 82,
+                            Reps = 12,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 75,
+                            ExerciseId = 83,
+                            Reps = 15,
+                            Sets = 3
+                        },
+                        new
+                        {
+                            Id = 76,
+                            ExerciseId = 66,
+                            Reps = 30,
+                            Sets = 3
                         });
                 });
 
@@ -1661,6 +2053,391 @@ namespace FitnessPlanner.Data.Migrations
                         {
                             ExercisePerformInfoId = 20,
                             SingleWorkoutId = 7
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 21,
+                            SingleWorkoutId = 8
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 22,
+                            SingleWorkoutId = 8
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 23,
+                            SingleWorkoutId = 8
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 24,
+                            SingleWorkoutId = 8
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 25,
+                            SingleWorkoutId = 8
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 26,
+                            SingleWorkoutId = 8
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 27,
+                            SingleWorkoutId = 9
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 28,
+                            SingleWorkoutId = 9
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 29,
+                            SingleWorkoutId = 9
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 30,
+                            SingleWorkoutId = 9
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 31,
+                            SingleWorkoutId = 9
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 32,
+                            SingleWorkoutId = 9
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 33,
+                            SingleWorkoutId = 10
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 34,
+                            SingleWorkoutId = 10
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 35,
+                            SingleWorkoutId = 10
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 36,
+                            SingleWorkoutId = 10
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 37,
+                            SingleWorkoutId = 10
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 38,
+                            SingleWorkoutId = 11
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 39,
+                            SingleWorkoutId = 11
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 40,
+                            SingleWorkoutId = 11
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 41,
+                            SingleWorkoutId = 11
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 42,
+                            SingleWorkoutId = 11
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 43,
+                            SingleWorkoutId = 11
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 44,
+                            SingleWorkoutId = 11
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 45,
+                            SingleWorkoutId = 12
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 46,
+                            SingleWorkoutId = 12
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 47,
+                            SingleWorkoutId = 12
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 48,
+                            SingleWorkoutId = 12
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 49,
+                            SingleWorkoutId = 12
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 50,
+                            SingleWorkoutId = 12
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 51,
+                            SingleWorkoutId = 12
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 52,
+                            SingleWorkoutId = 13
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 53,
+                            SingleWorkoutId = 13
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 54,
+                            SingleWorkoutId = 13
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 55,
+                            SingleWorkoutId = 13
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 56,
+                            SingleWorkoutId = 13
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 57,
+                            SingleWorkoutId = 13
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 58,
+                            SingleWorkoutId = 13
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 38,
+                            SingleWorkoutId = 14
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 39,
+                            SingleWorkoutId = 14
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 40,
+                            SingleWorkoutId = 14
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 41,
+                            SingleWorkoutId = 14
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 42,
+                            SingleWorkoutId = 14
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 43,
+                            SingleWorkoutId = 14
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 44,
+                            SingleWorkoutId = 14
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 45,
+                            SingleWorkoutId = 15
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 46,
+                            SingleWorkoutId = 15
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 47,
+                            SingleWorkoutId = 15
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 48,
+                            SingleWorkoutId = 15
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 49,
+                            SingleWorkoutId = 15
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 50,
+                            SingleWorkoutId = 15
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 51,
+                            SingleWorkoutId = 15
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 52,
+                            SingleWorkoutId = 16
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 53,
+                            SingleWorkoutId = 16
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 54,
+                            SingleWorkoutId = 16
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 55,
+                            SingleWorkoutId = 16
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 56,
+                            SingleWorkoutId = 16
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 57,
+                            SingleWorkoutId = 16
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 58,
+                            SingleWorkoutId = 16
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 59,
+                            SingleWorkoutId = 17
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 60,
+                            SingleWorkoutId = 17
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 61,
+                            SingleWorkoutId = 17
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 62,
+                            SingleWorkoutId = 17
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 63,
+                            SingleWorkoutId = 17
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 64,
+                            SingleWorkoutId = 17
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 65,
+                            SingleWorkoutId = 18
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 66,
+                            SingleWorkoutId = 18
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 67,
+                            SingleWorkoutId = 18
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 68,
+                            SingleWorkoutId = 18
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 69,
+                            SingleWorkoutId = 18
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 70,
+                            SingleWorkoutId = 18
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 71,
+                            SingleWorkoutId = 19
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 72,
+                            SingleWorkoutId = 19
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 73,
+                            SingleWorkoutId = 19
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 74,
+                            SingleWorkoutId = 19
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 75,
+                            SingleWorkoutId = 19
+                        },
+                        new
+                        {
+                            ExercisePerformInfoId = 76,
+                            SingleWorkoutId = 19
                         });
                 });
 
@@ -1848,6 +2625,78 @@ namespace FitnessPlanner.Data.Migrations
                             Id = 7,
                             Day = 5,
                             Name = "Cardio and Core"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Day = 1,
+                            Name = "Pull"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Day = 3,
+                            Name = "Push"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Day = 5,
+                            Name = "Legs"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Day = 1,
+                            Name = "Push"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Day = 2,
+                            Name = "Pull"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Day = 3,
+                            Name = "Legs"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Day = 5,
+                            Name = "Push"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Day = 6,
+                            Name = "Pull"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Day = 7,
+                            Name = "Leg"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Day = 1,
+                            Name = "Full Body A"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Day = 3,
+                            Name = "Full Body B"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Day = 5,
+                            Name = "Full Body C"
                         });
                 });
 
@@ -1902,6 +2751,66 @@ namespace FitnessPlanner.Data.Migrations
                         {
                             SingleWorkoutId = 7,
                             WorkoutPlanId = 2
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 8,
+                            WorkoutPlanId = 3
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 9,
+                            WorkoutPlanId = 3
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 10,
+                            WorkoutPlanId = 3
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 11,
+                            WorkoutPlanId = 4
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 12,
+                            WorkoutPlanId = 4
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 13,
+                            WorkoutPlanId = 4
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 14,
+                            WorkoutPlanId = 4
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 15,
+                            WorkoutPlanId = 4
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 16,
+                            WorkoutPlanId = 4
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 17,
+                            WorkoutPlanId = 5
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 18,
+                            WorkoutPlanId = 5
+                        },
+                        new
+                        {
+                            SingleWorkoutId = 19,
+                            WorkoutPlanId = 5
                         });
                 });
 
@@ -1962,8 +2871,8 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("name");
 
                     b.Property<int>("SkillLevelId")
@@ -1990,15 +2899,36 @@ namespace FitnessPlanner.Data.Migrations
                         new
                         {
                             Id = 1,
-                            GoalId = 1,
-                            Name = "Beginner muscle gain full body workout",
+                            GoalId = 2,
+                            Name = "Beginner muscle gain full body workout plan",
                             SkillLevelId = 1
                         },
                         new
                         {
                             Id = 2,
                             GoalId = 1,
-                            Name = "Beginner body toning workout for women",
+                            Name = "Beginner body toning workout plan for women",
+                            SkillLevelId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            GoalId = 2,
+                            Name = "Push pull legs workout plan for intermediate lifters",
+                            SkillLevelId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            GoalId = 2,
+                            Name = "Push pull legs workout plan for advanced lifters",
+                            SkillLevelId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            GoalId = 1,
+                            Name = "Beginner weight loss plan",
                             SkillLevelId = 1
                         });
                 });
@@ -2053,6 +2983,41 @@ namespace FitnessPlanner.Data.Migrations
                         new
                         {
                             WorkoutPlanId = 2,
+                            BodyMassIndexMeasureId = 6
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 3,
+                            BodyMassIndexMeasureId = 3
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 3,
+                            BodyMassIndexMeasureId = 4
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 4,
+                            BodyMassIndexMeasureId = 3
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 4,
+                            BodyMassIndexMeasureId = 4
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 5,
+                            BodyMassIndexMeasureId = 4
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 5,
+                            BodyMassIndexMeasureId = 5
+                        },
+                        new
+                        {
+                            WorkoutPlanId = 5,
                             BodyMassIndexMeasureId = 6
                         });
                 });
