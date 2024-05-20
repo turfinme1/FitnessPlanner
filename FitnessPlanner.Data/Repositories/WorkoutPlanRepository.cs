@@ -19,6 +19,20 @@ namespace FitnessPlanner.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<WorkoutPlan?> GetByIdWithRelatedEntitiesAsync(int id)
+        {
+            return await base.DbSet
+                .Include(wp => wp.SingleWorkoutWorkoutPlans)
+                .ThenInclude(swp => swp.SingleWorkout)
+                .ThenInclude(sw => sw.ExercisePerformInfoSingleWorkouts)
+                .ThenInclude(episw => episw.ExercisePerformInfo)
+                .ThenInclude(epi => epi.Exercise)
+                .Include(wp => wp.SkillLevel)
+                .Include(wp => wp.Goal)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(wp => wp.Id == id);
+        }
     }
     
 }
