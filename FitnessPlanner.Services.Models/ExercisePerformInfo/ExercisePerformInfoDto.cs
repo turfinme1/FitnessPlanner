@@ -9,6 +9,5 @@
         public int Reps { get; set; }
 
         public int Sets { get; set; }
-
     }
 }
