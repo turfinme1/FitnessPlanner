@@ -10,4 +10,8 @@
     <ProjectReference Include="..\FitnessPlanner.Data\FitnessPlanner.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SkillLevel\" />
+  </ItemGroup>
+
 </Project>

@@ -20,6 +20,14 @@ using FitnessPlanner.Services.Admin;
 using FitnessPlanner.Services.Admin.Contracts;
 using FitnessPlanner.Services.BodyMassIndexCalculation;
 using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
+using FitnessPlanner.Services.BodyMassIndexMeasure;
+using FitnessPlanner.Services.BodyMassIndexMeasure.Contracts;
+using FitnessPlanner.Services.CosineSimilarityCalculation;
+using FitnessPlanner.Services.CosineSimilarityCalculation.Contracts;
+using FitnessPlanner.Services.Goal;
+using FitnessPlanner.Services.Goal.Contracts;
+using FitnessPlanner.Services.SkillLevel;
+using FitnessPlanner.Services.SkillLevel.Contracts;
 
 namespace FitnessPlanner.Server.Extensions
 {
@@ -54,12 +62,19 @@ namespace FitnessPlanner.Server.Extensions
             builder.AddScoped<ISingleWorkoutRepository, SingleWorkoutRepository>();
             builder.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
             builder.AddScoped<IUserRepository, UserRepository>();
+            builder.AddScoped<ISkillLevelRepository, SkillLevelRepository>();
+            builder.AddScoped<IGoalRepository, GoalRepository>();
+            builder.AddScoped<IBodyMassIndexMeasureRepository, BodyMassIndexMeasureRepository>();
             builder.AddScoped<IUnitOfWork, UnitOfWork>();
 
             builder.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.AddScoped<IFilePersistenceService, FilePersistenceService>();
             builder.AddScoped<IBodyMassIndexCalculationService, BodyMassIndexCalculationService>();
+            builder.AddScoped<ICosineSimilarityCalculationService, CosineSimilarityCalculationService>();
             builder.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
+            builder.AddScoped<IGoalService, GoalService>();
+            builder.AddScoped<ISkillLevelService, SkillLevelService>();
+            builder.AddScoped<IBodyMassIndexMeasureService, BodyMassIndexMeasureService>();
             builder.AddScoped<IUserService, UserService>();
             builder.AddScoped<IAdminService, AdminService>();
         }
