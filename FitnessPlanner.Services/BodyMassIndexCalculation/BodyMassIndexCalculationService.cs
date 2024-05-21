@@ -8,6 +8,7 @@ namespace FitnessPlanner.Services.BodyMassIndexCalculation
         public int GetBodyMassIndexMeasureId(double weight, double height)
         {
             var bodyMassIndex = GetBodyMassIndex(weight, height);
+            
             return bodyMassIndex switch
             {
                 < 16 => (int)BodyMassIndexMeasuresEnum.SevereUnderweight,
@@ -21,7 +22,8 @@ namespace FitnessPlanner.Services.BodyMassIndexCalculation
 
         private static double GetBodyMassIndex(double weight, double height)
         {
-            return weight / (height * height);
+            var heightInMeters = height / 100;
+            return weight / (heightInMeters * heightInMeters);
         }
     }
 }
