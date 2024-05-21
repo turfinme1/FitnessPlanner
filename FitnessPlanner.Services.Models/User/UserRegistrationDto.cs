@@ -31,19 +31,19 @@ namespace FitnessPlanner.Services.Models.User
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(AgeMinLength,
             AgeMaxLength,
-            ErrorMessage = NumberValueErrorMessage)]
+            ErrorMessage = RangeErrorMessage)]
         public int Age { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(HeightMinLength,
             HeightMaxLength,
-            ErrorMessage = NumberValueErrorMessage)]
+            ErrorMessage = RangeErrorMessage)]
         public double Height { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [Range(WeightMinLength,
             WeightMaxLength,
-            ErrorMessage = NumberValueErrorMessage)]
+            ErrorMessage = RangeErrorMessage)]
         public double Weight { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
