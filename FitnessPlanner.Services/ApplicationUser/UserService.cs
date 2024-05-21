@@ -13,7 +13,7 @@ namespace FitnessPlanner.Services.ApplicationUser
         {
             try
             {
-                var user = await repositoryManager.Users.GetByIdAsync(userId);
+                var user = await repositoryManager.Users.GetByIdWithRelatedEntitiesAsync(userId);
                 ArgumentNullException.ThrowIfNull(user);
 
                 var userDto = new UserPreferencesDto()
