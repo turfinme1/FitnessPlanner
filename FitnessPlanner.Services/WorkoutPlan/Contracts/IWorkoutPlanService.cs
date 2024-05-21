@@ -9,5 +9,7 @@ namespace FitnessPlanner.Services.WorkoutPlan.Contracts
         Task<IEnumerable<WorkoutPlanPropertiesDto>> GetAllWorkoutsWithPreferencesAsync();
         
         Task<WorkoutPlanDto?> GetByIdAsync(int id);
+
+        Task<int> CreateAsync(WorkoutPlanCreateDto model);
     }
 }
