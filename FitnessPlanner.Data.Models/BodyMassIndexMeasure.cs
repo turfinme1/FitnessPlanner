@@ -16,8 +16,8 @@ namespace FitnessPlanner.Data.Models
         [Column("type")]
         public required string Type { get; set; }
 
-        public IEnumerable<User> Users { get; set; } = [];
+        public IEnumerable<User> Users { get; set; } = new List<User>();
 
-        public IEnumerable<WorkoutPlanBodyMassIndexMeasure> WorkoutPlanBodyMassIndexMeasures { get; set; } = [];
+        public IEnumerable<WorkoutPlanBodyMassIndexMeasure> WorkoutPlanBodyMassIndexMeasures { get; set; } = new List<WorkoutPlanBodyMassIndexMeasure>();
     }
 }
