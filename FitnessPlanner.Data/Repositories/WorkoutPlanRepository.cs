@@ -14,6 +14,8 @@ namespace FitnessPlanner.Data.Repositories
                 .ThenInclude(sw=>sw.ExercisePerformInfoSingleWorkouts)
                 .ThenInclude(episw=>episw.ExercisePerformInfo)
                 .ThenInclude(epi=>epi.Exercise)
+                .Include(wp => wp.WorkoutPlanBodyMassIndexMeasures)
+                .ThenInclude(xp => xp.BodyMassIndexMeasure)
                 .Include(wp=>wp.SkillLevel)
                 .Include(wp=>wp.Goal)
                 .AsNoTracking()
