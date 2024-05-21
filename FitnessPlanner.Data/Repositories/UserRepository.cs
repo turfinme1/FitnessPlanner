@@ -15,5 +15,15 @@ namespace FitnessPlanner.Data.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<User?> GetByIdWithRelatedEntitiesAsync(string id)
+        {
+            return await base.DbSet
+                .Include(u => u.SkillLevel)
+                .Include(u => u.Goal)
+                .Include(u => u.BodyMassIndexMeasure)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }
