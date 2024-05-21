@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace FitnessPlanner.Data.Models.Constants
+﻿namespace FitnessPlanner.Data.Models.Constants
 {
     public static class ValidationConstants
     {
@@ -19,11 +17,13 @@ namespace FitnessPlanner.Data.Models.Constants
 
         public static class SingleWorkoutConstants
         {
+            public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
         }
 
         public static class WorkoutPlanConstants
         {
+            public const int NameMinLength = 3;
             public const int NameMaxLength = 100;
             public const int UserIdMaxLength = 450;
         }
@@ -86,7 +86,7 @@ namespace FitnessPlanner.Data.Models.Constants
         {
             public const string RequiredErrorMessage = "The field {0} is required.";
             public const string StringLengthErrorMessage = "The field {0} must be between {2} and {1} characters.";
-            public const string NumberValueErrorMessage = "The {0} must be between {1} and {2}.";
+            public const string RangeErrorMessage = "The {0} must be between {1} and {2}.";
         }
     }
 }
