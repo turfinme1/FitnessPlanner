@@ -54,5 +54,29 @@ namespace FitnessPlanner.Server.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<WorkoutPlanDto>> CreateWorkoutPlan([FromBody] WorkoutPlanCreateDto workoutPlanDto)
+        {
+            try
+            {
+                var createdWorkoutPlanId = await workoutPlanService.CreateAsync(workoutPlanDto);
+
+                var createdWorkoutPlan = await workoutPlanService.GetByIdAsync(createdWorkoutPlanId);
+
+                return CreatedAtAction(nameof(GetWorkoutPlanById), new { id = createdWorkoutPlanId },
+                    createdWorkoutPlan);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(CreateWorkoutPlan)}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
     }
 }
