@@ -11,30 +11,33 @@ namespace FitnessPlanner.Data.Repositories
             return await base.DbSet
                 .Include(wp => wp.SingleWorkoutWorkoutPlans)
                 .ThenInclude(swp => swp.SingleWorkout)
-                .ThenInclude(sw=>sw.ExercisePerformInfoSingleWorkouts)
-                .ThenInclude(episw=>episw.ExercisePerformInfo)
-                .ThenInclude(epi=>epi.Exercise)
+                .ThenInclude(sw => sw.ExercisePerformInfoSingleWorkouts)
+                .ThenInclude(episw => episw.ExercisePerformInfo)
+                .ThenInclude(epi => epi.Exercise)
                 .Include(wp => wp.WorkoutPlanBodyMassIndexMeasures)
                 .ThenInclude(xp => xp.BodyMassIndexMeasure)
-                .Include(wp=>wp.SkillLevel)
-                .Include(wp=>wp.Goal)
+                .Include(wp => wp.SkillLevel)
+                .Include(wp => wp.Goal)
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task<WorkoutPlan?> GetByIdWithRelatedEntitiesAsync(int id)
+        public async Task<WorkoutPlan?> GetByIdWithRelatedEntitiesAsync(int id, bool isTracked = false)
         {
-            return await base.DbSet
+            var query = base.DbSet
                 .Include(wp => wp.SingleWorkoutWorkoutPlans)
                 .ThenInclude(swp => swp.SingleWorkout)
                 .ThenInclude(sw => sw.ExercisePerformInfoSingleWorkouts)
                 .ThenInclude(episw => episw.ExercisePerformInfo)
                 .ThenInclude(epi => epi.Exercise)
                 .Include(wp => wp.SkillLevel)
-                .Include(wp => wp.Goal)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(wp => wp.Id == id);
+                .Include(wp => wp.Goal);
+
+            return isTracked
+                ? await query.FirstOrDefaultAsync(wp => wp.Id == id)
+                : await query.AsNoTracking().FirstOrDefaultAsync(wp => wp.Id == id);
         }
+
     }
-    
+
 }
