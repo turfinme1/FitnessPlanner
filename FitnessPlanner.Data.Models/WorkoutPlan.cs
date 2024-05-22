@@ -23,12 +23,14 @@ namespace FitnessPlanner.Data.Models
         [ForeignKey(nameof(UserId))]
         public User? User { get; set; }
 
+        [Required]
         [Column("skill_level_id")]
         public int SkillLevelId { get; set; }
 
         [ForeignKey(nameof(SkillLevelId))]
         public SkillLevel SkillLevel { get; set; } = null!;
 
+        [Required]
         [Column("goal_id")]
         public int GoalId { get; set; }
             
