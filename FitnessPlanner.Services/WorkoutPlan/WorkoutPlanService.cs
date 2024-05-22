@@ -112,23 +112,24 @@ namespace FitnessPlanner.Services.WorkoutPlan
                 UserId = model.UserId,
                 SkillLevelId = model.SkillLevelId,
                 GoalId = model.GoalId,
-                SingleWorkoutWorkoutPlans = model.Workouts.Select(w => new SingleWorkoutWorkoutPlan()
-                {
-                    SingleWorkout = new SingleWorkout()
+                SingleWorkoutWorkoutPlans = model.SingleWorkouts
+                    .Select(w => new SingleWorkoutWorkoutPlan()
                     {
-                        Name = w.Name,
-                        Day = w.Day,
-                        ExercisePerformInfoSingleWorkouts = w.ExercisePerformInfos.Select(epi => new ExercisePerformInfoSingleWorkout()
+                        SingleWorkout = new SingleWorkout()
                         {
-                            ExercisePerformInfo = new ExercisePerformInfo()
+                            Name = w.Name,
+                            Day = w.Day,
+                            ExercisePerformInfoSingleWorkouts = w.ExercisePerformInfos.Select(epi => new ExercisePerformInfoSingleWorkout()
                             {
-                                ExerciseId = epi.ExerciseId,
-                                Sets = epi.Sets,
-                                Reps = epi.Reps
-                            }
-                        }).ToList()
-                    }
-                }).ToList(),
+                                ExercisePerformInfo = new ExercisePerformInfo()
+                                {
+                                    ExerciseId = epi.ExerciseId,
+                                    Sets = epi.Sets,
+                                    Reps = epi.Reps
+                                }
+                            }).ToList()
+                        }
+                    }).ToList(),
                 WorkoutPlanBodyMassIndexMeasures = model.BodyMassIndexMeasures.Select(bmi => new WorkoutPlanBodyMassIndexMeasure()
                 {
                     BodyMassIndexMeasureId = bmi
@@ -145,6 +146,77 @@ namespace FitnessPlanner.Services.WorkoutPlan
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task UpdateAsync(WorkoutPlanUpdateDto model)
+        {
+            try
+            {
+                var entity = await repositoryManager.WorkoutPlans.GetByIdWithRelatedEntitiesAsync(model.Id, isTracked: true);
+
+                if (entity is null)
+                {
+                    throw new ArgumentException($"WorkoutPlan with id {model.Id} not found");
+                }
+
+                if (entity.UserId != model.UserId)
+                {
+                    throw new ArgumentException($"WorkoutPlan with id {model.Id} does not belong to user with id {model.UserId}");
+                }
+
+                entity.Name = model.Name;
+                entity.SkillLevelId = model.SkillLevelId;
+                entity.GoalId = model.GoalId;
+                entity.SingleWorkoutWorkoutPlans = model.SingleWorkouts
+                    .Select(w => new SingleWorkoutWorkoutPlan()
+                    {
+                        SingleWorkout = new SingleWorkout()
+                        {
+                            Name = w.Name,
+                            Day = w.Day,
+                            ExercisePerformInfoSingleWorkouts = w.ExercisePerformInfos.Select(epi => new ExercisePerformInfoSingleWorkout()
+                            {
+                                ExercisePerformInfo = new ExercisePerformInfo()
+                                {
+                                    ExerciseId = epi.ExerciseId,
+                                    Sets = epi.Sets,
+                                    Reps = epi.Reps
+                                }
+                            }).ToList()
+                        }
+                    }).ToList();
+                entity.WorkoutPlanBodyMassIndexMeasures = model.BodyMassIndexMeasures
+                    .Select(bmi => new WorkoutPlanBodyMassIndexMeasure()
+                    {
+                        BodyMassIndexMeasureId = bmi
+                    }).ToList();
+
+                await repositoryManager.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetAllAsync)}");
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var entity = await repositoryManager.WorkoutPlans.GetByIdAsync(id);
+
+                if (entity is not null)
+                {
+                    repositoryManager.WorkoutPlans.Remove(entity);
+                    await repositoryManager.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(DeleteAsync)}");
                 throw;
             }
         }

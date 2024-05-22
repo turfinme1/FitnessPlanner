@@ -11,5 +11,9 @@ namespace FitnessPlanner.Services.WorkoutPlan.Contracts
         Task<WorkoutPlanDto?> GetByIdAsync(int id);
 
         Task<int> CreateAsync(WorkoutPlanCreateDto model);
+
+        Task UpdateAsync(WorkoutPlanUpdateDto model);
+
+        Task DeleteAsync(int id);
     }
 }
