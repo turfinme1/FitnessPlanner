@@ -1,4 +1,5 @@
-﻿using Azure.Identity;
+﻿using System.Reflection;
+using Azure.Identity;
 using Azure.Storage.Blobs;
 using FitnessPlanner.Data;
 using FitnessPlanner.Data.Contracts;
@@ -28,6 +29,7 @@ using FitnessPlanner.Services.Goal;
 using FitnessPlanner.Services.Goal.Contracts;
 using FitnessPlanner.Services.SkillLevel;
 using FitnessPlanner.Services.SkillLevel.Contracts;
+using Microsoft.OpenApi.Models;
 
 namespace FitnessPlanner.Server.Extensions
 {
@@ -104,6 +106,39 @@ namespace FitnessPlanner.Server.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
                     };
                 });
+        }
+
+        public static void ConfigureSwagger(this IServiceCollection builder)
+        {
+            builder.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Name = "Bearer"
+                        },
+                        new List<string>()
+                    },
+                });
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+            });
         }
     }
 }
