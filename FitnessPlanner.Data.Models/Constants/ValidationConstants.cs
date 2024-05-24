@@ -87,6 +87,7 @@
             public const string RequiredErrorMessage = "The field {0} is required.";
             public const string StringLengthErrorMessage = "The field {0} must be between {2} and {1} characters.";
             public const string RangeErrorMessage = "The {0} must be between {1} and {2}.";
+            public const string EnumDataTypeErrorMessage = "The field {0} is not valid.";
         }
     }
 }
