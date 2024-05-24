@@ -30,23 +30,26 @@ namespace FitnessPlanner.Data.Models
         [Column("weight")]
         public double Weight { get; set; }
 
+        [Required]
         [Column("skill_level_id")]
-        public int? SkillLevelId { get; set; }
+        public int SkillLevelId { get; set; }
 
         [ForeignKey(nameof(SkillLevelId))]
-        public SkillLevel? SkillLevel { get; set; }
+        public SkillLevel SkillLevel { get; set; } = null!;
 
+        [Required]
         [Column("goal_id")]
-        public int? GoalId { get; set; }
+        public int GoalId { get; set; }
 
         [ForeignKey(nameof(GoalId))]
-        public Goal? Goal { get; set; }
+        public Goal Goal { get; set; } = null!;
 
+        [Required]
         [Column("body_mass_index_measure_id")]
-        public int? BodyMassIndexMeasureId { get; set; }
+        public int BodyMassIndexMeasureId { get; set; }
 
         [ForeignKey(nameof(BodyMassIndexMeasureId))]
-        public BodyMassIndexMeasure? BodyMassIndexMeasure { get; set; }
+        public BodyMassIndexMeasure BodyMassIndexMeasure { get; set; } = null!;
 
         public WorkoutPlan? WorkoutPlan { get; set; }
     }
