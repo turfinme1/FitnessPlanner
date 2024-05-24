@@ -104,6 +104,26 @@ namespace FitnessPlanner.Services.WorkoutPlan
             }
         }
 
+        public async Task<WorkoutPlanDeleteDto?> GetByIdAsDeleteDtoAsync(int id)
+        {
+            try
+            {
+                var entity = await repositoryManager.WorkoutPlans.GetByIdAsync(id);
+                if (entity is null)
+                {
+                    return null;
+                }
+
+                var userId = entity.UserId ?? string.Empty;
+                return new WorkoutPlanDeleteDto(entity.Id, userId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
         public async Task<int> CreateAsync(WorkoutPlanCreateDto model)
         {
             var entity = new Data.Models.WorkoutPlan()
