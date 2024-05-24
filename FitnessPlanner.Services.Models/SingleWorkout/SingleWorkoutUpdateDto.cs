@@ -15,6 +15,8 @@ namespace FitnessPlanner.Services.Models.SingleWorkout
         public required string Name { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
+        [EnumDataType(typeof(DaysOfWeek), 
+            ErrorMessage = EnumDataTypeErrorMessage)]
         public DaysOfWeek Day { get; set; }
 
         [Required(ErrorMessage = RequiredErrorMessage)]
