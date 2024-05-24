@@ -1,18 +1,26 @@
-﻿using System.Security.Claims;
-using FitnessPlanner.Services.Models.WorkoutPlan;
+﻿using FitnessPlanner.Services.Models.WorkoutPlan;
 using FitnessPlanner.Services.WorkoutPlan.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FitnessPlanner.Server.Controllers
 {
-    [Route("api/workout-plan")]
+    /// <summary>
+    /// Controller class for handling HTTP requests related to workout plans.
+    /// </summary>
+    /// <param name="workoutPlanService"></param>
+    /// <param name="logger"></param>
     [ApiController]
+    [Route("api/workout-plan")]
     public class WorkoutPlanController(
         IWorkoutPlanService workoutPlanService,
         ILogger<WorkoutPlanController> logger) : BaseController
     {
-
+        /// <summary>
+        /// Retrieves all workout plans.
+        /// </summary>
+        /// <returns>A list of <see cref="WorkoutPlanDto"/></returns>
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,6 +39,11 @@ namespace FitnessPlanner.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves a specific workout plan by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the workout plan to retrieve.</param>
+        /// <returns>The <see cref="WorkoutPlanDto"/> with the specified ID.</returns>
         [HttpGet("{id}")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -56,8 +69,12 @@ namespace FitnessPlanner.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a new workout plan.
+        /// </summary>
+        /// <param name="workoutPlanDto">The workout plan data.</param>
+        /// <returns>The newly created <see cref="WorkoutPlanDto"/></returns>
         [HttpPost]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -85,8 +102,13 @@ namespace FitnessPlanner.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an existing workout plan.
+        /// </summary>
+        /// <param name="id">The ID of the workout plan to update.</param>
+        /// <param name="workoutPlanDto">The updated workout plan data.</param>
+        /// <returns>No content response if successful</returns>
         [HttpPut("{id}")]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -98,10 +120,10 @@ namespace FitnessPlanner.Server.Controllers
                 return BadRequest();
             }
 
-            //if (User.FindFirstValue(ClaimTypes.NameIdentifier) != workoutPlanDto.UserId)
-            //{
-            //    return Unauthorized();
-            //}
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != workoutPlanDto.UserId)
+            {
+                return Unauthorized();
+            }
 
             try
             {
@@ -116,24 +138,28 @@ namespace FitnessPlanner.Server.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an existing workout plan.
+        /// </summary>
+        /// <param name="id">The ID of the workout plan to delete.</param>
+        /// <returns>No content response if successful</returns>
         [HttpDelete("{id}")]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeleteWorkoutPlan(int id)
         {
-            var workoutPlan = await workoutPlanService.GetByIdAsync(id);
+            var workoutPlan = await workoutPlanService.GetByIdAsDeleteDtoAsync(id);
             if (workoutPlan == null)
             {
                 return BadRequest();
             }
 
-            //if (User.FindFirstValue(ClaimTypes.NameIdentifier) != workoutPlan.UserId)
-            //{
-            //    return Unauthorized();
-            //}
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != workoutPlan.UserId)
+            {
+                return Unauthorized();
+            }
 
             try
             {
