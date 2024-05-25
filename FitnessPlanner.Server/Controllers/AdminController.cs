@@ -5,14 +5,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessPlanner.Server.Controllers
 {
-    [Route("api/admin")]
+    /// <summary>
+    /// Controller class for handling HTTP requests related to admin.
+    /// </summary>
     [ApiController]
+    [Route("api/admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController(
         IAdminService adminService,
         ILogger<AdminController> logger) : BaseController
     {
+        /// <summary>
+        /// Retrieves all users.
+        /// </summary>
+        /// <returns>A collection of <see cref="UserDisplayDto"/> objects representing all users.</returns>
         [HttpGet("users")]
-        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
