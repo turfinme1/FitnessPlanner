@@ -25,6 +25,8 @@ using FitnessPlanner.Services.BodyMassIndexMeasure;
 using FitnessPlanner.Services.BodyMassIndexMeasure.Contracts;
 using FitnessPlanner.Services.CosineSimilarityCalculation;
 using FitnessPlanner.Services.CosineSimilarityCalculation.Contracts;
+using FitnessPlanner.Services.Exercise;
+using FitnessPlanner.Services.Exercise.Contracts;
 using FitnessPlanner.Services.Goal;
 using FitnessPlanner.Services.Goal.Contracts;
 using FitnessPlanner.Services.SkillLevel;
@@ -79,6 +81,7 @@ namespace FitnessPlanner.Server.Extensions
             builder.AddScoped<IBodyMassIndexMeasureService, BodyMassIndexMeasureService>();
             builder.AddScoped<IUserService, UserService>();
             builder.AddScoped<IAdminService, AdminService>();
+            builder.AddScoped<IExerciseService, ExerciseService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection builder, IConfiguration configuration)
