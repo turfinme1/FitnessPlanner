@@ -31,5 +31,32 @@ namespace FitnessPlanner.Services.Exercise
                 throw;
             }
         }
+
+        public async Task<ExerciseDisplayDto?> GetById(int id)
+        {
+            try
+            {
+                var exercise = await repositoryManager.Exercises.GetByIdWithRelatedEntitiesAsync(id);
+
+                if (exercise == null)
+                {
+                    return null;
+                }
+
+                return new ExerciseDisplayDto(
+                    Id: exercise.Id,
+                    Name: exercise.Name,
+                    Explanation: exercise.Explanation,
+                    PerformTip: exercise.PerformTip,
+                    ImageName: exercise.ImageName,
+                    MuscleGroups: exercise.ExerciseMuscleGroups.Select(mg =>
+                        new MuscleGroupDisplayDto(Name: mg.MuscleGroup.Name)));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetById)}");
+                throw;
+            }
+        }
     }
 }

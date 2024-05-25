@@ -5,5 +5,6 @@ namespace FitnessPlanner.Services.Exercise.Contracts
     public interface IExerciseService
     {
         Task<IEnumerable<ExerciseDisplayDto>> GetAllAsync();
+        Task<ExerciseDisplayDto?> GetById(int id);
     }
 }

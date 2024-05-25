@@ -13,5 +13,13 @@ namespace FitnessPlanner.Data.Repositories
                 .ThenInclude(emg => emg.MuscleGroup)
                 .ToListAsync();
         }
+
+        public async Task<Exercise?> GetByIdWithRelatedEntitiesAsync(int id)
+        {
+            return await base.DbSet
+                .Include(e => e.ExerciseMuscleGroups)
+                .ThenInclude(emg => emg.MuscleGroup)
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
     }
 }

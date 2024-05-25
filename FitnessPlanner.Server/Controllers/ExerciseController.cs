@@ -35,5 +35,36 @@ namespace FitnessPlanner.Server.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        /// <summary>
+        /// Retrieves a specific exercise by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the exercise to retrieve.</param>
+        /// <returns>The <see cref="ExerciseDisplayDto"/> with the specified ID.</returns>
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ExerciseDisplayDto>> GetExerciseById(int id)
+        {
+            try
+            {
+                var exercise = await exerciseService.GetById(id);
+
+                if (exercise == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(exercise);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetExerciseById)}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }
