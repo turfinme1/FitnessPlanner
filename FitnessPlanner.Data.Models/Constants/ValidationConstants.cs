@@ -9,9 +9,13 @@
 
         public static class ExerciseConstants
         {
+            public const int NameMinLength = 3;
             public const int NameMaxLength = 50;
+            public const int ExplanationMinLength = 50;
             public const int ExplanationMaxLength = 2000;
+            public const int PerformTipMinLength = 50;
             public const int PerformTipMaxLength = 2000;
+            public const int ImageNameMinLength = 3;
             public const int ImageNameMaxLength = 100;
         }
 
