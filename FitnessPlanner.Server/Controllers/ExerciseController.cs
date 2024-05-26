@@ -1,7 +1,9 @@
 ﻿using FitnessPlanner.Services.Exercise.Contracts;
 using FitnessPlanner.Services.Models.Exercise;
+using FitnessPlanner.Services.WorkoutPlan;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FitnessPlanner.Server.Controllers
 {
@@ -63,6 +65,97 @@ namespace FitnessPlanner.Server.Controllers
             catch (Exception e)
             {
                 logger.LogError(e, $"Error in {nameof(GetExerciseById)}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Creates a new exercise.
+        /// </summary>
+        /// <param name="exerciseCreateDto">The exercise data.</param>
+        /// <returns>The newly created <see cref="ExerciseDisplayDto"/></returns>
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ExerciseDisplayDto>> CreateExercise([FromBody] ExerciseCreateDto exerciseCreateDto)
+        {
+            try
+            {
+                var createdExerciseId = await exerciseService.CreateAsync(exerciseCreateDto);
+                var createdExercise = await exerciseService.GetById(createdExerciseId);
+
+                return CreatedAtAction(nameof(GetExerciseById), new { id = createdExerciseId }, createdExercise);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(CreateExercise)}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Updates an existing exercise.
+        /// </summary>
+        /// <param name="id">The ID of the exercise to update.</param>
+        /// <param name="exerciseUpdateDto">The updated exercise data.</param>
+        /// <returns>No content response if successful</returns>
+        [HttpPut("{id}")]
+        //[Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ExerciseDisplayDto>> UpdateExercise(int id, [FromBody] ExerciseUpdateDto exerciseUpdateDto)
+        {
+            if (id != exerciseUpdateDto.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await exerciseService.UpdateAsync(exerciseUpdateDto);
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(UpdateExercise)}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Deletes an existing exercise.
+        /// </summary>
+        /// <param name="id">The ID of the exercise to delete.</param>
+        /// <returns>No content response if successful</returns>
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> DeleteExercise(int id)
+        {
+            var workoutPlan = await exerciseService.GetByIdAsDeleteDtoAsync(id);
+            if (workoutPlan == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await exerciseService.DeleteAsync(id);
+                //TODO: Improve delete logic
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(DeleteExercise)}");
                 return StatusCode(500, "Internal server error");
             }
         }

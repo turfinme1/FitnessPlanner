@@ -1,4 +1,5 @@
 ﻿using FitnessPlanner.Data.Contracts;
+using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.Exercise.Contracts;
 using FitnessPlanner.Services.Models.Exercise;
 using FitnessPlanner.Services.Models.MuscleGroup;
@@ -55,6 +56,103 @@ namespace FitnessPlanner.Services.Exercise
             catch (Exception e)
             {
                 logger.LogError(e, $"Error in {nameof(GetById)}");
+                throw;
+            }
+        }
+
+        public async Task<ExerciseDeleteDto?> GetByIdAsDeleteDtoAsync(int id)
+        {
+            try
+            {
+                var entity = await repositoryManager.Exercises.GetByIdAsync(id);
+                if (entity is null)
+                {
+                    return null;
+                }
+
+                return new ExerciseDeleteDto(entity.Id);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetByIdAsDeleteDtoAsync)}");
+                throw;
+            }
+        }
+
+        public async Task<int> CreateAsync(ExerciseCreateDto model)
+        {
+            var entity = new Data.Models.Exercise()
+            {
+                Name = model.Name,
+                Explanation = model.Explanation,
+                PerformTip = model.PerformTip,
+                ImageName = model.ImageName,
+                ExerciseMuscleGroups = model.MuscleGroups
+                    .Select(mgId => new ExerciseMuscleGroup()
+                    {
+                        MuscleGroupId = mgId
+                    })
+                    .ToList()
+            };
+
+            try
+            {
+                repositoryManager.Exercises.Add(entity);
+                await repositoryManager.SaveChangesAsync();
+
+                return entity.Id;
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(CreateAsync)}");
+                throw;
+            }
+        }
+
+        public async Task UpdateAsync(ExerciseUpdateDto model)
+        {
+            try
+            {
+                var entity = await repositoryManager.Exercises.GetByIdWithRelatedEntitiesAsync(model.Id, isTracked: true);
+
+                if (entity is null)
+                {
+                    throw new ArgumentException($"Exercise with id {model.Id} not found");
+                }
+
+                entity.Name = model.Name;
+                entity.Explanation = model.Explanation;
+                entity.PerformTip = model.PerformTip;
+                entity.ImageName = model.ImageName;
+                entity.ExerciseMuscleGroups = model.MuscleGroups.Select(mgId => new ExerciseMuscleGroup()
+                {
+                    MuscleGroupId = mgId
+                }).ToList();
+
+                await repositoryManager.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(UpdateAsync)}");
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var entity = await repositoryManager.Exercises.GetByIdAsync(id);
+
+                if (entity is not null)
+                {
+                    repositoryManager.Exercises.Remove(entity);
+                    await repositoryManager.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(DeleteAsync)}");
                 throw;
             }
         }
