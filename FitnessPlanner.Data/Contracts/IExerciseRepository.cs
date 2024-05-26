@@ -6,6 +6,6 @@ namespace FitnessPlanner.Data.Contracts
     {
         Task<IEnumerable<Exercise>> GetAllWithRelatedEntitiesAsync();
 
-        Task<Exercise?> GetByIdWithRelatedEntitiesAsync(int id);
+        Task<Exercise?> GetByIdWithRelatedEntitiesAsync(int id, bool isTracked = false);
     }
 }

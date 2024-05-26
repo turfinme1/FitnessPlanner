@@ -14,12 +14,15 @@ namespace FitnessPlanner.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Exercise?> GetByIdWithRelatedEntitiesAsync(int id)
+        public async Task<Exercise?> GetByIdWithRelatedEntitiesAsync(int id, bool isTracked = false)
         {
-            return await base.DbSet
+            var query = base.DbSet
                 .Include(e => e.ExerciseMuscleGroups)
-                .ThenInclude(emg => emg.MuscleGroup)
-                .FirstOrDefaultAsync(e => e.Id == id);
+                .ThenInclude(emg => emg.MuscleGroup);
+
+            return isTracked
+                ? await query.FirstOrDefaultAsync(wp => wp.Id == id)
+                : await query.AsNoTracking().FirstOrDefaultAsync(wp => wp.Id == id);
         }
     }
 }
