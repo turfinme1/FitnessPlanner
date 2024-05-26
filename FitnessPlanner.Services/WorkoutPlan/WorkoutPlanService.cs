@@ -119,7 +119,7 @@ namespace FitnessPlanner.Services.WorkoutPlan
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                logger.LogError(e, $"Error in {nameof(GetByIdAsDeleteDtoAsync)}");
                 throw;
             }
         }
@@ -156,16 +156,16 @@ namespace FitnessPlanner.Services.WorkoutPlan
                 }).ToList()
             };
 
-            repositoryManager.WorkoutPlans.Add(entity);
-
             try
             {
+                repositoryManager.WorkoutPlans.Add(entity);
                 await repositoryManager.SaveChangesAsync();
+
                 return entity.Id;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                logger.LogError(e, $"Error in {nameof(CreateAsync)}");
                 throw;
             }
         }
