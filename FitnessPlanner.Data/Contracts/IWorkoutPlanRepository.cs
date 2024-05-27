@@ -3,7 +3,7 @@
 namespace FitnessPlanner.Data.Contracts
 {
     /// <summary>
-    /// Interface for the workout plan repository, defining methods for retrieving workout plans with related entities.
+    /// Interface for the workout plan repository, defining methods for managing <see cref="WorkoutPlan"/> entities.
     /// </summary>
     public interface IWorkoutPlanRepository : IRepository<WorkoutPlan>
     {
