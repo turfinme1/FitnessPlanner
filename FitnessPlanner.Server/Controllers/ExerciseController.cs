@@ -103,7 +103,7 @@ namespace FitnessPlanner.Server.Controllers
         /// <param name="exerciseUpdateDto">The updated exercise data.</param>
         /// <returns>No content response if successful</returns>
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

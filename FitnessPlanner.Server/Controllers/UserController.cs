@@ -11,8 +11,8 @@ namespace FitnessPlanner.Server.Controllers
     /// <summary>
     /// Controller class for handling HTTP requests related to users.
     /// </summary>
-    /// <param name="similarityCalculationService"></param>
-    /// <param name="logger"></param>
+    /// <param name="similarityCalculationService">Service for calculating similarity between user and workout plan properties.</param>
+    /// <param name="logger">Logger for logging information and errors.</param>
     [ApiController]
     [Route("api/user")]
     public class UserController(

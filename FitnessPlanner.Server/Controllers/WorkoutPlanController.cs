@@ -9,8 +9,8 @@ namespace FitnessPlanner.Server.Controllers
     /// <summary>
     /// Controller class for handling HTTP requests related to workout plans.
     /// </summary>
-    /// <param name="workoutPlanService"></param>
-    /// <param name="logger"></param>
+    /// <param name="workoutPlanService">Service for handling operations related to workout plan</param>
+    /// <param name="logger">Logger for logging information and errors.</param>
     [ApiController]
     [Route("api/workout-plan")]
     public class WorkoutPlanController(
