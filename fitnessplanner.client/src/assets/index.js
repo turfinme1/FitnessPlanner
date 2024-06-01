@@ -1,3 +1,9 @@
+import fitnessPlanner from "./fitnessPlanner.svg";
+import curve from "./hero/curve.png";
+import background2 from "./background2.jpg";
+import gym from "./gym.jpg";
+import gymBackground from "./gym-background.jpg";
+import gymBackground2 from "./gym-background2.jpg";
 import brainwave from "./brainwave.svg";
 import check from "./check.svg";
 import brainwaveSymbol from "./brainwave-symbol.svg";
@@ -21,7 +27,6 @@ import sliders04 from "./sliders-04.svg";
 import loading from "./loading.png";
 import background from "./background.jpg";
 
-import curve from "./hero/curve.png";
 import robot from "./hero/robot.jpg";
 import heroBackground from "./hero/hero-background.jpg";
 
@@ -76,6 +81,12 @@ import telegram from "./socials/telegram.svg";
 import twitter from "./socials/twitter.svg";
 
 export {
+  fitnessPlanner,
+  background2,
+  curve,
+  gym,
+  gymBackground,
+  gymBackground2,
   brainwave,
   check,
   check2,
@@ -98,7 +109,6 @@ export {
   sliders04,
   loading,
   background,
-  curve,
   robot,
   heroBackground,
   curve1,
