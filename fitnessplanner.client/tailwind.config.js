@@ -74,6 +74,7 @@ export default {
     },
   },
   plugins: [
+    require('@tailwindcss/forms'),
     plugin(function ({ addBase, addComponents, addUtilities }) {
       addBase({});
       addComponents({
