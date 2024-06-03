@@ -40,28 +40,28 @@ export const navigation = [
   {
     id: "0",
     title: "Features",
-    url: "#features",
+    url: "/features",
   },
   {
     id: "1",
     title: "Crete a workout",
-    url: "#create-workout",
+    url: "/create-workout",
   },
   {
     id: "2",
     title: "Workout suggestion",
-    url: "#get-workout-suggestion",
+    url: "/get-workout-suggestion",
   },
   {
     id: "3",
     title: "Create account",
-    url: "#signup",
+    url: "/register",
     onlyMobile: true,
   },
   {
     id: "4",
     title: "Sign in",
-    url: "#login",
+    url: "/login",
     onlyMobile: true,
   },
 ];
