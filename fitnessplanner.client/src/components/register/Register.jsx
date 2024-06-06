@@ -1,0 +1,371 @@
+import Section from "../section/Section";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import * as authService from "../../services/authService";
+
+const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+  });
+
+  const handleRegistration = async (values) => {
+    console.log(values);
+    try {
+      await authService.register(values);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  return (
+    <Section
+      className="pt-[12rem] -mt-[5.25rem]"
+      crosses
+      crossesOffset="lg:translate-y-[5.25rem]"
+      customPaddings
+      id="login"
+    >
+      <div className="flex min-h-screen items-center justify-center px-4">
+        <div className="flex w-full flex-col items-center py-10 sm:justify-center">
+          <a
+            href="#"
+            className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+          >
+            <img
+              className="w-8 h-8 mr-2"
+              src="./src/assets/bench-gym-svgrepo-com.svg"
+              alt="logo"
+            />
+            Create Account
+          </a>
+          <div className="w-full max-w-sm rounded-md  bg-white px-6 py-6 shadow-md dark:bg-gray-900 sm:rounded-lg">
+            <form
+              action=""
+              onSubmit={handleSubmit(handleRegistration)}
+              className="group"
+            >
+              <div className="mt-4">
+                <label
+                  htmlFor="name"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Full Name
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    type="text"
+                    // name="name"
+                    placeholder="Full Name"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400 valid:[&:not(:placeholder-shown)]:border-green-500"
+                    // pattern="[0-9a-zA-Z ]{6,}"
+                    // required
+                    {...register("name", {
+                      required: "Field is required",
+                      pattern: {
+                        value:
+                          /^[a-zA-Z]+(?:['-]?[a-zA-Z]+)*\s+[a-zA-Z]+(?:['-]?[a-zA-Z]+)*$/,
+                        message: "Provide a valid name",
+                      },
+                      minLength: { value: 6, message: "Minimum 6 characters" },
+                    })}
+                  />
+
+                  {errors.name && (
+                    <span className="mt-1 text-sm text-red-400">
+                      {errors.name?.message}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Email
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    placeholder="Email"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400 valid:[&:not(:placeholder-shown)]:border-green-500"
+                    autoComplete="off"
+                    {...register("email", {
+                      required: "Field is required",
+                      pattern: {
+                        value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                        message: "Invalid email",
+                      },
+                    })}
+                  />
+
+                  {errors.email && (
+                    <span className="mt-1 text-sm text-red-400">
+                      {errors.email.message}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="password"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Password
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    type="password"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400 valid:[&:not(:placeholder-shown)]:border-green-500"
+                    autoComplete="off"
+                    {...register("password", {
+                      required: "Field is required",
+                      minLength: { value: 6, message: "Minimum 6 characters" },
+                    })}
+                  />
+
+                  {errors.password && (
+                    <span className="mt-1 text-sm text-red-400">
+                      {errors.password?.message}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="age"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Age
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    type="number"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400 valid:[&:not(:placeholder-shown)]:border-green-500"
+                    autoComplete="off"
+                    defaultValue={14}
+                    {...register("age", {
+                      required: "Field is invalid",
+                      min: { value: 14, message: "Minimum age is 14" },
+                      max: { value: 99, message: "Maximum age is 99" },
+                    })}
+                  />
+
+                  {errors.age && (
+                    <span className="mt-1 text-sm text-red-400">
+                      {errors.age?.message}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="height"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Height (cm)
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    type="number"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400 valid:[&:not(:placeholder-shown)]:border-green-500"
+                    autoComplete="off"
+                    defaultValue={160}
+                    {...register("height", {
+                      required: "Field is invalid",
+                      min: { value: 140, message: "Minimum heigth is 140 cm" },
+                      max: { value: 250, message: "Maximum height is 250 cm" },
+                    })}
+                  />
+
+                  {errors.height && (
+                    <span className="mt-1 text-sm text-red-400">
+                      {errors.height?.message}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="weight"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Weight (kg)
+                </label>
+                <div className="flex flex-col items-start">
+                  <input
+                    type="number"
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400 valid:[&:not(:placeholder-shown)]:border-green-500"
+                    autoComplete="off"
+                    defaultValue={50}
+                    {...register("weight", {
+                      required: "Field is invalid",
+                      min: { value: 40, message: "Minimum weight is 40 kg" },
+                      max: { value: 200, message: "Maximum weight is 200 kg" },
+                    })}
+                  />
+
+                  {errors.weight && (
+                    <span className="mt-1 text-sm text-red-400">
+                      {errors.weight?.message}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="gender"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Gender
+                </label>
+                <select
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                  defaultValue={""}
+                  {...register("gender", {
+                    required: "Select your gender",
+                  })}
+                >
+                  <option disabled value="">
+                    Select your gender
+                  </option>
+                  <option key={1} value={1}>
+                    {"Female"}
+                  </option>
+                  <option key={2} value={2}>
+                    {"Male"}
+                  </option>
+                  <option key={3} value={3}>
+                    {"Other"}
+                  </option>
+                </select>
+                {errors.gender && (
+                  <span className="mt-1 text-sm text-red-400">
+                    {errors.gender?.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="skillLevelId"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Skill Level
+                </label>
+                <select
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                  defaultValue={""}
+                  {...register("skillLevelId", {
+                    required: "Select your skill level",
+                  })}
+                >
+                  <option disabled value={""}>
+                    Select your Skill Level
+                  </option>
+                  <option key={1} value={1}>
+                    {"Beginner"}
+                  </option>
+                  <option key={2} value={2}>
+                    {"Intermediate"}
+                  </option>
+                  <option key={3} value={3}>
+                    {"Advanced"}
+                  </option>
+                  <option key={4} value={4}>
+                    {"Professional"}
+                  </option>
+                </select>
+
+                {errors.skillLevelId && (
+                  <span className="mt-1 text-sm text-red-400">
+                    {errors.skillLevelId?.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-4">
+                <label
+                  htmlFor="goalId"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Goal
+                </label>
+                <select
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                  defaultValue={""}
+                  {...register("goalId", {
+                    required: "Field is invalid",
+                  })}
+                >
+                  <option disabled value={""}>
+                    Select your Goal
+                  </option>
+                  <option key={1} value={1}>
+                    {"Lose weight"}
+                  </option>
+                  <option key={2} value={2}>
+                    {"Gain muscle"}
+                  </option>
+                  <option key={3} value={3}>
+                    {"Maintain weight"}
+                  </option>
+                </select>
+
+                {errors.goalId && (
+                  <span className="mt-1 text-sm text-red-400">
+                    {errors.goalId?.message}
+                  </span>
+                )}
+              </div>
+
+              <a
+                href="#"
+                className="pt-1 text-xs text-purple-600 hover:text-purple-800 hover:underline dark:text-purple-300 dark:hover:text-purple-100"
+              >
+                Forget Password?
+              </a>
+              <div className="mt-4 flex items-center">
+                <button
+                  type="submit"
+                  className="mt-2 w-full rounded-lg bg-purple-700 px-5 py-3 text-center text-sm font-medium text-white hover:bg-purple-600 focus:outline-none focus:ring-1 focus:ring-blue-300 disabled:cursor-not-allowed disabled:bg-gradient-to-br disabled:from-gray-100 disabled:to-gray-300 disabled:text-gray-400 group-invalid:pointer-events-none group-invalid:bg-gradient-to-br group-invalid:from-gray-100 group-invalid:to-gray-300 group-invalid:text-gray-400 group-invalid:opacity-70"
+                >
+                  Create account
+                </button>
+              </div>
+            </form>
+            <div className="text-md mt-4 text-zinc-600 dark:text-zinc-300">
+              Already have an account?{" "}
+              <span>
+                <Link
+                  className="text-purple-600 hover:text-purple-800 hover:underline dark:text-purple-400 dark:hover:text-purple-100"
+                  to="/login"
+                >
+                  Login instead
+                </Link>
+              </span>
+            </div>
+            <div className="my-4 flex w-full items-center">
+              <hr className="my-8 h-px w-full border-0 bg-gray-200 dark:bg-gray-700" />
+              <p className="px-3 ">OR</p>
+              <hr className="my-8 h-px w-full border-0 bg-gray-200 dark:bg-gray-700" />
+            </div>
+            <div className="my-6 space-y-2"></div>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+};
+
+export default Register;
