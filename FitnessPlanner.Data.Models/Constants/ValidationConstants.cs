@@ -48,10 +48,10 @@
             public const int EmailMinLength = 5;
             public const int EmailMaxLength = 50;
 
-            public const int HeightMinLength = 80;
+            public const int HeightMinLength = 140;
             public const int HeightMaxLength = 250;
 
-            public const int WeightMinLength = 30;
+            public const int WeightMinLength = 40;
             public const int WeightMaxLength = 200;
         }
 
