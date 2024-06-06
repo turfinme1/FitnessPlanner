@@ -9,7 +9,9 @@ const Login = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onChange",
+  });
 
   const handleLogin = async (values) => {
     console.log(values);
