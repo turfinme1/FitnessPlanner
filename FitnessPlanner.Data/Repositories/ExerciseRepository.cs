@@ -21,12 +21,12 @@ namespace FitnessPlanner.Data.Repositories
         {
             return await base.DbSet
                 .Include(e => e.ExerciseMuscleGroups)
-                .ThenInclude(emg => emg.MuscleGroup)
+                    .ThenInclude(emg => emg.MuscleGroup)
                 .ToListAsync();
         }
 
         /// <summary>
-        /// Retrieves an exercise by its ID along with its related entities asynchronously.
+        /// Retrieves an <see cref="Exercise"/> by its ID along with its related entities asynchronously.
         /// </summary>
         /// <param name="id">The ID of the exercise to retrieve.</param>
         /// <param name="isTracked">Indicates whether the entity should be tracked by the context.</param>
@@ -38,11 +38,30 @@ namespace FitnessPlanner.Data.Repositories
         {
             var query = base.DbSet
                 .Include(e => e.ExerciseMuscleGroups)
-                .ThenInclude(emg => emg.MuscleGroup);
+                    .ThenInclude(emg => emg.MuscleGroup);
 
             return isTracked
                 ? await query.FirstOrDefaultAsync(wp => wp.Id == id)
                 : await query.AsNoTracking().FirstOrDefaultAsync(wp => wp.Id == id);
+        }
+
+        /// <summary>
+        /// Retrieves a collection of <see cref="Exercise"/> by their muscle group along with their related entities asynchronously.
+        /// </summary>
+        /// <param name="muscleGroupName">The name of the muscle group</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation. 
+        /// The task result contains an enumerable collection of <see cref="Exercise"/> objects with their related entities, or null if no exercises with the specified muscle group name are found.
+        /// </returns>
+        public async Task<IEnumerable<Exercise>> GetByMuscleGroupWithRelatedEntitiesAsync(string muscleGroupName)
+        {
+            return await base.DbSet
+                .Include(e => e.ExerciseMuscleGroups)
+                .ThenInclude(emg => emg.MuscleGroup)
+                .Where(e => e.ExerciseMuscleGroups
+                    .Any(emg => emg.MuscleGroup.Name == muscleGroupName))
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }
