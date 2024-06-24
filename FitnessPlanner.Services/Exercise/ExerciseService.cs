@@ -1,4 +1,5 @@
-﻿using FitnessPlanner.Data.Contracts;
+﻿using System.Security.Cryptography.X509Certificates;
+using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.Exercise.Contracts;
 using FitnessPlanner.Services.Models.Exercise;
@@ -33,7 +34,7 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task<ExerciseDisplayDto?> GetById(int id)
+        public async Task<ExerciseDisplayDto?> GetByIdAsync(int id)
         {
             try
             {
@@ -55,7 +56,39 @@ namespace FitnessPlanner.Services.Exercise
             }
             catch (Exception e)
             {
-                logger.LogError(e, $"Error in {nameof(GetById)}");
+                logger.LogError(e, $"Error in {nameof(GetByIdAsync)}");
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<ExerciseDisplayDto>?> GetAllByMuscleGroupAsync(string muscleGroupName)
+        {
+            try
+            {
+                var muscleGroupNameWithUppercase =
+                    string.Concat(muscleGroupName[0].ToString().ToUpper(), muscleGroupName.AsSpan(1));
+
+                var exercises = (await repositoryManager.Exercises
+                    .GetByMuscleGroupWithRelatedEntitiesAsync(muscleGroupNameWithUppercase))
+                    .ToArray();
+
+                if (exercises.Any() == false)
+                {
+                    return null;
+                }
+
+                return exercises.Select(e => new ExerciseDisplayDto(
+                    Id: e.Id,
+                    Name: e.Name,
+                    Explanation: e.Explanation,
+                    PerformTip: e.PerformTip,
+                    ImageName: e.ImageName,
+                    MuscleGroups: e.ExerciseMuscleGroups.Select(mg =>
+                        new MuscleGroupDisplayDto(Name: mg.MuscleGroup.Name))));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetAllByMuscleGroupAsync)}");
                 throw;
             }
         }

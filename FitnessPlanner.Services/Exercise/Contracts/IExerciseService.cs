@@ -6,7 +6,9 @@ namespace FitnessPlanner.Services.Exercise.Contracts
     {
         Task<IEnumerable<ExerciseDisplayDto>> GetAllAsync();
 
-        Task<ExerciseDisplayDto?> GetById(int id);
+        Task<ExerciseDisplayDto?> GetByIdAsync(int id);
+
+        Task<IEnumerable<ExerciseDisplayDto>?> GetAllByMuscleGroupAsync(string muscleGroupName);
 
         Task<ExerciseDeleteDto?> GetByIdAsDeleteDtoAsync(int id);
 
