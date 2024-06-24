@@ -1,69 +1,89 @@
 import React, { useState } from "react";
-import ExerciseList from "../column/ExerciseList";
+import { useForm } from "react-hook-form";
+import { getAllByMuscleGroup } from "../../services/exerciseService";
 
-const SearchBar = () => {
-  const [cards, setCards] = useState(DEFAULT_CARDS);
-  const [selected, setSelected] = useState("");
+const SearchBar = ({setElements}) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+  });
+
+  const submitHandler =async (values) => {
+    const result = await getAllByMuscleGroup(values.muscleGroup);
+    // console.log("result", result);
+    setElements(prev=> [...result])
+  };
+
   return (
-    // <div className="mb-3 xl:w-96">
-    //   <div className="mb-4 flex w-full flex-wrap items-stretch">
-    //     <input
-    //       type="search"
-    //       className="relative m-0 block flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-    //       placeholder="Search"
-    //       aria-label="Search"
-    //       aria-describedby="button-addon2"
-    //     />
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className="flex gap-2 flex-wrap w-full pb-10"
+    >
+      <div className="grow">
+        <select
+          className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
-    //     <button
-    //       className="z-[2] inline-block rounded-e border-2 border-primary px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary transition duration-150 ease-in-out hover:border-primary-accent-300 hover:bg-primary-50/50 hover:text-primary-accent-300 focus:border-primary-600 focus:bg-primary-50/50 focus:text-primary-600 focus:outline-none focus:ring-0 active:border-primary-700 active:text-primary-700 dark:text-primary-500 dark:hover:bg-blue-950 dark:focus:bg-blue-950"
-    //       data-twe-ripple-init
-    //       data-twe-ripple-color="white"
-    //       type="button"
-    //       id="button-addon3"
-    //     >
-    //       Search
-    //     </button>
+          defaultValue={""}
+          {...register("muscleGroup", {
+            required: "Muscle group is required",
+          })}
+        >
+          <option disabled value={""}>
+            Select a muscle group
+          </option>
+          <option key={1} value="Neck">
+            Neck
+          </option>
+          <option key={2} value="Trapezius">
+            Trapezius
+          </option>
+          <option key={3} value="Shoulder">
+            Shoulder
+          </option>
+          <option key={4} value="Chest">
+            Chest
+          </option>
+          <option key={5} value="Back">
+            Back
+          </option>
+          <option key={6} value="Biceps">
+            Biceps
+          </option>
+          <option key={7} value="Triceps">
+            Triceps
+          </option>
+          <option key={8} value="Forearm">
+            Forearm
+          </option>
+          <option key={9} value="Abs">
+            Abs
+          </option>
+          <option key={10} value="Legs">
+            Legs
+          </option>
+          <option key={11} value="Calves">
+            Calves
+          </option>
+          <option key={12} value="Full Body">
+            Full Body
+          </option>
+        </select>
+      </div>
 
-    //     {/* <!--Search icon--> */}
-    //     {/* <ExerciseList title="Todo" cards={cards} setCards={setCards}/> */}
-    //   </div>
-    // </div>
-
-    <form>
-      <label
-        for="default"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >
-        Find exercise by group
-      </label>
-      <select
-        id="default"
-        class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      >
-        <option selected>Choose a country</option>
-        <option value="US">United States</option>
-        <option value="CA">Canada</option>
-        <option value="FR">France</option>
-        <option value="DE">Germany</option>
-      </select>
-
-      {/* <ExerciseList /> */}
+      <div className="grow">
+        <button
+          className="w-full h-11 rounded-lg bg-purple-700 px-5 text-center text-sm font-bold text-white hover:bg-purple-600"
+          type="submit"
+        >
+          Search
+        </button>
+      </div>
     </form>
   );
 };
-
-const DEFAULT_CARDS = [
-  { title: "Look into render bug in dashboard", id: "1" },
-  { title: "SOX compliance checklist", id: "2" },
-  { title: "[SPIKE] Migrate to Azure", id: "3" },
-  { title: "Document Notifications service", id: "4" },
-  { title: "Research DB options for new microservice", id: "5" },
-  { title: "Postmortem for outage", id: "6" },
-  { title: "Sync with product on Q3 roadmap", id: "7" },
-  { title: "Refactor context providers to use Zustand", id: "8" },
-  { title: "Add logging to daily CRON", id: "9" },
-  { title: "Set up DD dashboards for Lambda listener", id: "10" },
-];
 
 export default SearchBar;
