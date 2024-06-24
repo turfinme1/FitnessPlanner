@@ -43,7 +43,7 @@ namespace FitnessPlanner.Server.Controllers
         /// </summary>
         /// <param name="id">The ID of the exercise to retrieve.</param>
         /// <returns>The <see cref="ExerciseDisplayDto"/> with the specified ID.</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -53,7 +53,7 @@ namespace FitnessPlanner.Server.Controllers
         {
             try
             {
-                var exercise = await exerciseService.GetById(id);
+                var exercise = await exerciseService.GetByIdAsync(id);
 
                 if (exercise == null)
                 {
@@ -65,6 +65,37 @@ namespace FitnessPlanner.Server.Controllers
             catch (Exception e)
             {
                 logger.LogError(e, $"Error in {nameof(GetExerciseById)}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all exercises for a specific muscle group.
+        /// </summary>
+        /// <param name="muscleGroup">The name of the muscle group</param>
+        /// <returns>A list of <see cref="ExerciseDisplayDto"/> with the specific muscle group</returns>
+        [HttpGet("{muscleGroup}")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<ExerciseDisplayDto>>> GetExercisesByMuscleGroup(string muscleGroup)
+        {
+            try
+            {
+                var exercises = await exerciseService.GetAllByMuscleGroupAsync(muscleGroup);
+
+                if (exercises == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(exercises);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetExercisesByMuscleGroup)}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -85,7 +116,7 @@ namespace FitnessPlanner.Server.Controllers
             try
             {
                 var createdExerciseId = await exerciseService.CreateAsync(exerciseCreateDto);
-                var createdExercise = await exerciseService.GetById(createdExerciseId);
+                var createdExercise = await exerciseService.GetByIdAsync(createdExerciseId);
 
                 return CreatedAtAction(nameof(GetExerciseById), new { id = createdExerciseId }, createdExercise);
             }
