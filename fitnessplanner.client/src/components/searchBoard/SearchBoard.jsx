@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import SearchBar from "../searchBar/SearchBar";
 import Section from "../section/Section";
-import ExerciseList from "../column/ExerciseList";
+import ExerciseList from "../list/ExerciseList";
+import List from "../list/List";
 
 const SearchBoard = () => {
   const [cards, setCards] = useState(DEFAULT_CARDS);
 
   return (
-    <div
-      className=""
-      crosses
-    >
+    <div className="w-full h-full grow">
       <>
-         <SearchBar /> 
-         <ExerciseList />
+        <SearchBar setElements={setCards}/>
+        <ExerciseList elements={cards} setElements={setCards} />
       </>
     </div>
   );
