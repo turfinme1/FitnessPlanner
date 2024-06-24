@@ -15,21 +15,19 @@ import {
 } from "@dnd-kit/sortable";
 import Card from "../card/Card";
 
-const ExerciseList = () => {
-  const [tasks, setTasks] = useState(DEFAULT_CARDS);
-
-  const getTaskIndex = (id) => tasks.findIndex((task) => task.id === id);
+const ExerciseList = ({ elements, setElements }) => {
+  const getTaskIndex = (id) => elements.findIndex((elements) => elements.id === id);
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
     if (active.id === over.id) return;
 
-    setTasks((tasks) => {
+    setElements((elements) => {
       const originIndex = getTaskIndex(active.id);
       const targetIndex = getTaskIndex(over.id);
 
-      return arrayMove(tasks, originIndex, targetIndex);
+      return arrayMove(elements, originIndex, targetIndex);
     });
   };
 
@@ -41,27 +39,27 @@ const ExerciseList = () => {
   );
 
   return (
-    <div>
+    <div className="w-full h-full grow">
       <DndContext
         onDragEnd={handleDragEnd}
         collisionDetection={closestCorners}
         sensors={sensors}
       >
-        <Column tasks={tasks} />
+        {elements && <Column elements={elements} />}
       </DndContext>
     </div>
   );
 };
 
-const Column = ({ tasks }) => {
+const Column = ({ elements }) => {
   return (
-    <div className="flex flex-col gap-1">
-      <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
-        {tasks.map((task) => (
-          <Card title={task.title} id={task.id} key={task.id} />
+    <div className="flex flex-col gap-1 grow">
+      <SortableContext items={elements} strategy={verticalListSortingStrategy}>
+        {elements.map((elements) => (
+          <Card title={elements.name} id={elements.id} key={elements.id} isSortable/>
         ))}
       </SortableContext>
-    </div>
+    </div>  
   );
 };
 
