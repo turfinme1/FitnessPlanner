@@ -1,9 +1,10 @@
 import Section from "../section/Section";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as authService from "../../services/authService";
 
 const Register = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,8 +16,17 @@ const Register = () => {
 
   const handleRegistration = async (values) => {
     console.log(values);
+    values.gender = parseInt(values.gender);
+    console.log(values);
     try {
-      await authService.register(values);
+      const isSuccessful = await authService.register(values);
+
+      if (isSuccessful) {
+        navigate("/login");
+      } else {
+        // errors from server not displayed to user (email already exists, etc.)
+        console.log("Registration failed");
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -24,13 +34,13 @@ const Register = () => {
 
   return (
     <Section
-      className="pt-[12rem] -mt-[5.25rem]"
+      className="pt-[5rem] -mt-[5.25rem]"
       crosses
       crossesOffset="lg:translate-y-[5.25rem]"
       customPaddings
-      id="login"
+      id="register"
     >
-      <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="flex min-h-screen items-start justify-center px-4">
         <div className="flex w-full flex-col items-center py-10 sm:justify-center">
           <a
             href="#"
@@ -329,12 +339,6 @@ const Register = () => {
                 )}
               </div>
 
-              <a
-                href="#"
-                className="pt-1 text-xs text-purple-600 hover:text-purple-800 hover:underline dark:text-purple-300 dark:hover:text-purple-100"
-              >
-                Forget Password?
-              </a>
               <div className="mt-4 flex items-center">
                 <button
                   type="submit"
@@ -355,11 +359,7 @@ const Register = () => {
                 </Link>
               </span>
             </div>
-            <div className="my-4 flex w-full items-center">
-              <hr className="my-8 h-px w-full border-0 bg-gray-200 dark:bg-gray-700" />
-              <p className="px-3 ">OR</p>
-              <hr className="my-8 h-px w-full border-0 bg-gray-200 dark:bg-gray-700" />
-            </div>
+
             <div className="my-6 space-y-2"></div>
           </div>
         </div>

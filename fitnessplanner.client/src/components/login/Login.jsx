@@ -24,13 +24,13 @@ const Login = () => {
 
   return (
     <Section
-      className="pt-[1rem] -mt-[5.25rem]"
+      className="pt-[5rem] -mt-[5.25rem]"
       crosses
       crossesOffset="lg:translate-y-[5.25rem]"
       customPaddings
       id="login"
     >
-      <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="flex min-h-screen items-start justify-center px-4">
         <div className="flex w-full flex-col items-center py-10 sm:justify-center">
           <a
             href="#"
