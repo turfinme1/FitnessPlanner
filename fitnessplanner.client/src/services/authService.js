@@ -32,15 +32,15 @@ export const register = async (userData) => {
 
   if (response.status === 201) {
     // const data = await response.json();
-    // console.log(data);
+    console.log(response);
     // return data;
     return true;
   }
 
-  const errorArray = await response.json();
-  const errorMessage = errorArray.map((a) => a.description).join("\n");
-  throw new Error(errorMessage);
-  //   return null;
+  // const errorArray = await response.json();
+  // const errorMessage = errorArray.map((a) => a.description).join("\n");
+  // throw new Error(errorMessage);
+  return false;
 };
 
 export const logout = async () => {
