@@ -120,7 +120,7 @@ export default {
           "@apply font-code text-lg leading-normal": {},
         },
         ".button": {
-          "@apply font-code text-xs font-bold uppercase tracking-wider": {},
+          "@apply font-code text-base font-bold uppercase tracking-wider": {},
         },
       });
       addUtilities({
