@@ -16,11 +16,7 @@ namespace FitnessPlanner.Services.Models.User
             MinimumLength = NameMinLength,
             ErrorMessage = StringLengthErrorMessage)]
         public string Name { get; set; }
-
-        [EnumDataType(typeof(Genders),
-            ErrorMessage = EnumDataTypeErrorMessage)]
-        public Genders Gender { get; set; }
-
+        
         [Range(AgeMinLength,
             AgeMaxLength,
             ErrorMessage = RangeErrorMessage)]
