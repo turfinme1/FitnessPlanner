@@ -1,8 +1,10 @@
 import Section from "../section/Section";
 import useUserAuth from "../../store/useUserAuth";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { login } = useUserAuth((state) => ({ login: state.login }));
   const {
     register,
@@ -17,6 +19,7 @@ const Login = () => {
     console.log(values);
     try {
       await login(values);
+      navigate("/");
     } catch (error) {
       console.log("error", error);
     }
