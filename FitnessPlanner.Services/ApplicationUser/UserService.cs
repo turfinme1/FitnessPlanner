@@ -52,12 +52,7 @@ namespace FitnessPlanner.Services.ApplicationUser
                 {
                     user.Name = userPreferencesDto.Name;
                 }
-
-                if (user.Gender != userPreferencesDto.Gender)
-                {
-                    user.Gender = userPreferencesDto.Gender;
-                }
-
+                
                 if (user.Age != userPreferencesDto.Age)
                 {
                     user.Age = userPreferencesDto.Age;
@@ -91,6 +86,32 @@ namespace FitnessPlanner.Services.ApplicationUser
             catch (Exception e)
             {
                 logger.LogError($"{nameof(UpdateAsync)}: Update failed");
+                throw;
+            }
+        }
+
+        public async Task<UserDataFormDto> GetByIdAsUserDataFormDtoAsync(string userId)
+        {
+            try
+            {
+                var user = await repositoryManager.Users.GetByIdAsync(userId);
+                ArgumentNullException.ThrowIfNull(user);
+
+                var userDto = new UserDataFormDto()
+                {
+                    Name = user.Name,
+                    Age = user.Age,
+                    Height = user.Height,
+                    Weight = user.Weight,
+                    SkillLevelId = user.SkillLevelId,
+                    GoalId = user.GoalId
+                };
+
+                return userDto;
+            }
+            catch (Exception e)
+            {
+                logger.LogError($"{nameof(GetByIdAsUserDataFormDtoAsync)}: User not found");
                 throw;
             }
         }

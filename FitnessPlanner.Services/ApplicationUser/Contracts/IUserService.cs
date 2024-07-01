@@ -6,6 +6,9 @@ namespace FitnessPlanner.Services.ApplicationUser.Contracts
     public interface IUserService
     {
         Task<UserPreferencesDto?> GetByIdAsUserPreferenceDtoAsync(string userId);
+
         Task<IdentityResult> UpdateAsync(UserDataUpdateDto userPreferencesDto);
+
+        Task<UserDataFormDto> GetByIdAsUserDataFormDtoAsync(string userId);
     }
 }
