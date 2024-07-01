@@ -58,6 +58,14 @@ export default defineConfig({
                 target: 'https://localhost:7124/api',
                 secure: false
             },
+            '^/user/update-data': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
+            '^/user/form-data': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
             '^/exercise': {
                 target: 'https://localhost:7124/api',
                 secure: false
