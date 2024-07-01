@@ -78,5 +78,29 @@ namespace FitnessPlanner.Server.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+
+        /// <summary>
+        /// Gets the user's own data for form.
+        /// </summary>
+        /// <returns>The <see cref="WorkoutPlanDto"/> representing user's own data </returns>
+        [HttpGet("form-data")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<UserDataFormDto>> GetOwnUserData()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                return Ok(await userService.GetByIdAsUserDataFormDtoAsync(userId));
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(GetOwnUserData)}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }
