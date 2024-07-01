@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
 import { fitnessPlanner } from "../../assets";
@@ -7,10 +7,16 @@ import Button from "../button/Button";
 import MenuSvg from "../../assets/svg/MenuSvg";
 import { HamburgerMenu } from "../design/Header";
 import { useState } from "react";
+import useUserAuth from "../../store/useUserAuth";
 
 const Header = () => {
   const pathName = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
+  const { isAuthenticated, logout } = useUserAuth((state) => ({
+    isAuthenticated: state.isAuthenticated,
+    logout: state.logout
+  }));
+  const navigate = useNavigate();
 
   const toggleNavigation = () => {
     if (openNavigation) {
@@ -29,6 +35,11 @@ const Header = () => {
     setOpenNavigation(false);
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  }
+
   return (
     <div
       className={`fixed top-0 left-0 w-full z-50 border-b border-n-6 lg:bg-n-8/90 lg:backdrop-blur-sm ${
@@ -37,7 +48,12 @@ const Header = () => {
     >
       <div className="flex items-center px-5 lg:px-7.5 xl:px-10">
         <Link className="block w-[12rem] xl:mr-8" to="/">
-          <img src={fitnessPlanner} width={190} height={40} alt="Fitness planner" />
+          <img
+            src={fitnessPlanner}
+            width={190}
+            height={40}
+            alt="Fitness planner"
+          />
         </Link>
 
         <nav
@@ -62,20 +78,36 @@ const Header = () => {
                 {item.title}
               </Link>
             ))}
-
           </div>
-            <HamburgerMenu />
+          <HamburgerMenu />
         </nav>
 
-        <Link
-          to="/register"
-          className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"
-        >
-          Create account
-        </Link>
-        <Button className="hidden lg:flex" href="/login">
-          Sign in
-        </Button>
+        {isAuthenticated && (
+          <>
+            <button
+              className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block "
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+            <Button className="hidden lg:flex" href="/profile">
+              Profile
+            </Button>
+          </>
+        )}
+        {!isAuthenticated && (
+          <>
+            <Link
+              to="/register"
+              className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block"              
+            >
+              Create account
+            </Link>
+            <Button className="hidden lg:flex" href="/login">
+              Sign in
+            </Button>
+          </>
+        )}
 
         <Button
           className="ml-auto lg:hidden"
