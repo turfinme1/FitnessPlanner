@@ -17,7 +17,7 @@ const AddDay = ({ setElements }) => {
         return prev;
       }
 
-      return [...prev, { day: values.day, id: values.day, name: values.name }];
+      return [...prev, { name: values.name, day: values.day, id: values.day, exercisePerformInfos: []}];
     });
   };
 

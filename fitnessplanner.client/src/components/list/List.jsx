@@ -14,7 +14,7 @@ import {
 } from "@dnd-kit/sortable";
 import ListCard from "../card/ListCard";
 
-const List = ({ elements, setElements, isSortable }) => {
+const List = ({ elements, setElements, isSortable, onClickHandler }) => {
   const getTaskIndex = (id) =>
     elements.findIndex((element) => element.id === id);
 
@@ -72,6 +72,7 @@ const List = ({ elements, setElements, isSortable }) => {
                     id={element.id}
                     key={element.day}
                     isSortable
+                    onClickHandler={onClickHandler}
                   />
                 ))}
               </SortableContext>
