@@ -18,16 +18,16 @@ const SearchBoard = () => {
 };
 
 const DEFAULT_CARDS = [
-  { title: "Look into render bug in dashboard", id: "11" },
-  { title: "SOX compliance checklist", id: "21" },
-  { title: "[SPIKE] Migrate to Azure", id: "31" },
-  { title: "Document Notifications service", id: "41" },
-  { title: "Research DB options for new microservice", id: "51" },
-  { title: "Postmortem for outage", id: "61" },
-  { title: "Sync with product on Q3 roadmap", id: "71" },
-  { title: "Refactor context providers to use Zustand", id: "81" },
-  { title: "Add logging to daily CRON", id: "91" },
-  { title: "Set up DD dashboards for Lambda listener", id: "101" },
+  { name: "Look into render bug in dashboard", id: "11" },
+  { name: "SOX compliance checklist", id: "21" },
+  { name: "[SPIKE] Migrate to Azure", id: "31" },
+  { name: "Document Notifications service", id: "41" },
+  { name: "Research DB options for new microservice", id: "51" },
+  { name: "Postmortem for outage", id: "61" },
+  { name: "Sync with product on Q3 roadmap", id: "71" },
+  { name: "Refactor context providers to use Zustand", id: "81" },
+  { name: "Add logging to daily CRON", id: "91" },
+  { name: "Set up DD dashboards for Lambda listener", id: "101" },
 ];
 
 export default SearchBoard;
