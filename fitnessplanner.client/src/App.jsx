@@ -6,6 +6,12 @@ import Hero from "./components/hero/Hero";
 import Login from "./components/login/Login";
 import { Route, Routes } from "react-router-dom";
 import Register from "./components/register/Register";
+import SearchBoard from "./components/searchBoard/SearchBoard";
+import CreateWorkout from "./components/createWorkout/CreateWorkout";
+import Profile from "./components/profile/Profile";
+import WorkoutPlan from "./components/workoutPlans/workoutPlans";
+import WorkoutDetails from "./components/workoutDetails/workoutDetails";
+import CreateWorkout2 from "./components/createWorkout/CreateWorkout2";
 
 function App() {
   return (
@@ -16,62 +22,13 @@ function App() {
         <Route path="/" element={<Hero />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/create-workout" element={<CreateWorkout2 />} />
+        <Route path="/workout-list" element={<WorkoutPlan />} />
+        <Route path="workout-list/:workoutId" element={<WorkoutDetails />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
-      
     </div>
   );
 }
 
 export default App;
-
-// const [forecasts, setForecasts] = useState();
-
-//   useEffect(() => {
-//     populateWeatherData();
-//   }, []);
-// const contents =
-//     forecasts === undefined ? (
-//       <p>
-//         <em>
-//           Loading... Please refresh once the ASP.NET backend has started. See{" "}
-//           <a href="https://aka.ms/jspsintegrationreact">
-//             https://aka.ms/jspsintegrationreact
-//           </a>{" "}
-//           for more details.
-//         </em>
-//       </p>
-//     ) : (
-//       <table className="table table-striped" aria-labelledby="tabelLabel">
-//         <thead>
-//           <tr>
-//             <th>Date</th>
-//             <th>Temp. (C)</th>
-//             <th>Temp. (F)</th>
-//             <th>Summary</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {forecasts.map((forecast) => (
-//             <tr key={forecast.date}>
-//               <td>{forecast.date}</td>
-//               <td>{forecast.temperatureC}</td>
-//               <td>{forecast.temperatureF}</td>
-//               <td>{forecast.summary}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     );
-
-//   return (
-//     <>
-//       <h1 className="text-3xl font-bold underline">Hello world!</h1>
-//       {contents}
-//     </>
-//   );
-
-//   async function populateWeatherData() {
-//     const response = await fetch("weatherforecast");
-//     const data = await response.json();
-//     setForecasts(data);
-//   }
