@@ -70,6 +70,10 @@ export default defineConfig({
                 target: 'https://localhost:7124/api',
                 secure: false
             },
+            '^/workout-plan': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
         },
         port: 5173,
         https: {
