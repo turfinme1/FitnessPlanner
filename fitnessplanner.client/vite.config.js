@@ -49,7 +49,31 @@ export default defineConfig({
             '^/weatherforecast': {
                 target: 'https://localhost:7124/',
                 secure: false
-            }
+            },
+            '^/authentication/login': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
+            '^/authentication/register': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
+            '^/user/update-data': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
+            '^/user/form-data': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
+            '^/exercise': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
+            '^/workout-plan': {
+                target: 'https://localhost:7124/api',
+                secure: false
+            },
         },
         port: 5173,
         https: {
