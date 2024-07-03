@@ -39,8 +39,8 @@ import {
 export const navigation = [
   {
     id: "0",
-    title: "Features",
-    url: "/features",
+    title: "Workout plans",
+    url: "/workout-list",
   },
   {
     id: "1",
