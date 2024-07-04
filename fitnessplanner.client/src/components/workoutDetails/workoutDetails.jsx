@@ -3,16 +3,18 @@ import { useParams } from "react-router-dom";
 import SingleWorkoutCard from "./singleWorkoutCard/SingleWorkoutCard";
 import { getWorkoutById } from "../../services/workoutService";
 
-const WorkoutDetails = () => {
+const WorkoutDetails = ({ workoutData }) => {
   const { workoutId } = useParams();
-  const [workout, setWorkout] = useState(workout1);
+  const [workout, setWorkout] = useState(workoutData || workout1);
 
   useEffect(() => {
     console.log("Workout ID: ", workoutId);
 
-    getWorkoutById(workoutId).then((data) => {
-      setWorkout(data);
-    });
+    if (!workoutData) {
+      getWorkoutById(workoutId).then((data) => {
+        setWorkout(data);
+      });
+    }
   }, []);
 
   return (

@@ -1,5 +1,5 @@
 export const updateProfile = async (data) => {
-  const response = await fetch("user/update-data", {
+  const response = await fetch("api/user/update-data", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export const updateProfile = async (data) => {
 };
 
 export const getUserFormData = async () => {
-  const response = await fetch("user/form-data", {
+  const response = await fetch("api/user/form-data", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
