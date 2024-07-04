@@ -50,32 +50,32 @@ export default defineConfig({
                 target: 'https://localhost:7124/',
                 secure: false
             },
-            '^/authentication/login': {
-                target: 'https://localhost:7124/api',
+            '^/api/authentication/login': {
+                target: 'https://localhost:7124/',
                 secure: false
             },
-            '^/authentication/register': {
-                target: 'https://localhost:7124/api',
+            '^/api/authentication/register': {
+                target: 'https://localhost:7124/',
                 secure: false
             },
-            '^/user/update-data': {
-                target: 'https://localhost:7124/api',
+            '^/api/user/update-data': {
+                target: 'https://localhost:7124/',
                 secure: false
             },
-            '^/user/form-data': {
-                target: 'https://localhost:7124/api',
+            '^/api/user/form-data': {
+                target: 'https://localhost:7124/',
                 secure: false
             },
-            '^/exercise': {
-                target: 'https://localhost:7124/api',
+            '^/api/exercise': {
+                target: 'https://localhost:7124/',
                 secure: false
             },
-            '^/workout-plan': {
-                target: 'https://localhost:7124/api',
+            '^/api/workout-plan': {
+                target: 'https://localhost:7124/',
                 secure: false
             },
-            '^/user/recommendation': {
-                target: 'https://localhost:7124/api',
+            '^/api/user/recommendation': {
+                target: 'https://localhost:7124/',
                 secure: false
             },
         },

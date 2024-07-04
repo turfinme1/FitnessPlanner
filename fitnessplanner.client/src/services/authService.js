@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 const storageState = JSON.parse(sessionStorage.getItem("authData"));
 
 export const login = async (userData) => {
-  const response = await fetch("authentication/login", {
+  const response = await fetch("api/authentication/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export const login = async (userData) => {
 };
 
 export const register = async (userData) => {
-  const response = await fetch("authentication/register", {
+  const response = await fetch("api/authentication/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
