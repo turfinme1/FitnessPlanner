@@ -37,7 +37,7 @@ const Hero = () => {
             Getting started
           </Button>
         </div>
-        <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24">
+        <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:pb-8 lg:pb-4">
           <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">
             <div className="relative bg-n-8 rounded-[1rem]">
               <div className="h-[1.4rem] bg-n-10 rounded-t-[0.9rem]" />
@@ -51,7 +51,6 @@ const Hero = () => {
                   alt="Gym Room"
                 />
 
-                {/* <Generating className="absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2" /> */}
               </div>
             </div>
 

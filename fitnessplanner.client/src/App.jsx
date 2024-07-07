@@ -13,6 +13,7 @@ import WorkoutPlan from "./components/workoutPlans/workoutPlans";
 import WorkoutDetails from "./components/workoutDetails/workoutDetails";
 import CreateWorkout2 from "./components/createWorkout/CreateWorkout2";
 import WorkoutSuggestion from "./components/workoutSuggestion/WorkoutSuggestion";
+import Footer from "./components/footer/Footer";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/get-workout-suggestion" element={<WorkoutSuggestion />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

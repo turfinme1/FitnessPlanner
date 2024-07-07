@@ -41,10 +41,6 @@ import protopie from "./collaboration/protopie.png";
 import raindrop from "./collaboration/raindrop.png";
 import slack from "./collaboration/slack.png";
 
-import service1 from "./services/service-1.png";
-import service2 from "./services/service-2.png";
-import service3 from "./services/service-3.png";
-
 import lines from "./pricing/lines.svg";
 import stars from "./pricing/stars.svg";
 
@@ -74,11 +70,8 @@ import benefitIcon3 from "./benefits/icon-3.svg";
 import benefitIcon4 from "./benefits/icon-4.svg";
 import benefitImage2 from "./benefits/image-2.png";
 
-import discordBlack from "./socials/discord.svg";
-import facebook from "./socials/facebook.svg";
-import instagram from "./socials/instagram.svg";
-import telegram from "./socials/telegram.svg";
-import twitter from "./socials/twitter.svg";
+import github from "./socials/github.svg";
+import linkedin from "./socials/linkedin.svg";
 
 export {
   fitnessPlanner,
@@ -87,6 +80,8 @@ export {
   gym,
   gymBackground,
   gymBackground2,
+  github,
+  linkedin,
   brainwave,
   check,
   check2,
@@ -121,9 +116,6 @@ export {
   protopie,
   raindrop,
   slack,
-  service1,
-  service2,
-  service3,
   lines,
   stars,
   coins,
@@ -149,9 +141,4 @@ export {
   benefitIcon3,
   benefitIcon4,
   benefitImage2,
-  discordBlack,
-  facebook,
-  instagram,
-  telegram,
-  twitter,
 };
