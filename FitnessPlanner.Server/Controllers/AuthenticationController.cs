@@ -1,4 +1,5 @@
-﻿using FitnessPlanner.Services.Authentication.Contracts;
+﻿using FitnessPlanner.Server.Models;
+using FitnessPlanner.Services.Authentication.Contracts;
 using FitnessPlanner.Services.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -48,7 +49,13 @@ namespace FitnessPlanner.Server.Controllers
                 return StatusCode(StatusCodes.Status201Created);
             }
 
-            return BadRequest(result.Errors);
+            var response = new ErrorResponse
+            {
+                Title = "Bad request",
+                Status = StatusCodes.Status400BadRequest,
+                ErrorMessage = "Could not register user with provided data."
+            };
+            return BadRequest(response);
         }
 
         /// <summary>
