@@ -1,0 +1,29 @@
+﻿using FitnessPlanner.Server.Models;
+using Microsoft.AspNetCore.Diagnostics;
+
+namespace FitnessPlanner.Server.Middlewares
+{
+    public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+    {
+        /// <inheritdoc/>
+        public async ValueTask<bool> TryHandleAsync(
+            HttpContext httpContext,
+            Exception exception,
+            CancellationToken cancellationToken)
+        {
+            logger.LogError(exception, "An unhandled exception occurred.");
+
+            var response = new ErrorResponse
+            {   
+                Title = "Internal Server Error",
+                Status = StatusCodes.Status500InternalServerError,
+                ErrorMessage = "Something went wrong while processing your request. Please try again later."
+            };
+
+            httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
+
+            return true;
+        }
+    }
+}
