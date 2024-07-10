@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using FitnessPlanner.Data;
@@ -35,7 +36,8 @@ using Microsoft.OpenApi.Models;
 
 namespace FitnessPlanner.Server.Extensions
 {
-    public static class ServiceExtensions
+    [ExcludeFromCodeCoverage]
+    public static class ServiceCollectionExtensions
     {
         public static void ConfigureIdentity(this IServiceCollection builder)
         {
@@ -121,7 +123,7 @@ namespace FitnessPlanner.Server.Extensions
                     Description = "Please insert JWT with Bearer into field",
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
+                    Scheme = "Bearer",
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -139,8 +141,26 @@ namespace FitnessPlanner.Server.Extensions
                         new List<string>()
                     },
                 });
+
+                options.SwaggerDoc("v1", new OpenApiInfo()
+                {
+                    Version = "v1",
+                    Title = "Fitness Planner",
+                    Description = "API for Fitness Planner application",
+                    Contact = new OpenApiContact()
+                    {
+                        Name = "Borislav Angelov",
+                        Email = "borislav.m.angelov@gmail.com"
+                    },
+                    License = new OpenApiLicense()
+                    {
+                        Name = "MIT",
+                        Url = new Uri("https://opensource.org/licenses/MIT")
+                    }
+                });
+
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,
-                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"), true);
             });
         }
     }
