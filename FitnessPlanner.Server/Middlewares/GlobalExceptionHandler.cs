@@ -13,12 +13,8 @@ namespace FitnessPlanner.Server.Middlewares
         {
             logger.LogError(exception, "An unhandled exception occurred.");
 
-            var response = new ErrorResponse
-            {   
-                Title = "Internal Server Error",
-                Status = StatusCodes.Status500InternalServerError,
-                ErrorMessage = "Something went wrong while processing your request. Please try again later."
-            };
+            var response =
+                ApiResponse.InternalServerError("Something went wrong while processing your request. Please try again later.");
 
             httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await httpContext.Response.WriteAsJsonAsync(response, cancellationToken);
