@@ -1,4 +1,5 @@
-﻿using FitnessPlanner.Data.Contracts;
+﻿using Ardalis.Result;
+using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.Models.ExercisePerformInfo;
 using FitnessPlanner.Services.Models.SingleWorkout;
@@ -12,31 +13,34 @@ namespace FitnessPlanner.Services.WorkoutPlan
         IUnitOfWork repositoryManager,
         ILogger<WorkoutPlanService> logger) : IWorkoutPlanService
     {
-        public async Task<IEnumerable<WorkoutPlanDto>> GetAllAsync()
+        public async Task<Result<IEnumerable<WorkoutPlanDisplayDto>>> GetAllAsync()
         {
             try
             {
-                return (await repositoryManager.WorkoutPlans.GetAllWithRelatedEntitiesAsync()).Select(wp => new WorkoutPlanDto()
-                {
-                    Id = wp.Id,
-                    Name = wp.Name,
-                    Goal = wp.Goal.Name,
-                    SkillLevel = wp.SkillLevel.Name,
-                    Workouts = wp.SingleWorkoutWorkoutPlans.Select(swwp => new SingleWorkoutDto()
+                var result = (await repositoryManager.WorkoutPlans.GetAllWithRelatedEntitiesAsync())
+                    .Select(wp => new WorkoutPlanDisplayDto()
                     {
-                        Id = swwp.SingleWorkout.Id,
-                        Name = swwp.SingleWorkout.Name,
-                        Day = (int)swwp.SingleWorkout.Day,
-                        Exercises = swwp.SingleWorkout.ExercisePerformInfoSingleWorkouts.Select(episw =>
-                            new ExercisePerformInfoDto()
-                            {
-                                Id = episw.ExercisePerformInfo.Id,
-                                ExerciseName = episw.ExercisePerformInfo.Exercise.Name,
-                                Sets = episw.ExercisePerformInfo.Sets,
-                                Reps = episw.ExercisePerformInfo.Reps
-                            })
-                    })
-                });
+                        Id = wp.Id,
+                        Name = wp.Name,
+                        Goal = wp.Goal.Name,
+                        SkillLevel = wp.SkillLevel.Name,
+                        Workouts = wp.SingleWorkoutWorkoutPlans.Select(swwp => new SingleWorkoutDto()
+                        {
+                            Id = swwp.SingleWorkout.Id,
+                            Name = swwp.SingleWorkout.Name,
+                            Day = (int)swwp.SingleWorkout.Day,
+                            Exercises = swwp.SingleWorkout.ExercisePerformInfoSingleWorkouts.Select(episw =>
+                                new ExercisePerformInfoDto()
+                                {
+                                    Id = episw.ExercisePerformInfo.Id,
+                                    ExerciseName = episw.ExercisePerformInfo.Exercise.Name,
+                                    Sets = episw.ExercisePerformInfo.Sets,
+                                    Reps = episw.ExercisePerformInfo.Reps
+                                })
+                        })
+                    });
+
+                return Result<IEnumerable<WorkoutPlanDisplayDto>>.Success(result);
             }
             catch (Exception e)
             {
@@ -45,17 +49,17 @@ namespace FitnessPlanner.Services.WorkoutPlan
             }
         }
 
-        public async Task<WorkoutPlanDto?> GetByIdAsync(int id)
+        public async Task<Result<WorkoutPlanDisplayDto>> GetByIdAsync(int id)
         {
             try
             {
                 var workoutPlan = await repositoryManager.WorkoutPlans.GetByIdWithRelatedEntitiesAsync(id);
-                if (workoutPlan == null)
+                if (workoutPlan is null)
                 {
-                    return null;
+                    return Result.NotFound($"Workout plan with Id: {id} doesn't exist.");
                 }
 
-                return new WorkoutPlanDto()
+                var result = new WorkoutPlanDisplayDto()
                 {
                     Id = workoutPlan.Id,
                     Name = workoutPlan.Name,
@@ -76,6 +80,8 @@ namespace FitnessPlanner.Services.WorkoutPlan
                             })
                     })
                 };
+
+                return Result<WorkoutPlanDisplayDto>.Success(result);
             }
             catch (Exception e)
             {
@@ -84,18 +90,20 @@ namespace FitnessPlanner.Services.WorkoutPlan
             }
         }
 
-        public async Task<IEnumerable<WorkoutPlanPropertiesDto>> GetAllWorkoutsWithPreferencesAsync()
+        public async Task<Result<IEnumerable<WorkoutPlanPropertiesDto>>> GetAllWorkoutsWithPreferencesAsync()
         {
             try
             {
-                return (await repositoryManager.WorkoutPlans.GetAllWithRelatedEntitiesAsync()).Select(wp =>
-                    new WorkoutPlanPropertiesDto()
+                var result = (await repositoryManager.WorkoutPlans.GetAllWithRelatedEntitiesAsync())
+                    .Select(wp => new WorkoutPlanPropertiesDto()
                     {
                         Id = wp.Id,
                         Goal = wp.Goal.Name,
                         SkillLevel = wp.SkillLevel.Name,
                         BodyMassIndexMeasures = wp.WorkoutPlanBodyMassIndexMeasures.Select(x => x.BodyMassIndexMeasure.Type)
                     });
+
+                return Result<IEnumerable<WorkoutPlanPropertiesDto>>.Success(result);
             }
             catch (Exception e)
             {
@@ -104,32 +112,17 @@ namespace FitnessPlanner.Services.WorkoutPlan
             }
         }
 
-        public async Task<WorkoutPlanDeleteDto?> GetByIdAsDeleteDtoAsync(int id)
+        public async Task<Result<WorkoutPlanDisplayDto>> CreateAsync(string? userClaimId, WorkoutPlanCreateDto model)
         {
-            try
+            if (userClaimId is null)
             {
-                var entity = await repositoryManager.WorkoutPlans.GetByIdAsync(id);
-                if (entity is null)
-                {
-                    return null;
-                }
-
-                var userId = entity.UserId ?? string.Empty;
-                return new WorkoutPlanDeleteDto(entity.Id, userId);
+                return Result.Unauthorized();
             }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetByIdAsDeleteDtoAsync)}");
-                throw;
-            }
-        }
 
-        public async Task<int> CreateAsync(WorkoutPlanCreateDto model)
-        {
             var entity = new Data.Models.WorkoutPlan()
             {
                 Name = model.Name,
-                UserId = model.UserId,
+                UserId = userClaimId,
                 SkillLevelId = model.SkillLevelId,
                 GoalId = model.GoalId,
                 SingleWorkoutWorkoutPlans = model.SingleWorkouts
@@ -161,7 +154,8 @@ namespace FitnessPlanner.Services.WorkoutPlan
                 repositoryManager.WorkoutPlans.Add(entity);
                 await repositoryManager.SaveChangesAsync();
 
-                return entity.Id;
+                var workoutPlanDto = await GetByIdAsync(entity.Id);
+                return Result<WorkoutPlanDisplayDto>.Success(workoutPlanDto);
             }
             catch (Exception e)
             {
@@ -170,20 +164,25 @@ namespace FitnessPlanner.Services.WorkoutPlan
             }
         }
 
-        public async Task UpdateAsync(WorkoutPlanUpdateDto model)
+        public async Task<Result> UpdateAsync(int workoutId, string? userClaimId, WorkoutPlanUpdateDto model)
         {
+            if (workoutId != model.Id)
+            {
+                return Result.Error("Workout ID mismatch.");
+            }
+
             try
             {
                 var entity = await repositoryManager.WorkoutPlans.GetByIdWithRelatedEntitiesAsync(model.Id, isTracked: true);
 
                 if (entity is null)
                 {
-                    throw new ArgumentException($"WorkoutPlan with id {model.Id} not found");
+                    return Result.NotFound($"WorkoutPlan with Id: {model.Id} doesn't exist.");
                 }
 
-                if (entity.UserId != model.UserId)
+                if (entity.UserId != userClaimId)
                 {
-                    throw new ArgumentException($"WorkoutPlan with id {model.Id} does not belong to user with id {model.UserId}");
+                    return Result.Unauthorized();
                 }
 
                 entity.Name = model.Name;
@@ -207,13 +206,18 @@ namespace FitnessPlanner.Services.WorkoutPlan
                             }).ToList()
                         }
                     }).ToList();
-                entity.WorkoutPlanBodyMassIndexMeasures = model.BodyMassIndexMeasures
+
+                var bodyMassIndexMeasures = model.BodyMassIndexMeasures
+                    .SkipWhile(x => entity.WorkoutPlanBodyMassIndexMeasures.Any(y => y.BodyMassIndexMeasureId == x));
+
+                entity.WorkoutPlanBodyMassIndexMeasures = bodyMassIndexMeasures
                     .Select(bmi => new WorkoutPlanBodyMassIndexMeasure()
                     {
                         BodyMassIndexMeasureId = bmi
                     }).ToList();
 
                 await repositoryManager.SaveChangesAsync();
+                return Result.Success();
             }
             catch (Exception e)
             {
@@ -222,17 +226,25 @@ namespace FitnessPlanner.Services.WorkoutPlan
             }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<Result> DeleteAsync(string? userClaimId, int id)
         {
             try
             {
                 var entity = await repositoryManager.WorkoutPlans.GetByIdAsync(id);
 
-                if (entity is not null)
+                if (entity is null)
                 {
-                    repositoryManager.WorkoutPlans.Remove(entity);
-                    await repositoryManager.SaveChangesAsync();
+                    return Result.NotFound($"Workout plan with Id: {id} doesn't exist.");
                 }
+
+                if (entity.UserId != userClaimId)
+                {
+                    return Result.Unauthorized();
+                }
+
+                repositoryManager.WorkoutPlans.Remove(entity);
+                await repositoryManager.SaveChangesAsync();
+                return Result.Success();
             }
             catch (Exception e)
             {
