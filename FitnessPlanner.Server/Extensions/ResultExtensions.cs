@@ -10,23 +10,27 @@ namespace FitnessPlanner.Server.Extensions
         public static IActionResult ToActionResult(this Result result)
         {
             return result.IsSuccess
-                ? new OkResult()
+                ? new OkObjectResult(ApiResponse.Ok())
                 : result.ToNonSuccessActionResult();
         }
 
         public static IActionResult ToActionResult<T>(this Result<T> result)
         {
-            return result.IsSuccess
+            return result.IsSuccess 
                 ? new OkObjectResult(ApiResponse<T>.Ok(result.Value))
                 : result.ToNonSuccessActionResult();
         }
 
         private static IActionResult ToNonSuccessActionResult(this IResult result)
         {
+            var error = result.Errors.ToList().FirstOrDefault();
+
             return result.Status switch
-            {
+            {   
                 ResultStatus.Unauthorized => new UnauthorizedObjectResult(ApiResponse.Unauthorized()),
-                ResultStatus.NotFound => new NotFoundObjectResult(ApiResponse.NotFound()),
+                ResultStatus.NotFound => error is null 
+                    ? new NotFoundObjectResult(ApiResponse.NotFound()) 
+                    : new NotFoundObjectResult(ApiResponse.NotFound(error)),
                 _ => new BadRequestObjectResult(ApiResponse.BadRequest())
             };
         }
