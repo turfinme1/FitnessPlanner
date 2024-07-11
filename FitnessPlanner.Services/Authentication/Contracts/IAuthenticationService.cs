@@ -1,14 +1,12 @@
-﻿using FitnessPlanner.Services.Models.User;
-using Microsoft.AspNetCore.Identity;
+﻿using Ardalis.Result;
+using FitnessPlanner.Services.Models.User;
 
 namespace FitnessPlanner.Services.Authentication.Contracts
 {
     public interface IAuthenticationService
     {
-        Task<IdentityResult> RegisterUserAsync(UserRegistrationDto model);
+        Task<Result> RegisterUserAsync(UserRegistrationDto model);
 
-        Task<bool> AuthenticateUserAsync(UserLoginDto model);
-
-        Task<string> CreateToken();
+        Task<Result<string>> AuthenticateUserAsync(UserLoginDto model);
     }
 }

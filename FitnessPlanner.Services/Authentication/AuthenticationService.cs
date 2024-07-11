@@ -1,14 +1,15 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using Ardalis.Result;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.Authentication.Contracts;
+using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
 using FitnessPlanner.Services.Models.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
-using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
 
 
 namespace FitnessPlanner.Services.Authentication
@@ -21,7 +22,7 @@ namespace FitnessPlanner.Services.Authentication
     {
         private User? _user;
 
-        public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto model)
+        public async Task<Result> RegisterUserAsync(UserRegistrationDto model)
         {
             var user = new User
             {
@@ -39,7 +40,11 @@ namespace FitnessPlanner.Services.Authentication
 
             try
             {
-                return await userManager.CreateAsync(user, model.Password);
+                var result = await userManager.CreateAsync(user, model.Password);
+
+                return result.Succeeded
+                    ? Result.Success()
+                    : Result.Error("Could not register user with provided email and password");
             }
             catch (Exception e)
             {
@@ -48,21 +53,30 @@ namespace FitnessPlanner.Services.Authentication
             }
         }
 
-        public async Task<bool> AuthenticateUserAsync(UserLoginDto model)
+        public async Task<Result<string>> AuthenticateUserAsync(UserLoginDto model)
         {
-            _user = await userManager.FindByEmailAsync(model.Email);
-
-            var result = (_user is not null) && await userManager.CheckPasswordAsync(_user, model.Password);
-
-            if (result is false)
+            try
             {
-                logger.LogWarning($"{nameof(AuthenticateUserAsync)}: Authentication failed. Wrong username or password");
-            }
+                _user = await userManager.FindByEmailAsync(model.Email);
 
-            return result;
+                var result = (_user is not null) && await userManager.CheckPasswordAsync(_user, model.Password);
+
+                if (result is false)
+                {
+                    logger.LogWarning($"{nameof(AuthenticateUserAsync)}: Authentication failed. Wrong username or password");
+                    return Result.Unauthorized();
+                }
+
+                return Result<string>.Success(await CreateToken());
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"Error in {nameof(AuthenticateUserAsync)}: Communicating with datastore failed");
+                throw;
+            }
         }
 
-        public async Task<string> CreateToken()
+        private async Task<string> CreateToken()
         {
             var signingCredentials = GetSigningCredentials();
             var claims = await GetClaims();
