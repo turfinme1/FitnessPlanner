@@ -16,7 +16,7 @@ namespace FitnessPlanner.Server.Extensions
 
         public static IActionResult ToActionResult<T>(this Result<T> result)
         {
-            return result.IsSuccess 
+            return result.IsSuccess
                 ? new OkObjectResult(ApiResponse<T>.Ok(result.Value))
                 : result.ToNonSuccessActionResult();
         }
@@ -26,12 +26,14 @@ namespace FitnessPlanner.Server.Extensions
             var error = result.Errors.ToList().FirstOrDefault();
 
             return result.Status switch
-            {   
+            {
                 ResultStatus.Unauthorized => new UnauthorizedObjectResult(ApiResponse.Unauthorized()),
-                ResultStatus.NotFound => error is null 
-                    ? new NotFoundObjectResult(ApiResponse.NotFound()) 
+                ResultStatus.NotFound => error is null
+                    ? new NotFoundObjectResult(ApiResponse.NotFound())
                     : new NotFoundObjectResult(ApiResponse.NotFound(error)),
-                _ => new BadRequestObjectResult(ApiResponse.BadRequest())
+                _ => error is null
+                    ? new BadRequestObjectResult(ApiResponse.BadRequest())
+                    : new BadRequestObjectResult(ApiResponse.BadRequest(error))
             };
         }
     }
