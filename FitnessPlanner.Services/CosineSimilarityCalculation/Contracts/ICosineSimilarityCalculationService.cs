@@ -5,6 +5,6 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation.Contracts
 {
     public interface ICosineSimilarityCalculationService
     {
-        Task<Result<WorkoutPlanDto>> GetWorkoutIdRecommendationByUserIdAsync(string? userId);
+        Task<Result<WorkoutPlanDisplayDto>> GetWorkoutIdRecommendationByUserIdAsync(string? userId);
     }
 }

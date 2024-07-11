@@ -19,7 +19,7 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation
         IWorkoutPlanService workoutService,
         ILogger<CosineSimilarityCalculationService> logger) : ICosineSimilarityCalculationService
     {
-        public async Task<Result<WorkoutPlanDto>> GetWorkoutIdRecommendationByUserIdAsync(string? userId)
+        public async Task<Result<WorkoutPlanDisplayDto>> GetWorkoutIdRecommendationByUserIdAsync(string? userId)
         {
             UserPreferencesDto? user;
             IEnumerable<WorkoutPlanPropertiesDto> workoutPlan;
@@ -40,7 +40,13 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation
 
                 user = result.Value;
 
-                workoutPlan = await workoutService.GetAllWorkoutsWithPreferencesAsync();
+                var workoutPlanResult = await workoutService.GetAllWorkoutsWithPreferencesAsync();
+                if (!workoutPlanResult.IsSuccess)
+                {
+                    return Result.Error($"Couldn't retrieve workout plans.");
+                }
+
+                workoutPlan = workoutPlanResult.Value;
                 vocabulary = await GetVocabulary();
             }
             catch (Exception e)
@@ -72,7 +78,7 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation
                     return Result.Error($"Couldn't retrieve recommended workout with Id: {maxSimilarity.Key}");
                 }
 
-                return Result<WorkoutPlanDto>.Success(recommenderWorkout);
+                return Result<WorkoutPlanDisplayDto>.Success(recommenderWorkout);
             }
             catch (Exception e)
             {
