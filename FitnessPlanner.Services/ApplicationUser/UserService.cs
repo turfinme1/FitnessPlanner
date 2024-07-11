@@ -1,4 +1,5 @@
-﻿using FitnessPlanner.Data.Contracts;
+﻿using Ardalis.Result;
+using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.ApplicationUser.Contracts;
 using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
@@ -14,12 +15,16 @@ namespace FitnessPlanner.Services.ApplicationUser
         IBodyMassIndexCalculationService bodyMassCalculationService,
         ILogger<UserService> logger) : IUserService
     {
-        public async Task<UserPreferencesDto?> GetByIdAsUserPreferenceDtoAsync(string userId)
+        public async Task<Result<UserPreferencesDto>> GetByIdAsUserPreferenceDtoAsync(string userId)
         {
             try
             {
                 var user = await repositoryManager.Users.GetByIdWithRelatedEntitiesAsync(userId);
-                ArgumentNullException.ThrowIfNull(user);
+
+                if (user is null)
+                {
+                    return Result<UserPreferencesDto>.NotFound($"User with Id: {userId} doesn't exist.");
+                }
 
                 var userDto = new UserPreferencesDto()
                 {
@@ -29,30 +34,35 @@ namespace FitnessPlanner.Services.ApplicationUser
                     BodyMassIndexMeasures = user.BodyMassIndexMeasure.Type
                 };
 
-                return userDto;
+                return Result<UserPreferencesDto>.Success(userDto);
             }
             catch (Exception e)
             {
-                logger.LogError($"{nameof(GetByIdAsUserPreferenceDtoAsync)}: User not found");
+                logger.LogError(e, $"{nameof(GetByIdAsUserPreferenceDtoAsync)}: Error while retrieving user");
                 throw;
             }
         }
 
-        public async Task<IdentityResult> UpdateAsync(UserDataUpdateDto userPreferencesDto)
-        {   
+        public async Task<Result> UpdateAsync(string? userClaimId, UserDataUpdateDto userPreferencesDto)
+        {
+            if (userClaimId != userPreferencesDto.Id)
+            {
+                return Result.Unauthorized();
+            }
+
             try
             {
                 var user = await userManager.FindByIdAsync(userPreferencesDto.Id);
                 if (user is null)
                 {
-                    throw new ArgumentNullException(nameof(user));
+                    return Result.NotFound($"User with Id: {userPreferencesDto.Id} doesn't exist.");
                 }
 
                 if (user.Name != userPreferencesDto.Name)
                 {
                     user.Name = userPreferencesDto.Name;
                 }
-                
+
                 if (user.Age != userPreferencesDto.Age)
                 {
                     user.Age = userPreferencesDto.Age;
@@ -81,21 +91,33 @@ namespace FitnessPlanner.Services.ApplicationUser
                 user.BodyMassIndexMeasureId = bodyMassCalculationService
                         .GetBodyMassIndexMeasureId(userPreferencesDto.Weight, userPreferencesDto.Height);
 
-                return await userManager.UpdateAsync(user);
+                var identityResult = await userManager.UpdateAsync(user);
+
+                return identityResult.Succeeded
+                    ? Result.Success()
+                    : Result.Error("Update failed");
             }
             catch (Exception e)
             {
-                logger.LogError($"{nameof(UpdateAsync)}: Update failed");
+                logger.LogError(e, $"{nameof(UpdateAsync)}: Error while updating user");
                 throw;
             }
         }
 
-        public async Task<UserDataFormDto> GetByIdAsUserDataFormDtoAsync(string userId)
+        public async Task<Result<UserDataFormDto>> GetByIdAsUserDataFormDtoAsync(string? userId)
         {
+            if (userId is null)
+            {
+                return Result.Unauthorized();
+            }
+
             try
             {
                 var user = await repositoryManager.Users.GetByIdAsync(userId);
-                ArgumentNullException.ThrowIfNull(user);
+                if (user is null)
+                {
+                    return Result.NotFound($"User with Id: {userId} doesn't exist.");
+                }
 
                 var userDto = new UserDataFormDto()
                 {
@@ -107,11 +129,11 @@ namespace FitnessPlanner.Services.ApplicationUser
                     GoalId = user.GoalId
                 };
 
-                return userDto;
+                return Result<UserDataFormDto>.Success(userDto);
             }
             catch (Exception e)
             {
-                logger.LogError($"{nameof(GetByIdAsUserDataFormDtoAsync)}: User not found");
+                logger.LogError(e, $"{nameof(GetByIdAsUserDataFormDtoAsync)}: Error while retrieving user");
                 throw;
             }
         }
