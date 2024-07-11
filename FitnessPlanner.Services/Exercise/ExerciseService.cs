@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using Ardalis.Result;
 using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.Exercise.Contracts;
@@ -12,13 +12,12 @@ namespace FitnessPlanner.Services.Exercise
         IUnitOfWork repositoryManager,
         ILogger<ExerciseService> logger) : IExerciseService
     {
-        public async Task<IEnumerable<ExerciseDisplayDto>> GetAllAsync()
+        public async Task<Result<IEnumerable<ExerciseDisplayDto>>> GetAllAsync()
         {
             try
             {
                 var exercises = await repositoryManager.Exercises.GetAllWithRelatedEntitiesAsync();
-
-                return exercises.Select(e => new ExerciseDisplayDto(
+                var exerciseDtos = exercises.Select(e => new ExerciseDisplayDto(
                     Id: e.Id,
                     Name: e.Name,
                     Explanation: e.Explanation,
@@ -26,6 +25,8 @@ namespace FitnessPlanner.Services.Exercise
                     ImageName: e.ImageName,
                     MuscleGroups: e.ExerciseMuscleGroups.Select(mg =>
                         new MuscleGroupDisplayDto(Name: mg.MuscleGroup.Name))));
+
+                return Result.Success(exerciseDtos);
             }
             catch (Exception e)
             {
@@ -34,18 +35,18 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task<ExerciseDisplayDto?> GetByIdAsync(int id)
+        public async Task<Result<ExerciseDisplayDto>> GetByIdAsync(int id)
         {
             try
             {
                 var exercise = await repositoryManager.Exercises.GetByIdWithRelatedEntitiesAsync(id);
 
-                if (exercise == null)
+                if (exercise is null)
                 {
-                    return null;
+                    return Result.NotFound($"Exercise with Id: {id} doesn't exist.");
                 }
 
-                return new ExerciseDisplayDto(
+                var exerciseDto = new ExerciseDisplayDto(
                     Id: exercise.Id,
                     Name: exercise.Name,
                     Explanation: exercise.Explanation,
@@ -53,6 +54,8 @@ namespace FitnessPlanner.Services.Exercise
                     ImageName: exercise.ImageName,
                     MuscleGroups: exercise.ExerciseMuscleGroups.Select(mg =>
                         new MuscleGroupDisplayDto(Name: mg.MuscleGroup.Name)));
+
+                return Result<ExerciseDisplayDto>.Success(exerciseDto);
             }
             catch (Exception e)
             {
@@ -61,7 +64,7 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task<IEnumerable<ExerciseDisplayDto>?> GetAllByMuscleGroupAsync(string muscleGroupName)
+        public async Task<Result<IEnumerable<ExerciseDisplayDto>>> GetAllByMuscleGroupAsync(string muscleGroupName)
         {
             try
             {
@@ -72,12 +75,12 @@ namespace FitnessPlanner.Services.Exercise
                     .GetByMuscleGroupWithRelatedEntitiesAsync(muscleGroupNameWithUppercase))
                     .ToArray();
 
-                if (exercises.Any() == false)
+                if (exercises.Length == 0)
                 {
-                    return null;
+                    return Result.NotFound($"No exercises with specified muscle group: {muscleGroupName}.");
                 }
 
-                return exercises.Select(e => new ExerciseDisplayDto(
+                var exerciseDtos = exercises.Select(e => new ExerciseDisplayDto(
                     Id: e.Id,
                     Name: e.Name,
                     Explanation: e.Explanation,
@@ -85,6 +88,8 @@ namespace FitnessPlanner.Services.Exercise
                     ImageName: e.ImageName,
                     MuscleGroups: e.ExerciseMuscleGroups.Select(mg =>
                         new MuscleGroupDisplayDto(Name: mg.MuscleGroup.Name))));
+
+                return Result<IEnumerable<ExerciseDisplayDto>>.Success(exerciseDtos);
             }
             catch (Exception e)
             {
@@ -93,17 +98,18 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task<ExerciseDeleteDto?> GetByIdAsDeleteDtoAsync(int id)
+        public async Task<Result<ExerciseDeleteDto>> GetByIdAsDeleteDtoAsync(int id)
         {
             try
             {
                 var entity = await repositoryManager.Exercises.GetByIdAsync(id);
                 if (entity is null)
                 {
-                    return null;
+                    return Result.NotFound($"Exercise with Id: {id} doesn't exist.");
                 }
 
-                return new ExerciseDeleteDto(entity.Id);
+                var dto = new ExerciseDeleteDto(entity.Id);
+                return Result<ExerciseDeleteDto>.Success(dto);
             }
             catch (Exception e)
             {
@@ -112,7 +118,7 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task<int> CreateAsync(ExerciseCreateDto model)
+        public async Task<Result<ExerciseDisplayDto>> CreateAsync(ExerciseCreateDto model)
         {
             var entity = new Data.Models.Exercise()
             {
@@ -133,7 +139,8 @@ namespace FitnessPlanner.Services.Exercise
                 repositoryManager.Exercises.Add(entity);
                 await repositoryManager.SaveChangesAsync();
 
-                return entity.Id;
+                var exerciseDto =await GetByIdAsync(entity.Id);
+                return Result<ExerciseDisplayDto>.Created(exerciseDto);
             }
             catch (Exception e)
             {
@@ -142,15 +149,20 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task UpdateAsync(ExerciseUpdateDto model)
+        public async Task<Result> UpdateAsync(int exerciseId, ExerciseUpdateDto model)
         {
+            if (exerciseId != model.Id)
+            {
+                return Result.Error("Exercise ID mismatch.");
+            }
+
             try
             {
                 var entity = await repositoryManager.Exercises.GetByIdWithRelatedEntitiesAsync(model.Id, isTracked: true);
 
                 if (entity is null)
                 {
-                    throw new ArgumentException($"Exercise with id {model.Id} not found");
+                    return Result.NotFound($"Exercise with Id: {model.Id} doesn't exist.");
                 }
 
                 entity.Name = model.Name;
@@ -163,6 +175,7 @@ namespace FitnessPlanner.Services.Exercise
                 }).ToList();
 
                 await repositoryManager.SaveChangesAsync();
+                return Result.Success();
             }
             catch (Exception e)
             {
@@ -171,17 +184,20 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<Result> DeleteAsync(int id)
         {
             try
             {
                 var entity = await repositoryManager.Exercises.GetByIdAsync(id);
 
-                if (entity is not null)
+                if (entity is null)
                 {
-                    repositoryManager.Exercises.Remove(entity);
-                    await repositoryManager.SaveChangesAsync();
+                    return Result.NotFound($"Exercise with Id: {id} doesn't exist.");
                 }
+
+                repositoryManager.Exercises.Remove(entity);
+                await repositoryManager.SaveChangesAsync();
+                return Result.Success();
             }
             catch (Exception e)
             {
