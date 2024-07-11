@@ -143,8 +143,8 @@ namespace FitnessPlanner.Server.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteExercise(int id) =>
             (await exerciseService.DeleteAsync(id)).ToActionResult();

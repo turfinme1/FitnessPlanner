@@ -1,7 +1,10 @@
-﻿using FitnessPlanner.Services.Models.WorkoutPlan;
+﻿using FitnessPlanner.Server.Extensions;
+using FitnessPlanner.Server.Models;
+using FitnessPlanner.Services.Models.WorkoutPlan;
 using FitnessPlanner.Services.WorkoutPlan.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 using System.Security.Claims;
 
 namespace FitnessPlanner.Server.Controllers
@@ -20,86 +23,59 @@ namespace FitnessPlanner.Server.Controllers
         /// <summary>
         /// Retrieves all workout plans.
         /// </summary>
-        /// <returns>A list of <see cref="WorkoutPlanDto"/></returns>
+        /// <returns>A list of <see cref="WorkoutPlanDisplayDto"/></returns>
+        /// <response code="200">Returns the collection of workout plans.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<WorkoutPlanDto>>> GetAllWorkoutPlans()
-        {
-            try
-            {
-                return Ok(await workoutPlanService.GetAllAsync());
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetAllWorkoutPlans)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<WorkoutPlanDisplayDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllWorkoutPlans() =>
+            (await workoutPlanService.GetAllAsync()).ToActionResult();
 
         /// <summary>
         /// Retrieves a specific workout plan by its ID.
         /// </summary>
         /// <param name="id">The ID of the workout plan to retrieve.</param>
-        /// <returns>The <see cref="WorkoutPlanDto"/> with the specified ID.</returns>
+        /// <returns>The <see cref="WorkoutPlanDisplayDto"/> with the specified ID.</returns>
+        /// <response code="200">Returns the workout plan with the specified ID.</response>
+        /// <response code="404">If no workout plan with the specified ID is found.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpGet("{id}")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<WorkoutPlanDto>> GetWorkoutPlanById(int id)
-        {
-            try
-            {
-                var workoutPlan = await workoutPlanService.GetByIdAsync(id);
-                if (workoutPlan == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(workoutPlan);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetWorkoutPlanById)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<WorkoutPlanDisplayDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetWorkoutPlanById(int id) =>
+            (await workoutPlanService.GetByIdAsync(id)).ToActionResult();
 
         /// <summary>
         /// Creates a new workout plan.
         /// </summary>
         /// <param name="workoutPlanDto">The workout plan data.</param>
-        /// <returns>The newly created <see cref="WorkoutPlanDto"/></returns>
+        /// <returns>The newly created <see cref="WorkoutPlanDisplayDto"/></returns>
+        /// <response code="200">Returns the newly created workout plan.</response>
+        /// <response code="401">If the user is not authorized.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<WorkoutPlanDto>> CreateWorkoutPlan([FromBody] WorkoutPlanCreateDto workoutPlanDto)
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<WorkoutPlanDisplayDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateWorkoutPlan([FromBody] WorkoutPlanCreateDto workoutPlanDto)
         {
-            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != workoutPlanDto.UserId)
-            {
-                return Unauthorized();
-            }
+            var userClaimId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            try
-            {
-                var createdWorkoutPlanId = await workoutPlanService.CreateAsync(workoutPlanDto);
-
-                var createdWorkoutPlan = await workoutPlanService.GetByIdAsync(createdWorkoutPlanId);
-
-                return CreatedAtAction(nameof(GetWorkoutPlanById), new { id = createdWorkoutPlanId },
-                    createdWorkoutPlan);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(CreateWorkoutPlan)}");
-                return StatusCode(500, "Internal server error");
-            }
+            return (await workoutPlanService.CreateAsync(userClaimId, workoutPlanDto)).ToActionResult();
         }
 
         /// <summary>
@@ -108,34 +84,26 @@ namespace FitnessPlanner.Server.Controllers
         /// <param name="id">The ID of the workout plan to update.</param>
         /// <param name="workoutPlanDto">The updated workout plan data.</param>
         /// <returns>No content response if successful</returns>
+        /// <response code="200">If the workout plan was successfully updated.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="401">If the user is not authorized.</response>
+        /// <response code="404">If no workout plan with the specified ID is found.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> UpdateWorkoutPlan(int id, [FromBody] WorkoutPlanUpdateDto workoutPlanDto)
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateWorkoutPlan(int id, [FromBody] WorkoutPlanUpdateDto workoutPlanDto)
         {
-            if (id != workoutPlanDto.Id)
-            {
-                return BadRequest();
-            }
+            var userClaimId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != workoutPlanDto.UserId)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                await workoutPlanService.UpdateAsync(workoutPlanDto);
-
-                return NoContent();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(UpdateWorkoutPlan)}");
-                return StatusCode(500, "Internal server error");
-            }
+            return (await workoutPlanService.UpdateAsync(id, userClaimId, workoutPlanDto)).ToActionResult();
         }
 
         /// <summary>
@@ -143,35 +111,25 @@ namespace FitnessPlanner.Server.Controllers
         /// </summary>
         /// <param name="id">The ID of the workout plan to delete.</param>
         /// <returns>No content response if successful</returns>
+        /// <response code="200">If the workout plan was successfully deleted.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="401">If the user is not authorized.</response>
+        /// <response code="404">If no workout plan with the specified ID is found.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteWorkoutPlan(int id)
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteWorkoutPlan(int id)
         {
-            var workoutPlan = await workoutPlanService.GetByIdAsDeleteDtoAsync(id);
-            if (workoutPlan == null)
-            {
-                return BadRequest();
-            }
+            var userClaimId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != workoutPlan.UserId)
-            {
-                return Unauthorized();
-            }
-
-            try
-            {
-                await workoutPlanService.DeleteAsync(id);
-                //TODO: Improve delete logic
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(DeleteWorkoutPlan)}");
-                return StatusCode(500, "Internal server error");
-            }
+            return (await workoutPlanService.DeleteAsync(userClaimId, id)).ToActionResult();
         }
     }
 }
