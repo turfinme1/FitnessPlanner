@@ -1,4 +1,5 @@
-﻿using FitnessPlanner.Services.ApplicationUser.Contracts;
+﻿using Ardalis.Result;
+using FitnessPlanner.Services.ApplicationUser.Contracts;
 using FitnessPlanner.Services.BodyMassIndexMeasure.Contracts;
 using FitnessPlanner.Services.CosineSimilarityCalculation.Contracts;
 using FitnessPlanner.Services.Goal.Contracts;
@@ -18,16 +19,27 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation
         IWorkoutPlanService workoutService,
         ILogger<CosineSimilarityCalculationService> logger) : ICosineSimilarityCalculationService
     {
-        public async Task<WorkoutPlanDto> GetWorkoutIdRecommendationByUserIdAsync(string userId)
+        public async Task<Result<WorkoutPlanDto>> GetWorkoutIdRecommendationByUserIdAsync(string? userId)
         {
             UserPreferencesDto? user;
             IEnumerable<WorkoutPlanPropertiesDto> workoutPlan;
             ICollection<string> vocabulary;
 
+            if (userId is null)
+            {
+                return Result.Error($"User Id not provided.");
+            }
+
             try
             {
-                user = await userService.GetByIdAsUserPreferenceDtoAsync(userId);
-                ArgumentNullException.ThrowIfNull(user);
+                var result = await userService.GetByIdAsUserPreferenceDtoAsync(userId);
+                if (!result.IsSuccess)
+                {
+                    return Result.Error($"User with Id: {userId} doesn't exist.");
+                }
+
+                user = result.Value;
+
                 workoutPlan = await workoutService.GetAllWorkoutsWithPreferencesAsync();
                 vocabulary = await GetVocabulary();
             }
@@ -53,14 +65,14 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation
 
             try
             {
-               var recommenderWorkout = await workoutService.GetByIdAsync(maxSimilarity.Key);
+                var recommenderWorkout = await workoutService.GetByIdAsync(maxSimilarity.Key);
 
-               if (recommenderWorkout == null)
-               {
-                   throw new ArgumentNullException("Workout not found");
-               }
+                if (recommenderWorkout is null)
+                {
+                    return Result.Error($"Couldn't retrieve recommended workout with Id: {maxSimilarity.Key}");
+                }
 
-               return recommenderWorkout;
+                return Result<WorkoutPlanDto>.Success(recommenderWorkout);
             }
             catch (Exception e)
             {
