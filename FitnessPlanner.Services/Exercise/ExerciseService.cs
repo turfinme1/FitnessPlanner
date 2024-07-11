@@ -26,7 +26,7 @@ namespace FitnessPlanner.Services.Exercise
                     MuscleGroups: e.ExerciseMuscleGroups.Select(mg =>
                         new MuscleGroupDisplayDto(Name: mg.MuscleGroup.Name))));
 
-                return Result.Success(exerciseDtos);
+                return Result<IEnumerable<ExerciseDisplayDto>>.Success(exerciseDtos);
             }
             catch (Exception e)
             {
@@ -98,26 +98,6 @@ namespace FitnessPlanner.Services.Exercise
             }
         }
 
-        public async Task<Result<ExerciseDeleteDto>> GetByIdAsDeleteDtoAsync(int id)
-        {
-            try
-            {
-                var entity = await repositoryManager.Exercises.GetByIdAsync(id);
-                if (entity is null)
-                {
-                    return Result.NotFound($"Exercise with Id: {id} doesn't exist.");
-                }
-
-                var dto = new ExerciseDeleteDto(entity.Id);
-                return Result<ExerciseDeleteDto>.Success(dto);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetByIdAsDeleteDtoAsync)}");
-                throw;
-            }
-        }
-
         public async Task<Result<ExerciseDisplayDto>> CreateAsync(ExerciseCreateDto model)
         {
             var entity = new Data.Models.Exercise()
@@ -139,7 +119,7 @@ namespace FitnessPlanner.Services.Exercise
                 repositoryManager.Exercises.Add(entity);
                 await repositoryManager.SaveChangesAsync();
 
-                var exerciseDto =await GetByIdAsync(entity.Id);
+                var exerciseDto = await GetByIdAsync(entity.Id);
                 return Result<ExerciseDisplayDto>.Created(exerciseDto);
             }
             catch (Exception e)

@@ -11,8 +11,6 @@ namespace FitnessPlanner.Services.Exercise.Contracts
 
         Task<Result<IEnumerable<ExerciseDisplayDto>>> GetAllByMuscleGroupAsync(string muscleGroupName);
 
-        Task<Result<ExerciseDeleteDto>> GetByIdAsDeleteDtoAsync(int id);
-
         Task<Result<ExerciseDisplayDto>> CreateAsync(ExerciseCreateDto model);
 
         Task<Result> UpdateAsync(int exerciseId, ExerciseUpdateDto model);
