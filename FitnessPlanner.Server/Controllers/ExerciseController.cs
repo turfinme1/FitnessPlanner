@@ -1,9 +1,10 @@
-﻿using FitnessPlanner.Services.Exercise.Contracts;
+﻿using FitnessPlanner.Server.Extensions;
+using FitnessPlanner.Server.Models;
+using FitnessPlanner.Services.Exercise.Contracts;
 using FitnessPlanner.Services.Models.Exercise;
-using FitnessPlanner.Services.WorkoutPlan;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using System.Net.Mime;
 
 namespace FitnessPlanner.Server.Controllers
 {
@@ -20,112 +21,79 @@ namespace FitnessPlanner.Server.Controllers
         /// Retrieves all exercises.
         /// </summary>
         /// <returns>A list of <see cref="ExerciseDisplayDto"/></returns>
+        /// <response code="200">Returns the collection of exercises.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ExerciseDisplayDto>>> GetAllExercises()
-        {
-            try
-            {
-                return Ok(await exerciseService.GetAllAsync());
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetAllExercises)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<ExerciseDisplayDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllExercises() =>
+             (await exerciseService.GetAllAsync()).ToActionResult();
 
         /// <summary>
         /// Retrieves a specific exercise by its ID.
         /// </summary>
         /// <param name="id">The ID of the exercise to retrieve.</param>
         /// <returns>The <see cref="ExerciseDisplayDto"/> with the specified ID.</returns>
+        /// <response code="200">Returns the exercise with the specified ID.</response>
+        /// <response code="404">If no exercise with the specified ID is found.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpGet("{id:int}")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ExerciseDisplayDto>> GetExerciseById(int id)
-        {
-            try
-            {
-                var exercise = await exerciseService.GetByIdAsync(id);
-
-                if (exercise == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(exercise);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetExerciseById)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<ExerciseDisplayDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetExerciseById(int id) =>
+            (await exerciseService.GetByIdAsync(id)).ToActionResult();
 
         /// <summary>
         /// Retrieves all exercises for a specific muscle group.
         /// </summary>
         /// <param name="muscleGroup">The name of the muscle group</param>
         /// <returns>A list of <see cref="ExerciseDisplayDto"/> with the specific muscle group</returns>
+        /// <response code="200">Returns the collection of exercises for the specified muscle group.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="404">If no exercises with the specified muscle group are found.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpGet("{muscleGroup}")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<ExerciseDisplayDto>>> GetExercisesByMuscleGroup(string muscleGroup)
-        {
-            try
-            {
-                var exercises = await exerciseService.GetAllByMuscleGroupAsync(muscleGroup);
-
-                if (exercises == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(exercises);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetExercisesByMuscleGroup)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<ExerciseDisplayDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetExercisesByMuscleGroup(string muscleGroup) =>
+            (await exerciseService.GetAllByMuscleGroupAsync(muscleGroup)).ToActionResult();
 
         /// <summary>
         /// Creates a new exercise.
         /// </summary>
         /// <param name="exerciseCreateDto">The exercise data.</param>
         /// <returns>The newly created <see cref="ExerciseDisplayDto"/></returns>
+        /// <response code="201">Returns the newly created exercise.</response>
+        /// <response code="401">If the user is not authorized.</response>
+        /// <response code="403">If the user is forbidden to perform the operation.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ExerciseDisplayDto>> CreateExercise([FromBody] ExerciseCreateDto exerciseCreateDto)
-        {
-            try
-            {
-                var createdExerciseId = await exerciseService.CreateAsync(exerciseCreateDto);
-                var createdExercise = await exerciseService.GetByIdAsync(createdExerciseId);
-
-                return CreatedAtAction(nameof(GetExerciseById), new { id = createdExerciseId }, createdExercise);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(CreateExercise)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<ExerciseDisplayDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateExercise([FromBody] ExerciseCreateDto exerciseCreateDto) =>
+            (await exerciseService.CreateAsync(exerciseCreateDto)).ToActionResult();
 
         /// <summary>
         /// Updates an existing exercise.
@@ -133,62 +101,52 @@ namespace FitnessPlanner.Server.Controllers
         /// <param name="id">The ID of the exercise to update.</param>
         /// <param name="exerciseUpdateDto">The updated exercise data.</param>
         /// <returns>No content response if successful</returns>
-        [HttpPut("{id}")]
+        /// <response code="200">If the exercise was successfully updated.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="401">If the user is not authorized.</response>
+        /// <response code="403">If the user is forbidden to perform the operation.</response>
+        /// <response code="404">If no exercise with the specified ID is found.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
+        [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ExerciseDisplayDto>> UpdateExercise(int id, [FromBody] ExerciseUpdateDto exerciseUpdateDto)
-        {
-            if (id != exerciseUpdateDto.Id)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                await exerciseService.UpdateAsync(exerciseUpdateDto);
-
-                return NoContent();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(UpdateExercise)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [AllowAnonymous]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<ExerciseDisplayDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateExercise(int id, [FromBody] ExerciseUpdateDto exerciseUpdateDto) =>
+            (await exerciseService.UpdateAsync(id, exerciseUpdateDto)).ToActionResult();
 
         /// <summary>
         /// Deletes an existing exercise.
         /// </summary>
         /// <param name="id">The ID of the exercise to delete.</param>
         /// <returns>No content response if successful</returns>
-        [HttpDelete("{id}")]
+        /// <response code="200">If the exercise was successfully deleted.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="401">If the user is not authorized.</response>
+        /// <response code="403">If the user is forbidden to perform the operation.</response>
+        /// <response code="404">If no exercise with the specified ID is found.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
+        [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> DeleteExercise(int id)
-        {
-            var workoutPlan = await exerciseService.GetByIdAsDeleteDtoAsync(id);
-            if (workoutPlan == null)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                await exerciseService.DeleteAsync(id);
-                //TODO: Improve delete logic
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(DeleteExercise)}");
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        [AllowAnonymous]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteExercise(int id) =>
+            (await exerciseService.DeleteAsync(id)).ToActionResult();
     }
 }
