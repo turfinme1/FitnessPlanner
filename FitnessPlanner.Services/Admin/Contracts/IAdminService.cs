@@ -1,9 +1,10 @@
-﻿using FitnessPlanner.Services.Models.User;
+﻿using Ardalis.Result;
+using FitnessPlanner.Services.Models.User;
 
 namespace FitnessPlanner.Services.Admin.Contracts
 {
     public interface IAdminService
     {
-        Task<IEnumerable<UserDisplayDto>> GetAllUsersAsync();
+        Task<Result<IEnumerable<UserDisplayDto>>> GetAllUsersAsync();
     }
 }
