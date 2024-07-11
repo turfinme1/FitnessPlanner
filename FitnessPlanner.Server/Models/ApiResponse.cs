@@ -42,7 +42,7 @@ namespace FitnessPlanner.Server.Models
             new() { Title = "Bad request", Success = false, StatusCode = StatusCodes.Status400BadRequest };
 
         public static ApiResponse BadRequest(string errorMessage) =>
-            new() { Title = "Bad request", Success = false, StatusCode = StatusCodes.Status400BadRequest, Errors = CreateErrors(errorMessage) };
+            new() { Title = "Bad request", Success = false, StatusCode = StatusCodes.Status400BadRequest, Message = errorMessage };
 
         public static ApiResponse BadRequest(IDictionary<string, string[]> errors) =>
             new() { Title = "Bad request", Success = false, StatusCode = StatusCodes.Status400BadRequest, Errors = errors };
@@ -51,7 +51,7 @@ namespace FitnessPlanner.Server.Models
             new() { Title = "Unauthorized", Success = false, StatusCode = StatusCodes.Status401Unauthorized };
 
         public static ApiResponse Unauthorized(string errorMessage) =>
-            new() { Title = "Unauthorized", Success = false, StatusCode = StatusCodes.Status401Unauthorized, Errors = CreateErrors(errorMessage) };
+            new() { Title = "Unauthorized", Success = false, StatusCode = StatusCodes.Status401Unauthorized, Message = errorMessage };
 
         public static ApiResponse Unauthorized(IDictionary<string, string[]> errors) =>
             new() { Title = "Unauthorized", Success = false, StatusCode = StatusCodes.Status401Unauthorized, Errors = errors };
@@ -60,7 +60,7 @@ namespace FitnessPlanner.Server.Models
             new() { Title = "Forbidden", Success = false, StatusCode = StatusCodes.Status403Forbidden };
 
         public static ApiResponse Forbidden(string errorMessage) =>
-            new() { Title = "Forbidden", Success = false, StatusCode = StatusCodes.Status403Forbidden, Errors = CreateErrors(errorMessage) };
+            new() { Title = "Forbidden", Success = false, StatusCode = StatusCodes.Status403Forbidden, Message = errorMessage };
 
         public static ApiResponse Forbidden(IDictionary<string, string[]> errors) =>
             new() { Title = "Forbidden", Success = false, StatusCode = StatusCodes.Status403Forbidden, Errors = errors };
@@ -69,7 +69,7 @@ namespace FitnessPlanner.Server.Models
             new() { Title = "Not Found", Success = false, StatusCode = StatusCodes.Status404NotFound };
 
         public static ApiResponse NotFound(string errorMessage) =>
-            new() { Title = "Not Found", Success = false, StatusCode = StatusCodes.Status404NotFound, Errors = CreateErrors(errorMessage) };
+            new() { Title = "Not Found", Success = false, StatusCode = StatusCodes.Status404NotFound, Message = errorMessage };
 
         public static ApiResponse NotFound(IDictionary<string, string[]> errors) =>
             new() { Title = "Not Found", Success = false, StatusCode = StatusCodes.Status404NotFound, Errors = errors };
@@ -78,13 +78,13 @@ namespace FitnessPlanner.Server.Models
             new() { Title = "Unprocessable Content", Success = false, StatusCode = StatusCodes.Status422UnprocessableEntity };
 
         public static ApiResponse Unprocessable(string errorMessage) =>
-            new() { Title = "Unprocessable Content", Success = false, StatusCode = StatusCodes.Status422UnprocessableEntity, Errors = CreateErrors(errorMessage) };
+            new() { Title = "Unprocessable Content", Success = false, StatusCode = StatusCodes.Status422UnprocessableEntity, Message = errorMessage };
 
         public static ApiResponse Unprocessable(IDictionary<string, string[]> errors) =>
             new() { Title = "Unprocessable Content", Success = false, StatusCode = StatusCodes.Status422UnprocessableEntity, Errors = errors };
 
         public static ApiResponse InternalServerError(string errorMessage) =>
-            new() { Title = "Internal Server Error", Success = false, StatusCode = StatusCodes.Status500InternalServerError, Errors = CreateErrors(errorMessage) };
+            new() { Title = "Internal Server Error", Success = false, StatusCode = StatusCodes.Status500InternalServerError, Message = errorMessage };
 
         public static ApiResponse InternalServerError(IDictionary<string, string[]> errors) =>
             new() { Title = "Internal Server Error", Success = false, StatusCode = StatusCodes.Status500InternalServerError, Errors = errors };
@@ -96,9 +96,6 @@ namespace FitnessPlanner.Server.Models
                 { "Internal Error", new[] { errorMessage } }
             };
         }
-
-        public override string ToString() =>
-            $"Success: {Success} | StatusCode: {StatusCode} | HasErrors: {Errors.Any()}";
     }
 }
 
