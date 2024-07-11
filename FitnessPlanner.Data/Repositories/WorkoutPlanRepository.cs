@@ -51,7 +51,8 @@ namespace FitnessPlanner.Data.Repositories
                 .ThenInclude(episw => episw.ExercisePerformInfo)
                 .ThenInclude(epi => epi.Exercise)
                 .Include(wp => wp.SkillLevel)
-                .Include(wp => wp.Goal);
+                .Include(wp => wp.Goal)
+                .Include(wp => wp.WorkoutPlanBodyMassIndexMeasures);
 
             return isTracked
                 ? await query.FirstOrDefaultAsync(wp => wp.Id == id)
