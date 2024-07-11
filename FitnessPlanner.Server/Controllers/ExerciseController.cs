@@ -11,6 +11,8 @@ namespace FitnessPlanner.Server.Controllers
     /// <summary>
     /// Controller class for handling HTTP requests related to exercises.
     /// </summary>
+    /// <param name="exerciseService">Service for handling exercise operations.</param>
+    /// <param name="logger">Logger for logging information and errors.</param>
     [ApiController]
     [Route("api/exercise")]
     public class ExerciseController(
@@ -110,10 +112,9 @@ namespace FitnessPlanner.Server.Controllers
         /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
-        [AllowAnonymous]
         [Consumes(MediaTypeNames.Application.Json)]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(ApiResponse<ExerciseDisplayDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
@@ -137,7 +138,6 @@ namespace FitnessPlanner.Server.Controllers
         /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
-        [AllowAnonymous]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]

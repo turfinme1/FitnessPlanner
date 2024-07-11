@@ -1,9 +1,10 @@
-﻿using FitnessPlanner.Server.Models;
+﻿using FitnessPlanner.Server.Extensions;
+using FitnessPlanner.Server.Models;
 using FitnessPlanner.Services.Authentication.Contracts;
 using FitnessPlanner.Services.Models.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace FitnessPlanner.Server.Controllers
 {
@@ -26,37 +27,20 @@ namespace FitnessPlanner.Server.Controllers
         /// <returns>
         /// A status code indicating the result of the operation. If successful, returns 201 (Created).
         /// </returns>
+        /// <response code="200">If the user was successfully registered.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpPost("register")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> RegisterUser(UserRegistrationDto model)
-        {
-            IdentityResult? result;
-            try
-            {
-                result = await authenticationService.RegisterUserAsync(model);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(RegisterUser)}");
-                return StatusCode(500, "Internal server error");
-            }
-
-            if (result.Succeeded)
-            {
-                return StatusCode(StatusCodes.Status201Created);
-            }
-
-            var response = new ErrorResponse
-            {
-                Title = "Bad request",
-                Status = StatusCodes.Status400BadRequest,
-                ErrorMessage = "Could not register user with provided data."
-            };
-            return BadRequest(response);
-        }
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RegisterUser(UserRegistrationDto model) =>
+            (await authenticationService.RegisterUserAsync(model)).ToActionResult();
 
         /// <summary>
         /// Authenticates a user and generates a JWT token if the authentication is successful.
@@ -65,32 +49,19 @@ namespace FitnessPlanner.Server.Controllers
         /// <returns> 
         /// A status code indicating the result of the operation. If the user was successfully authenticated, returns 200 (OK) with a JWT token.
         /// </returns>
-        /// <returns>Failed login</returns>
+        /// <response code="200">If the user was successfully authenticated.</response>
+        /// <response code="401">If the user could not be authenticated.</response>
+        /// <response code="422">If the request could not be processed.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpPost("login")]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AuthenticateUser(UserLoginDto model)
-        {
-            bool isAuthenticated;
-            try
-            {
-                isAuthenticated = await authenticationService.AuthenticateUserAsync(model);
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(AuthenticateUser)}");
-                return StatusCode(500, "Internal server error");
-            }
-
-            if (isAuthenticated)
-            {
-                var token = await authenticationService.CreateToken();
-                return Ok(new { Token = token });
-            }
-
-            return Unauthorized();
-        }
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AuthenticateUser(UserLoginDto model) =>
+            (await authenticationService.AuthenticateUserAsync(model)).ToActionResult();
     }
 }
