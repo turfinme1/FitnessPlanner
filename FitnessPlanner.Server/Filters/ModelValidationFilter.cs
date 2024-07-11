@@ -12,26 +12,29 @@ namespace FitnessPlanner.Server.Filters
         {
             if (!context.ModelState.IsValid)
             {
-                var response = new UnprocessableEntityResponse
+                var errors = new Dictionary<string, string[]>();
+                foreach (var keyValuePair in context.ModelState.Where(s => s.Key != "model"))
                 {
-                    Title = "One or more validation errors occurred.",
-                    Status = StatusCodes.Status422UnprocessableEntity,
-                    Errors = new Dictionary<string, string[]>()
-                };
-
-                foreach (var errors in context.ModelState.Where(s => s.Key != "model"))
-                {
-                    var key = errors.Key.Replace("$.", "");
-                    var errorMessages = errors.Value?.Errors.Select(e => e.ErrorMessage)
-                         .Select(str => str.Contains("The JSON value could not be converted") ? "The value could not be processed" : str)
-                         .ToArray();
+                    var key = keyValuePair.Key.Replace("$.", "");
+                    var errorMessages = keyValuePair.Value?.Errors
+                        .Select(e => e.ErrorMessage)
+                        .Select(str =>
+                        {
+                            if (str.Contains("The JSON value could not be converted") || str.Contains("invalid"))
+                            {
+                                return "The value is invalid.";
+                            }
+                            return str;
+                        })
+                        .ToArray();
 
                     if (errorMessages is not null)
                     {
-                        response.Errors.Add(key, errorMessages);
+                        errors.Add(key, errorMessages);
                     }
                 }
 
+                var response = ApiResponse.Unprocessable(errors);
                 context.Result = new UnprocessableEntityObjectResult(response);
             }
         }
