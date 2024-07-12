@@ -36,5 +36,4 @@ namespace FitnessPlanner.Data.Models
         [ForeignKey(nameof(SingleWorkoutId))]
         public SingleWorkout SingleWorkout { get; set; } = null!;
     }
-
 }
