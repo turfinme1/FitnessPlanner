@@ -97,8 +97,8 @@ namespace FitnessPlanner.Data.Models
         public BodyMassIndexMeasure BodyMassIndexMeasure { get; set; } = null!;
 
         /// <summary>
-        /// The workout plan associated with the user.
+        /// The workout plans associated with the user.
         /// </summary>
-        public WorkoutPlan? WorkoutPlan { get; set; }
+        public IEnumerable<WorkoutPlan> WorkoutPlans { get; set; } = new List<WorkoutPlan>();
     }
 }
