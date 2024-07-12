@@ -171,6 +171,11 @@ namespace FitnessPlanner.Services.WorkoutPlan
                 return Result.Error("Workout ID mismatch.");
             }
 
+            if (!model.BodyMassIndexMeasures.Any() || model.BodyMassIndexMeasures.Any(x=>x is <= 0 or >= 7))
+            {
+                return Result.Error("Body mass index measure is invalid.");
+            }
+
             try
             {
                 var entity = await repositoryManager.WorkoutPlans.GetByIdWithRelatedEntitiesAsync(model.Id, isTracked: true);
@@ -207,14 +212,26 @@ namespace FitnessPlanner.Services.WorkoutPlan
                         }
                     }).ToList();
 
-                var bodyMassIndexMeasures = model.BodyMassIndexMeasures
-                    .SkipWhile(x => entity.WorkoutPlanBodyMassIndexMeasures.Any(y => y.BodyMassIndexMeasureId == x));
+                var originalMeasures = entity.WorkoutPlanBodyMassIndexMeasures;
+                var newMeasure = model.BodyMassIndexMeasures;
 
-                entity.WorkoutPlanBodyMassIndexMeasures = bodyMassIndexMeasures
-                    .Select(bmi => new WorkoutPlanBodyMassIndexMeasure()
+                var originalMeasuresToRemove = originalMeasures
+                    .Where(bmi => newMeasure.All(x => x != bmi.BodyMassIndexMeasureId));
+                var newMeasuresToAdd = newMeasure
+                    .Where(bmi => originalMeasures.All(x => x.BodyMassIndexMeasureId != bmi));
+
+                foreach (var bmiToRemove in originalMeasuresToRemove.ToList())
+                {
+                    entity.WorkoutPlanBodyMassIndexMeasures.Remove(bmiToRemove);
+                }
+
+                foreach (var bmiId in newMeasuresToAdd)
+                {
+                    entity.WorkoutPlanBodyMassIndexMeasures.Add(new WorkoutPlanBodyMassIndexMeasure()
                     {
-                        BodyMassIndexMeasureId = bmi
-                    }).ToList();
+                        BodyMassIndexMeasureId = bmiId
+                    });
+                }
 
                 await repositoryManager.SaveChangesAsync();
                 return Result.Success();
