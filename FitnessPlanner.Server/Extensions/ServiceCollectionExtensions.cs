@@ -1,25 +1,17 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using Azure.Identity;
+﻿using Azure.Identity;
 using Azure.Storage.Blobs;
 using FitnessPlanner.Data;
 using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Data.Repositories;
+using FitnessPlanner.Server.Filters;
+using FitnessPlanner.Server.Middlewares;
+using FitnessPlanner.Services.Admin;
+using FitnessPlanner.Services.Admin.Contracts;
 using FitnessPlanner.Services.ApplicationUser;
 using FitnessPlanner.Services.ApplicationUser.Contracts;
 using FitnessPlanner.Services.Authentication;
 using FitnessPlanner.Services.Authentication.Contracts;
-using FitnessPlanner.Services.FilePersistence;
-using FitnessPlanner.Services.FilePersistence.Contracts;
-using FitnessPlanner.Services.WorkoutPlan;
-using FitnessPlanner.Services.WorkoutPlan.Contracts;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using FitnessPlanner.Services.Admin;
-using FitnessPlanner.Services.Admin.Contracts;
 using FitnessPlanner.Services.BodyMassIndexCalculation;
 using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
 using FitnessPlanner.Services.BodyMassIndexMeasure;
@@ -28,17 +20,49 @@ using FitnessPlanner.Services.CosineSimilarityCalculation;
 using FitnessPlanner.Services.CosineSimilarityCalculation.Contracts;
 using FitnessPlanner.Services.Exercise;
 using FitnessPlanner.Services.Exercise.Contracts;
+using FitnessPlanner.Services.FilePersistence;
+using FitnessPlanner.Services.FilePersistence.Contracts;
 using FitnessPlanner.Services.Goal;
 using FitnessPlanner.Services.Goal.Contracts;
 using FitnessPlanner.Services.SkillLevel;
 using FitnessPlanner.Services.SkillLevel.Contracts;
+using FitnessPlanner.Services.WorkoutPlan;
+using FitnessPlanner.Services.WorkoutPlan.Contracts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using System.Text;
 
 namespace FitnessPlanner.Server.Extensions
 {
     [ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
+        public static void ConfigureDatastore(this IServiceCollection builder, IConfiguration configuration)
+        {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            builder.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(connectionString));
+        }
+
+        public static void ConfigureModelValidation(this IServiceCollection builder)
+        {
+            builder.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            builder.AddControllers(options =>
+            {
+                options.Filters.Add<ModelValidationFilter>();
+            });
+        }
+
         public static void ConfigureIdentity(this IServiceCollection builder)
         {
             builder.AddIdentity<User, IdentityRole>(options =>
@@ -58,6 +82,9 @@ namespace FitnessPlanner.Server.Extensions
 
         public static void ConfigureApplicationServices(this IServiceCollection builder)
         {
+            builder.AddSingleton<
+                IAuthorizationMiddlewareResultHandler, AuthorizationResultHandler>();
+
             builder.AddSingleton<BlobServiceClient>(x =>
                 new BlobServiceClient(
                     new Uri("https://artshopimgs.blob.core.windows.net"),
