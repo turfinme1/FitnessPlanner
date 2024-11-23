@@ -2,6 +2,7 @@
 using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.Exercise.Contracts;
+using FitnessPlanner.Services.FilePersistence.Contracts;
 using FitnessPlanner.Services.Models.Exercise;
 using FitnessPlanner.Services.Models.MuscleGroup;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace FitnessPlanner.Services.Exercise
 {
     public sealed class ExerciseService(
         IUnitOfWork repositoryManager,
+        IFilePersistenceService filePersistenceService,
         ILogger<ExerciseService> logger) : IExerciseService
     {
         public async Task<Result<IEnumerable<ExerciseDisplayDto>>> GetAllAsync()
@@ -118,6 +120,9 @@ namespace FitnessPlanner.Services.Exercise
             {
                 repositoryManager.Exercises.Add(entity);
                 await repositoryManager.SaveChangesAsync();
+
+                await using Stream stream = model.File.OpenReadStream();
+                await filePersistenceService.AddFileAsync(stream, $"{model.ImageName}.gif");
 
                 var exerciseDto = await GetByIdAsync(entity.Id);
                 return Result<ExerciseDisplayDto>.Created(exerciseDto);

@@ -4,6 +4,7 @@ import background2 from "./background2.jpg";
 import gym from "./gym.jpg";
 import gymBackground from "./gym-background.jpg";
 import gymBackground2 from "./gym-background2.jpg";
+import accordionArrow from "./accordion-arrow.svg";
 import brainwave from "./brainwave.svg";
 import check from "./check.svg";
 import brainwaveSymbol from "./brainwave-symbol.svg";
@@ -82,6 +83,8 @@ export {
   gymBackground2,
   github,
   linkedin,
+  accordionArrow,
+  
   brainwave,
   check,
   check2,

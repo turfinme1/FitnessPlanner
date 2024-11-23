@@ -13,9 +13,9 @@ export const login = async (userData) => {
   });
 
   if (response.ok) {
-    const data = await response.json();
-    console.log(data);
-    return data;
+    const resultObject = await response.json();
+    console.log(resultObject);
+    return resultObject.result;
   }
   console.log(response);
   return null;

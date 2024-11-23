@@ -42,9 +42,9 @@ const useUserAuth = create(
       // },
 
       login: async (userData) => {
-        const user = await authService.login(userData);
+        const token = await authService.login(userData);
 
-        const decodedToken = jwtDecode(user.token);
+        const decodedToken = jwtDecode(token);
         const userFields = Object.keys(decodedToken).reduce((acc, key) => {
           if (key.lastIndexOf("/") !== -1) {
             acc[key.substring(key.lastIndexOf("/") + 1)] = decodedToken[key];
@@ -57,7 +57,7 @@ const useUserAuth = create(
 
         set(() => ({
           userData: userFields,
-          accessToken: user.token,
+          accessToken: token,
           isAuthenticated: true,
         }));
       },

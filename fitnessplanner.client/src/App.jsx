@@ -14,6 +14,7 @@ import WorkoutDetails from "./components/workoutDetails/workoutDetails";
 import CreateWorkout2 from "./components/createWorkout/CreateWorkout2";
 import WorkoutSuggestion from "./components/workoutSuggestion/WorkoutSuggestion";
 import Footer from "./components/footer/Footer";
+import CreateWorkout3 from "./components/createWorkout/CreateWorkout3";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
         <Route path="/" element={<Hero />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/create-workout" element={<CreateWorkout2 />} />
+        <Route path="/create-workout" element={<CreateWorkout3 />} />
         <Route path="/workout-list" element={<WorkoutPlan />} />
         <Route path="workout-list/:workoutId" element={<WorkoutDetails />} />
         <Route path="/get-workout-suggestion" element={<WorkoutSuggestion />} />

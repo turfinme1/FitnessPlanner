@@ -87,14 +87,14 @@ namespace FitnessPlanner.Server.Controllers
         /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Consumes(MediaTypeNames.Application.Json)]
+        [Consumes(MediaTypeNames.Multipart.FormData)]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ApiResponse<ExerciseDisplayDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateExercise([FromBody] ExerciseCreateDto exerciseCreateDto) =>
+        public async Task<IActionResult> CreateExercise([FromForm] ExerciseCreateDto exerciseCreateDto) =>
             (await exerciseService.CreateAsync(exerciseCreateDto)).ToActionResult();
 
         /// <summary>
