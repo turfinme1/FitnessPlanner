@@ -23,6 +23,7 @@ namespace FitnessPlanner.Data.Repositories
                 .Include(u => u.SkillLevel)
                 .Include(u => u.Goal)
                 .Include(u => u.BodyMassIndexMeasure)
+                .Include(u=> u.UserWorkoutPlans)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -35,14 +36,17 @@ namespace FitnessPlanner.Data.Repositories
         /// A task that represents the asynchronous operation. 
         /// The task result contains the <see cref="User"/> with its related entities, or null if no user with the specified ID is found.
         /// </returns>
-        public async Task<User?> GetByIdWithRelatedEntitiesAsync(string id)
+        public async Task<User?> GetByIdWithRelatedEntitiesAsync(string id, bool isTracked = false)
         {
-            return await base.DbSet
+            var query = base.DbSet
                 .Include(u => u.SkillLevel)
                 .Include(u => u.Goal)
                 .Include(u => u.BodyMassIndexMeasure)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .Include(u => u.UserWorkoutPlans);
+
+            return isTracked
+                ? await query.FirstOrDefaultAsync(u => u.Id == id)
+                : await query.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

@@ -51,5 +51,6 @@ namespace FitnessPlanner.Data
         public required DbSet<Goal> Goals { get; set; } = null!;
         public required DbSet<BodyMassIndexMeasure> BodyMassIndexMeasures { get; set; } = null!;
         public required DbSet<WorkoutPlanBodyMassIndexMeasure> WorkoutPlansBodyMassIndexMeasures { get; set; } = null!;
+        public required DbSet<UserWorkoutPlan> UsersWorkoutPlans { get; set; } = null!;
     }
 }

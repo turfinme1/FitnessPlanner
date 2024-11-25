@@ -20,10 +20,11 @@ namespace FitnessPlanner.Data.Contracts
         /// Retrieves a <see cref="User"/> by its ID along with its related entities asynchronously.
         /// </summary>
         /// <param name="id">The ID of the user to retrieve.</param>
+        /// <param name="isTracked">Indicates whether the entity should be tracked by the context.</param>
         /// <returns>
         /// A task that represents the asynchronous operation. 
         /// The task result contains the <see cref="User"/> with its related entities, or null if no user with the specified ID is found.
         /// </returns>
-        Task<User?> GetByIdWithRelatedEntitiesAsync(string id);
+        Task<User?> GetByIdWithRelatedEntitiesAsync(string id, bool isTracked = false);
     }
 }

@@ -97,8 +97,8 @@ namespace FitnessPlanner.Data.Models
         public BodyMassIndexMeasure BodyMassIndexMeasure { get; set; } = null!;
 
         /// <summary>
-        /// The workout plans associated with the user.
+        /// A collection representing many-to-many relationship between <see cref="User"/> and <see cref="WorkoutPlan"/>.
         /// </summary>
-        public IEnumerable<WorkoutPlan> WorkoutPlans { get; set; } = new List<WorkoutPlan>();
+        public ICollection<UserWorkoutPlan> UserWorkoutPlans { get; set; } = new List<UserWorkoutPlan>();
     }
 }

@@ -79,5 +79,10 @@ namespace FitnessPlanner.Data.Models
         /// A collection representing many-to-many relationship between <see cref="WorkoutPlan"/> and <see cref="BodyMassIndexMeasure"/>.
         /// </summary>
         public ICollection<WorkoutPlanBodyMassIndexMeasure> WorkoutPlanBodyMassIndexMeasures { get; set; } = new List<WorkoutPlanBodyMassIndexMeasure>();
+
+        /// <summary>
+        /// A collection representing many-to-many relationship between <see cref="User"/> and <see cref="WorkoutPlan"/>.
+        /// </summary>
+        public ICollection<UserWorkoutPlan> UserWorkoutPlans { get; set; } = new List<UserWorkoutPlan>();
     }
 }

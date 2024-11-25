@@ -89,5 +89,27 @@ namespace FitnessPlanner.Server.Controllers
 
             return (await userService.GetByIdAsUserDataFormDtoAsync(userId)).ToActionResult();
         }
+
+        /// <summary>
+        /// Adds a workout plan to the user's list of workout plans.
+        /// </summary>
+        /// <param name="workoutPlanId">The ID of the workout plan to add.</param>
+        /// <returns>Response indicating the result of the operation.</returns>
+        /// <response code="200">If the workout plan was successfully added to the user's list.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
+        [HttpPost("add-workout-plan/{workoutPlanId}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddWorkoutPlanToUser(int workoutPlanId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return (await userService.AddWorkoutPlanToUserAsync(userId, workoutPlanId)).ToActionResult();
+        }
     }
 }

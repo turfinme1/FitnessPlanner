@@ -10,5 +10,7 @@ namespace FitnessPlanner.Services.ApplicationUser.Contracts
         Task<Result> UpdateAsync(string? userClaimId, UserDataUpdateDto userPreferencesDto);
 
         Task<Result<UserDataFormDto>> GetByIdAsUserDataFormDtoAsync(string? userId);
+
+        Task<Result> AddWorkoutPlanToUserAsync(string? userId, int workoutPlanId);
     }
 }

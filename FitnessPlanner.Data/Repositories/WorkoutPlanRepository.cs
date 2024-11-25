@@ -29,6 +29,7 @@ namespace FitnessPlanner.Data.Repositories
                 .ThenInclude(xp => xp.BodyMassIndexMeasure)
                 .Include(wp => wp.SkillLevel)
                 .Include(wp => wp.Goal)
+                .Include(wp => wp.UserWorkoutPlans)
                 .AsNoTracking()
                 .ToListAsync();
         }
@@ -52,7 +53,8 @@ namespace FitnessPlanner.Data.Repositories
                 .ThenInclude(epi => epi.Exercise)
                 .Include(wp => wp.SkillLevel)
                 .Include(wp => wp.Goal)
-                .Include(wp => wp.WorkoutPlanBodyMassIndexMeasures);
+                .Include(wp => wp.WorkoutPlanBodyMassIndexMeasures)
+                .Include(wp => wp.UserWorkoutPlans);
 
             return isTracked
                 ? await query.FirstOrDefaultAsync(wp => wp.Id == id)

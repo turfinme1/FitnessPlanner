@@ -137,5 +137,46 @@ namespace FitnessPlanner.Services.ApplicationUser
                 throw;
             }
         }
+
+        public async Task<Result> AddWorkoutPlanToUserAsync(string? userId, int workoutPlanId)
+        {
+            if(userId is null)
+            {
+                return Result.Unauthorized();
+            }
+
+            try
+            {
+                var user = await repositoryManager.Users.GetByIdWithRelatedEntitiesAsync(userId, isTracked: true);
+                if (user is null)
+                {
+                    return Result.NotFound($"User with Id: {userId} doesn't exist.");
+                }
+
+                var workoutPlan = await repositoryManager.WorkoutPlans.GetByIdAsync(workoutPlanId);
+                if (workoutPlan is null)
+                {
+                    return Result.NotFound($"Workout plan with Id: {workoutPlanId} doesn't exist.");
+                }
+
+                if(user.UserWorkoutPlans.Any(uwp => uwp.WorkoutPlanId == workoutPlan.Id))
+                {
+                    return Result.Success();
+                }
+
+                user.UserWorkoutPlans.Add(new UserWorkoutPlan()
+                {
+                    WorkoutPlanId = workoutPlan.Id
+                });
+
+                await repositoryManager.SaveChangesAsync();
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"{nameof(AddWorkoutPlanToUserAsync)}: Error while adding workout plan to user");
+                throw;
+            }
+        }
     }
 }
