@@ -39,3 +39,35 @@ export const getUserFormData = async () => {
 
   return null;
 }
+
+export const getUserWorkoutPlans = async () => {
+  const response = await fetch("api/user/workout-plan", {
+    headers: {
+      Authorization: "Bearer " + JSON.parse(sessionStorage.getItem("authData")).state.accessToken,
+    },
+  });
+  const data = await response.json();
+  return data.result;
+};
+
+export const addWorkoutToUserProfile = async (workoutPlanId) => {
+  const response = await fetch(`api/user/workout-plan/${workoutPlanId}`, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + JSON.parse(sessionStorage.getItem('authData'))?.state.accessToken,
+    },
+  });
+  const data = await response.json();
+  return data.success;
+};
+
+export const removeWorkoutPlan = async (workoutPlanId) => {
+  const response = await fetch(`api/user/workout-plan/${workoutPlanId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + JSON.parse(sessionStorage.getItem("authData")).state.accessToken,
+    },
+  });
+  const data = await response.json();
+  return data.success;
+};

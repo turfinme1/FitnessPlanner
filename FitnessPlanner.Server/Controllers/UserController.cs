@@ -99,7 +99,7 @@ namespace FitnessPlanner.Server.Controllers
         /// <response code="400">If the request is invalid.</response>
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="500">If an unexpected internal error occurs.</response>
-        [HttpPost("add-workout-plan/{workoutPlanId}")]
+        [HttpPost("workout-plan/{workoutPlanId}")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
@@ -110,6 +110,49 @@ namespace FitnessPlanner.Server.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             return (await userService.AddWorkoutPlanToUserAsync(userId, workoutPlanId)).ToActionResult();
+        }
+
+        /// <summary>
+        /// Removes a workout plan from the user's list of workout plans.
+        /// </summary>
+        /// <param name="workoutPlanId">The ID of the workout plan to remove.</param>
+        /// <returns>Response indicating the result of the operation.</returns>
+        /// <response code="200">If the workout plan was successfully removed from the user's list.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
+        [HttpDelete("workout-plan/{workoutPlanId}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RemoveWorkoutPlan(int workoutPlanId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return (await userService.RemoveWorkoutPlanFromUserAsync(userId, workoutPlanId)).ToActionResult();
+        }
+
+        /// <summary>
+        /// Gets the user's workout plans.
+        /// </summary>
+        /// <returns> A list of <see cref="WorkoutPlanDisplayDto"/></returns>
+        /// <response code="200">Returns the user's workout plans.</response>
+        /// <response code="400">If the request is invalid.</response>
+        /// <response code="401">If the user is not authenticated.</response>
+        /// <response code="500">If an unexpected internal error occurs.</response>
+        [HttpGet("workout-plan")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<WorkoutPlanDisplayDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetUserWorkoutPlans()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            return (await userService.GetUserWorkoutPlansAsync(userId)).ToActionResult();
         }
     }
 }

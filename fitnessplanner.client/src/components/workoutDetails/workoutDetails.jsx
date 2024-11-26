@@ -3,36 +3,74 @@ import { useParams } from "react-router-dom";
 import SingleWorkoutCard from "./singleWorkoutCard/SingleWorkoutCard";
 import { getWorkoutById } from "../../services/workoutService";
 
-const WorkoutDetails = ({ workoutData }) => {
+const WorkoutDetails = () => {
   const { workoutId } = useParams();
-  const [workout, setWorkout] = useState(workoutData || workout1);
+  const [workout, setWorkout] = useState(null);
 
   useEffect(() => {
-    console.log("Workout ID: ", workoutId);
+    getWorkoutById(workoutId).then((data) => {
+      setWorkout(data);
+    });
+  }, [workoutId]);
 
-    if (!workoutData) {
-      getWorkoutById(workoutId).then((data) => {
-        setWorkout(data);
-      });
-    }
-  }, []);
+  if (!workout) {
+    return <div className="text-white text-center">Loading...</div>;
+  }
 
   return (
-    <div className="w-full text-center rounded-lg shadow sm:p-3 bg-gray-800 border-gray-700">
-      <div className="flex flex-col justify-center">
-        <h5 className="mb-2 text-3xl font-bold text-white">
-          {workout.name || "Full Body type A"}
-        </h5>
+    <div className="container mx-auto px-4 py-8">
+      {/* Workout Plan Header */}
+      <div className="bg-gray-800 rounded-lg p-6 mb-8">
+        <h1 className="text-4xl font-bold text-white mb-4">{workout.name}</h1>
+        <div className="flex gap-4 text-gray-300">
+          <span className="bg-gray-700 px-3 py-1 rounded-full">
+            Goal: {workout.goal}
+          </span>
+          <span className="bg-gray-700 px-3 py-1 rounded-full">
+            Level: {workout.skillLevel}
+          </span>
+        </div>
       </div>
-      {workout.workouts.map((workout) => (
-        <SingleWorkoutCard
-          key={workout.id}
-          id={workout.id}
-          name={workout.name}
-          day={workout.day}
-          exercises={workout.exercises}
-        />
-      ))}
+
+      {/* Workout Days */}
+      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {workout.workouts.map((workoutDay) => (
+          <div 
+            key={workoutDay.id} 
+            className="bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+          >
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-white mb-2">
+                Day {workoutDay.day}: {workoutDay.name}
+              </h2>
+              <div className="space-y-4">
+                {workoutDay.exercises.map((exercise) => (
+                  <div 
+                    key={exercise.id}
+                    className="bg-gray-700 rounded-lg p-4"
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <h3 className="text-xl font-medium text-white">
+                        {exercise.exerciseName}
+                      </h3>
+                      <span className="text-gray-300">
+                        {exercise.sets} × {exercise.reps}
+                      </span>
+                    </div>
+                    <div className="aspect-w-16 aspect-h-9">
+                      <img
+                        src={`https://artshopimgs.blob.core.windows.net/images/${exercise.exerciseName.replace(/\s+/g, '')}.gif`}
+                        alt={exercise.exerciseName}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

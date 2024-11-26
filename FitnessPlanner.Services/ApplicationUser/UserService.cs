@@ -3,7 +3,10 @@ using FitnessPlanner.Data.Contracts;
 using FitnessPlanner.Data.Models;
 using FitnessPlanner.Services.ApplicationUser.Contracts;
 using FitnessPlanner.Services.BodyMassIndexCalculation.Contracts;
+using FitnessPlanner.Services.Models.ExercisePerformInfo;
+using FitnessPlanner.Services.Models.SingleWorkout;
 using FitnessPlanner.Services.Models.User;
+using FitnessPlanner.Services.Models.WorkoutPlan;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -175,6 +178,87 @@ namespace FitnessPlanner.Services.ApplicationUser
             catch (Exception e)
             {
                 logger.LogError(e, $"{nameof(AddWorkoutPlanToUserAsync)}: Error while adding workout plan to user");
+                throw;
+            }
+        }
+
+        public async Task<Result> RemoveWorkoutPlanFromUserAsync(string? userId, int workoutPlanId)
+        {
+            if (userId is null)
+            {
+                return Result.Unauthorized();
+            }
+
+            try
+            {
+                var user = await repositoryManager.Users.GetByIdWithRelatedEntitiesAsync(userId, isTracked: true);
+                if (user is null)
+                {
+                    return Result.NotFound($"User with Id: {userId} doesn't exist.");
+                }
+
+                var userWorkoutPlan = user.UserWorkoutPlans.FirstOrDefault(uwp => uwp.WorkoutPlanId == workoutPlanId);
+                if (userWorkoutPlan is null)
+                {
+                    return Result.NotFound($"Workout plan with Id: {workoutPlanId} doesn't exist.");
+                }
+
+                user.UserWorkoutPlans.Remove(userWorkoutPlan);
+
+                await repositoryManager.SaveChangesAsync();
+                return Result.Success();
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"{nameof(RemoveWorkoutPlanFromUserAsync)}: Error while removing workout plan from user");
+                throw;
+            }
+        }
+
+        public async Task<Result<IEnumerable<WorkoutPlanDisplayDto>>> GetUserWorkoutPlansAsync(string? userId)
+        {
+            if (userId is null)
+            {
+                return Result.Unauthorized();
+            }
+
+            try
+            {
+                var user = await repositoryManager.Users.GetByIdWithRelatedEntitiesAsync(userId);
+                if (user is null)
+                {
+                    return Result.NotFound($"User with Id: {userId} doesn't exist.");
+                }
+
+                var workoutPlans = user.UserWorkoutPlans
+                .Select(uwp => uwp.WorkoutPlan)
+                .Select(wp => new WorkoutPlanDisplayDto()
+                {
+                    Id = wp.Id,
+                    Name = wp.Name,
+                    Goal = wp.Goal.Name,
+                    SkillLevel = wp.SkillLevel.Name,
+                    Workouts = wp.SingleWorkoutWorkoutPlans.Select(swwp=> new SingleWorkoutDto()
+                    {
+                        Id = swwp.SingleWorkout.Id,
+                        Name = swwp.SingleWorkout.Name,
+                        Day = (int)swwp.SingleWorkout.Day,
+                        Exercises = swwp.SingleWorkout.ExercisePerformInfoSingleWorkouts.Select(episw =>
+                            new ExercisePerformInfoDto()
+                            {
+                                Id = episw.ExercisePerformInfo.Id,
+                                ExerciseName = episw.ExercisePerformInfo.Exercise.Name,
+                                Sets = episw.ExercisePerformInfo.Sets,
+                                Reps = episw.ExercisePerformInfo.Reps
+                            })
+                    })
+                });
+                
+                return Result<IEnumerable<WorkoutPlanDisplayDto>>.Success(workoutPlans);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"{nameof(GetUserWorkoutPlansAsync)}: Error while retrieving user's workout plans");
                 throw;
             }
         }

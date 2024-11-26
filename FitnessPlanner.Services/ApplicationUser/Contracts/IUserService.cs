@@ -1,5 +1,6 @@
 ﻿using Ardalis.Result;
 using FitnessPlanner.Services.Models.User;
+using FitnessPlanner.Services.Models.WorkoutPlan;
 
 namespace FitnessPlanner.Services.ApplicationUser.Contracts
 {
@@ -12,5 +13,9 @@ namespace FitnessPlanner.Services.ApplicationUser.Contracts
         Task<Result<UserDataFormDto>> GetByIdAsUserDataFormDtoAsync(string? userId);
 
         Task<Result> AddWorkoutPlanToUserAsync(string? userId, int workoutPlanId);
+
+        Task<Result> RemoveWorkoutPlanFromUserAsync(string? userId, int workoutPlanId);
+
+        Task<Result<IEnumerable<WorkoutPlanDisplayDto>>> GetUserWorkoutPlansAsync(string? userId);
     }
 }

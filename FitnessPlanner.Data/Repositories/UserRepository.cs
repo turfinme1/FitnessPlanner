@@ -42,7 +42,20 @@ namespace FitnessPlanner.Data.Repositories
                 .Include(u => u.SkillLevel)
                 .Include(u => u.Goal)
                 .Include(u => u.BodyMassIndexMeasure)
-                .Include(u => u.UserWorkoutPlans);
+                .Include(u => u.UserWorkoutPlans)
+                .Include(u => u.UserWorkoutPlans)
+                .ThenInclude(uwp => uwp.WorkoutPlan)
+                        .ThenInclude(wp => wp.Goal)
+                .Include(u => u.UserWorkoutPlans)
+                    .ThenInclude(uwp => uwp.WorkoutPlan)
+                        .ThenInclude(wp => wp.SkillLevel)
+                .Include(u => u.UserWorkoutPlans)
+                    .ThenInclude(uwp => uwp.WorkoutPlan)
+                        .ThenInclude(wp => wp.SingleWorkoutWorkoutPlans)
+                            .ThenInclude(swp => swp.SingleWorkout)
+                                .ThenInclude(sw => sw.ExercisePerformInfoSingleWorkouts)
+                                    .ThenInclude(episw => episw.ExercisePerformInfo)
+                                        .ThenInclude(epi => epi.Exercise);
 
             return isTracked
                 ? await query.FirstOrDefaultAsync(u => u.Id == id)

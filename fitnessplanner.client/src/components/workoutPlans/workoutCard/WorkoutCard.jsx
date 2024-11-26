@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const WorkoutCard = ({ id, name, goal, skillLevel, img }) => {
+const WorkoutCard = ({ id, name, goal, skillLevel, img, onAddToProfile }) => {
   return (
     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-700">
@@ -19,7 +19,7 @@ const WorkoutCard = ({ id, name, goal, skillLevel, img }) => {
           </h5>
         </Link>
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center">
-          {goal || "Here are the biggest enterprise technology"}{" "}
+          {goal || "Gain Muscle"}{" "}
           {skillLevel}
         </p>
         <div className="flex items-center justify-center">
@@ -44,6 +44,14 @@ const WorkoutCard = ({ id, name, goal, skillLevel, img }) => {
               />
             </svg>
           </Link>
+          {onAddToProfile && (
+            <button
+            onClick={() => onAddToProfile(id)}
+            className="px-3 py-2 text-xs font-medium text-center text-white bg-purple-600 rounded-lg hover:bg-purple-700 focus:ring-4 focus:outline-none focus:ring-purple-800"
+            >
+            Add to Profile
+            </button>
+          )}
         </div>
       </div>
     </div>
