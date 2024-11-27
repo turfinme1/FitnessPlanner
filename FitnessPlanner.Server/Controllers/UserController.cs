@@ -26,14 +26,14 @@ namespace FitnessPlanner.Server.Controllers
         /// <summary>
         /// Gets a workout plan recommendation for the user.
         /// </summary>
-        /// <returns>The <see cref="WorkoutPlanDisplayDto"/> recommendation.</returns>
+        /// <returns>A collection of <see cref="WorkoutPlanSuggestionDto"/> recommendations.</returns>
         /// <response code="200">Returns the workout plan recommendation.</response>
         /// <response code="400">If the request is invalid.</response>
         /// <response code="401">If the user is not authenticated.</response>
         /// <response code="500">If an unexpected internal error occurs.</response>
         [HttpGet("recommendation")]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(ApiResponse<IEnumerable<WorkoutPlanDisplayDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<WorkoutPlanSuggestionDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status500InternalServerError)]
