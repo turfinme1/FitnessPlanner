@@ -3,14 +3,20 @@ import { useParams } from "react-router-dom";
 import SingleWorkoutCard from "./singleWorkoutCard/SingleWorkoutCard";
 import { getWorkoutById } from "../../services/workoutService";
 
-const WorkoutDetails = () => {
+const WorkoutDetails = ({ providedWorkoutId }) => {
   const { workoutId } = useParams();
   const [workout, setWorkout] = useState(null);
 
   useEffect(() => {
-    getWorkoutById(workoutId).then((data) => {
-      setWorkout(data);
-    });
+    if (providedWorkoutId) {
+      getWorkoutById(providedWorkoutId).then((data) => {
+        setWorkout(data);
+      });
+    } else {
+      getWorkoutById(workoutId).then((data) => {
+        setWorkout(data);
+      });
+    }
   }, [workoutId]);
 
   if (!workout) {
@@ -35,8 +41,8 @@ const WorkoutDetails = () => {
       {/* Workout Days */}
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {workout.workouts.map((workoutDay) => (
-          <div 
-            key={workoutDay.id} 
+          <div
+            key={workoutDay.id}
             className="bg-gray-800 rounded-lg shadow-lg overflow-hidden"
           >
             <div className="p-6">
@@ -45,10 +51,7 @@ const WorkoutDetails = () => {
               </h2>
               <div className="space-y-4">
                 {workoutDay.exercises.map((exercise) => (
-                  <div 
-                    key={exercise.id}
-                    className="bg-gray-700 rounded-lg p-4"
-                  >
+                  <div key={exercise.id} className="bg-gray-700 rounded-lg p-4">
                     <div className="flex justify-between items-center mb-2">
                       <h3 className="text-xl font-medium text-white">
                         {exercise.exerciseName}
@@ -59,7 +62,10 @@ const WorkoutDetails = () => {
                     </div>
                     <div className="aspect-w-16 aspect-h-9">
                       <img
-                        src={`https://artshopimgs.blob.core.windows.net/images/${exercise.exerciseName.replace(/\s+/g, '')}.gif`}
+                        src={`https://artshopimgs.blob.core.windows.net/images/${exercise.exerciseName.replace(
+                          /\s+/g,
+                          ""
+                        )}.gif`}
                         alt={exercise.exerciseName}
                         className="w-full h-full object-cover rounded-lg"
                       />

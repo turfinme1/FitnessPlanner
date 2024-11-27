@@ -41,7 +41,7 @@ namespace FitnessPlanner.Server.Controllers
         {
             var userId = User.FindFirstValue((ClaimTypes.NameIdentifier));
 
-            return (await similarityCalculationService.GetWorkoutIdRecommendationByUserIdAsync(userId)).ToActionResult();
+            return (await similarityCalculationService.GetWorkoutRecommendationsByUserIdAsync(userId)).ToActionResult();
         }
 
         /// <summary>

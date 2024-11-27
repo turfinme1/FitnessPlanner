@@ -28,7 +28,7 @@ export const createWorkoutPlan = async (workoutPlan) => {
   return responseObject.result;
 };
 
-export const getWorkoutSuggestion = async () => {
+export const getWorkoutSuggestions = async () => {
   const response = await fetch("api/user/recommendation", {
     headers: {
       Authorization:

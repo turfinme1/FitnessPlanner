@@ -19,7 +19,7 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation
         IWorkoutPlanService workoutService,
         ILogger<CosineSimilarityCalculationService> logger) : ICosineSimilarityCalculationService
     {
-        public async Task<Result<WorkoutPlanDisplayDto>> GetWorkoutIdRecommendationByUserIdAsync(string? userId)
+        public async Task<Result<IEnumerable<WorkoutPlanSuggestionDto>>> GetWorkoutRecommendationsByUserIdAsync(string? userId)
         {
             UserPreferencesDto? user;
             IEnumerable<WorkoutPlanPropertiesDto> workoutPlan;
@@ -48,46 +48,47 @@ namespace FitnessPlanner.Services.CosineSimilarityCalculation
 
                 workoutPlan = workoutPlanResult.Value;
                 vocabulary = await GetVocabulary();
-            }
-            catch (Exception e)
-            {
-                logger.LogError(e, $"Error in {nameof(GetWorkoutIdRecommendationByUserIdAsync)}");
-                throw;
-            }
+            
+                var userVector = BuildVector(vocabulary, user.Goal, user.SkillLevel, new List<string>() { user.BodyMassIndexMeasures });
 
-            var userVector = BuildVector(vocabulary, user.Goal, user.SkillLevel, new List<string>() { user.BodyMassIndexMeasures });
-
-            Dictionary<int, decimal> similarities = new Dictionary<int, decimal>();
-            foreach (var workout in workoutPlan)
-            {
-                var workoutVector = BuildVector(vocabulary, workout.Goal, workout.SkillLevel, new List<string>(workout.BodyMassIndexMeasures));
-
-                decimal similarity = CalculateCosineSimilarity(userVector, workoutVector);
-
-                similarities.Add(workout.Id, similarity);
-            }
-
-            var maxSimilarity = similarities.OrderByDescending(x => x.Value).FirstOrDefault();
-
-            try
-            {
-                var recommenderWorkout = await workoutService.GetByIdAsync(maxSimilarity.Key);
-
-                if (recommenderWorkout is null)
+                Dictionary<int, decimal> similarities = new Dictionary<int, decimal>();
+                foreach (var workout in workoutPlan)
                 {
-                    return Result.Error($"Couldn't retrieve recommended workout with Id: {maxSimilarity.Key}");
+                    var workoutVector = BuildVector(vocabulary, workout.Goal, workout.SkillLevel, new List<string>(workout.BodyMassIndexMeasures));
+
+                    decimal similarity = CalculateCosineSimilarity(userVector, workoutVector);
+
+                    similarities.Add(workout.Id, similarity);
                 }
 
-                return Result<WorkoutPlanDisplayDto>.Success(recommenderWorkout);
+                var topSimilarities = similarities.OrderByDescending(x => x.Value).Take(5);
+                var suggestions = new List<WorkoutPlanSuggestionDto>();
+                foreach(var similarity in topSimilarities)
+                {
+                    var workout = await workoutService.GetByIdAsync(similarity.Key);
+
+                    if (workout is null)
+                    {
+                        return Result.Error($"Couldn't retrieve recommended workout with Id: {similarity.Key}");
+                    }
+
+                    suggestions.Add(new WorkoutPlanSuggestionDto()
+                    {
+                        WorkoutPlan = workout,
+                        SimilarityScore = similarity.Value
+                    });
+                }
+
+                return Result<IEnumerable<WorkoutPlanSuggestionDto>>.Success(suggestions);
             }
             catch (Exception e)
             {
-                logger.LogError(e, $"Error in {nameof(GetWorkoutIdRecommendationByUserIdAsync)}");
+                logger.LogError(e, $"Error in {nameof(GetWorkoutRecommendationsByUserIdAsync)}");
                 throw;
             }
         }
 
-        private decimal CalculateCosineSimilarity(decimal[] userVector, decimal[] workoutVector)
+        private static decimal CalculateCosineSimilarity(decimal[] userVector, decimal[] workoutVector)
         {
             decimal dotProduct = DotProduct(userVector, workoutVector);
             decimal magnitudeA = (decimal)Magnitude(userVector);
