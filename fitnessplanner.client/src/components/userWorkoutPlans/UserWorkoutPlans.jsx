@@ -6,14 +6,21 @@ import { getUserWorkoutPlans, removeWorkoutPlan } from "../../services/userServi
 
 const UserWorkoutPlans = () => {
   const [workoutPlans, setWorkoutPlans] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     loadWorkoutPlans();
   }, []);
 
   const loadWorkoutPlans = async () => {
-    const data = await getUserWorkoutPlans();
-    setWorkoutPlans(data);
+    try {
+      const data = await getUserWorkoutPlans();
+      setWorkoutPlans(data);
+    } catch (error) {
+      console.error("Error loading workout plans:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRemove = async (workoutPlanId) => {
@@ -37,6 +44,13 @@ const UserWorkoutPlans = () => {
     >
       <div>
         <h1 className="text-center h1">My Workout Plans</h1>
+        
+        {isLoading && (
+              <div className="flex justify-center items-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+              </div>
+        )}
+            
         {workoutPlans.length === 0 && (
           <div className="text-center text-gray-500 dark:text-gray-400">
             No workout plans added yet

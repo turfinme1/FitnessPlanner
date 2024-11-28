@@ -1,32 +1,43 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { updateProfile, getUserFormData } from "../../../services/userService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const UpdateProfile = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm({
     mode: "onChange",
-    defaultValues: async () => getUserFormData(),
   });
 
-  // useEffect(() => {
-  //   const fetchUserFormData = async () => {
-  //     try {
-  //       const data = await getUserFormData();
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.log("error", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUserFormData = async () => {
+      try {
+        const data = await getUserFormData();
+        console.log(data);
+        // Set form values with fetched data
+        setValue("name", data.result.name);
+        setValue("age", data.result.age);
+        setValue("height", data.result.height);
+        setValue("weight", data.result.weight);
+        setValue("skillLevelId", data.result.skillLevelId);
+        setValue("goalId", data.result.goalId);
+      } catch (error) {
+        console.log("error", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  //   fetchUserFormData();
-  // }, []);
+    fetchUserFormData();
+  }, [setValue]);
 
   const handleRegistration = async (values) => {
     console.log(values);
@@ -34,13 +45,23 @@ const UpdateProfile = () => {
       sessionStorage.getItem("authData")
     ).state.userData.nameidentifier;
     try {
-      if (await updateProfile(values)) {
+      await updateProfile(values)
+        alert("Profile updated successfully");
         navigate("/profile");
-      }
+      
     } catch (error) {
+      alert("Failed to update profile");
       console.log("error", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full flex-col items-center py-5 sm:justify-center">
@@ -104,7 +125,6 @@ const UpdateProfile = () => {
                 type="number"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 placeholder-gray-300 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500 [&:not(:placeholder-shown):not(:focus):invalid~span]:block invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-400 valid:[&:not(:placeholder-shown)]:border-green-500"
                 autoComplete="off"
-                defaultValue={14}
                 {...register("age", {
                   required: "Field is invalid",
                   min: { value: 14, message: "Minimum age is 14" },
