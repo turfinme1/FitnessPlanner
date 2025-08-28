@@ -2,7 +2,7 @@
 
 namespace FitnessPlanner.Services.Models.WorkoutPlan
 {
-    public class WorkoutPlanDto
+    public class WorkoutPlanDisplayDto
     {
         public int Id { get; set; }
 

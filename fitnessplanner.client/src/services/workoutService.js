@@ -1,15 +1,15 @@
 export const getWorkoutById = async (id) => {
-  const response = await fetch(`api/workout-plan/${id}`);
-  const result = await response.json();
-  console.log(result);
-  return result;
+  const response = await fetch(`/api/workout-plan/${id}`);
+  const responseObject = await response.json();
+  console.log(responseObject);
+  return responseObject.result;
 };
 
 export const getWorkoutPlans = async () => {
   const response = await fetch("api/workout-plan");
-  const result = await response.json();
-  console.log(result);
-  return result;
+  const responseObject = await response.json();
+  console.log(responseObject);
+  return responseObject.result;
 };
 
 export const createWorkoutPlan = async (workoutPlan) => {
@@ -23,12 +23,12 @@ export const createWorkoutPlan = async (workoutPlan) => {
     },
     body: JSON.stringify(workoutPlan),
   });
-  const result = await response.json();
-  console.log(result);
-  return result;
+  const responseObject = await response.json();
+  console.log(responseObject);
+  return responseObject.result;
 };
 
-export const getWorkoutSuggestion = async () => {
+export const getWorkoutSuggestions = async () => {
   const response = await fetch("api/user/recommendation", {
     headers: {
       Authorization:
@@ -36,7 +36,8 @@ export const getWorkoutSuggestion = async () => {
         JSON.parse(sessionStorage.getItem("authData")).state.accessToken,
     },
   });
-  const result = await response.json();
-  console.log(result);
-  return result;
+
+  const responseObject = await response.json();
+  console.log(responseObject);
+  return responseObject.result;
 };

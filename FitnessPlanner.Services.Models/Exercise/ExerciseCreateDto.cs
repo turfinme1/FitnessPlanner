@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 using static FitnessPlanner.Data.Models.Constants.ValidationConstants.ErrorMessages;
 using static FitnessPlanner.Data.Models.Constants.ValidationConstants.ExerciseConstants;
-
 namespace FitnessPlanner.Services.Models.Exercise
 {
     public class ExerciseCreateDto
@@ -32,5 +32,8 @@ namespace FitnessPlanner.Services.Models.Exercise
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         public required IEnumerable<int> MuscleGroups { get; set; } = new List<int>();
+
+        [Required(ErrorMessage = RequiredErrorMessage)]
+        public required IFormFile File { get; set; } 
     }
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Section from "../section/Section";
 import WorkoutCard from "./workoutCard/WorkoutCard";
 import { getWorkoutPlans } from "../../services/workoutService";
+import { addWorkoutToUserProfile } from "../../services/userService";
 
 const WorkoutPlan = () => {
   const [workoutPlans, setWorkoutPlans] = useState([]);
@@ -10,6 +11,24 @@ const WorkoutPlan = () => {
       setWorkoutPlans(data);
     });
   }, []);
+
+  const handleAddToProfile = async (workoutPlanId) => {
+    // if (!isAuthenticated) {
+    //   navigate("/login");
+    //   return;
+    // }
+
+    try {
+      const success = await addWorkoutToUserProfile(workoutPlanId);
+      if (success) {
+        // Show success feedback
+        alert("Workout added to your profile!");
+      }
+    } catch (error) {
+      console.error("Error adding workout:", error);
+      alert("Failed to add workout to profile");
+    }
+  };
 
   return (
     <Section
@@ -31,6 +50,7 @@ const WorkoutPlan = () => {
             name={workoutPlan.name}
             goal={workoutPlan.goal}
             skillLevel={workoutPlan.skillLevel}
+            onAddToProfile={handleAddToProfile}
           />
         ))}
        

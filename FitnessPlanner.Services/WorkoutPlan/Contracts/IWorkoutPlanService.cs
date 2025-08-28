@@ -1,21 +1,20 @@
-﻿using FitnessPlanner.Services.Models.WorkoutPlan;
+﻿using Ardalis.Result;
+using FitnessPlanner.Services.Models.WorkoutPlan;
 
 namespace FitnessPlanner.Services.WorkoutPlan.Contracts
 {
     public interface IWorkoutPlanService
     {
-        Task<IEnumerable<WorkoutPlanDto>> GetAllAsync();
+        Task<Result<IEnumerable<WorkoutPlanDisplayDto>>> GetAllAsync();
 
-        Task<IEnumerable<WorkoutPlanPropertiesDto>> GetAllWorkoutsWithPreferencesAsync();
-        
-        Task<WorkoutPlanDto?> GetByIdAsync(int id);
+        Task<Result<WorkoutPlanDisplayDto>> GetByIdAsync(int id);
 
-        Task<WorkoutPlanDeleteDto?> GetByIdAsDeleteDtoAsync(int id);
+        Task<Result<IEnumerable<WorkoutPlanPropertiesDto>>> GetAllWorkoutsWithPreferencesAsync();
 
-        Task<int> CreateAsync(WorkoutPlanCreateDto model);
+        Task<Result<WorkoutPlanDisplayDto>> CreateAsync(string? userClaimId, WorkoutPlanCreateDto model);
 
-        Task UpdateAsync(WorkoutPlanUpdateDto model);
+        Task<Result> UpdateAsync(int workoutId, string? userClaimId, WorkoutPlanUpdateDto model);
 
-        Task DeleteAsync(int id);
+        Task<Result> DeleteAsync(string? userClaimId, int id);
     }
 }

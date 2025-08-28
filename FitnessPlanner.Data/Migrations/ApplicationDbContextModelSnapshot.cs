@@ -2882,6 +2882,25 @@ namespace FitnessPlanner.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FitnessPlanner.Data.Models.UserWorkoutPlan", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text")
+                        .HasColumnName("user_id")
+                        .HasComment("The ID of the associated user.");
+
+                    b.Property<int>("WorkoutPlanId")
+                        .HasColumnType("integer")
+                        .HasColumnName("workout_plan_id")
+                        .HasComment("The ID of the associated workout plan.");
+
+                    b.HasKey("UserId", "WorkoutPlanId");
+
+                    b.HasIndex("WorkoutPlanId");
+
+                    b.ToTable("user_workout_plan");
+                });
+
             modelBuilder.Entity("FitnessPlanner.Data.Models.WorkoutPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -2921,8 +2940,7 @@ namespace FitnessPlanner.Data.Migrations
 
                     b.HasIndex("SkillLevelId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("workout_plan");
 
@@ -3376,6 +3394,25 @@ namespace FitnessPlanner.Data.Migrations
                     b.Navigation("WorkoutPlan");
                 });
 
+            modelBuilder.Entity("FitnessPlanner.Data.Models.UserWorkoutPlan", b =>
+                {
+                    b.HasOne("FitnessPlanner.Data.Models.User", "User")
+                        .WithMany("UserWorkoutPlans")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FitnessPlanner.Data.Models.WorkoutPlan", "WorkoutPlan")
+                        .WithMany("UserWorkoutPlans")
+                        .HasForeignKey("WorkoutPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("WorkoutPlan");
+                });
+
             modelBuilder.Entity("FitnessPlanner.Data.Models.WorkoutPlan", b =>
                 {
                     b.HasOne("FitnessPlanner.Data.Models.Goal", "Goal")
@@ -3391,8 +3428,8 @@ namespace FitnessPlanner.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("FitnessPlanner.Data.Models.User", "User")
-                        .WithOne("WorkoutPlan")
-                        .HasForeignKey("FitnessPlanner.Data.Models.WorkoutPlan", "UserId");
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Goal");
 
@@ -3553,12 +3590,14 @@ namespace FitnessPlanner.Data.Migrations
                 {
                     b.Navigation("SingleWorkoutWorkoutPlans");
 
+                    b.Navigation("UserWorkoutPlans");
+
                     b.Navigation("WorkoutPlanBodyMassIndexMeasures");
                 });
 
             modelBuilder.Entity("FitnessPlanner.Data.Models.User", b =>
                 {
-                    b.Navigation("WorkoutPlan");
+                    b.Navigation("UserWorkoutPlans");
                 });
 #pragma warning restore 612, 618
         }

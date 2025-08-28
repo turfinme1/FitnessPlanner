@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="SkillLevel\" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>
